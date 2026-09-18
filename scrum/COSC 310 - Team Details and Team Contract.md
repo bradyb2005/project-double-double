@@ -112,30 +112,15 @@
   - I'll respond quickly during the day, even if it's just a quick "I saw it, I'll get to it tonight," so no one is left waiting on me.  
   - I'll bring ideas beyond the minimum rubric requirements and stay positive and easy to work with throughout.
 
-&nbsp;
+
 
 **Signatures**
 
-&nbsp;
+Brady: <img width="321" height="244" alt="Brady Signature" src="https://github.com/user-attachments/assets/ef035302-5c8e-4b3f-b0b2-b856f4dac358" />
 
-Brady:
 
-&nbsp;
+Liam: <img width="364" height="350" alt="Liam Signature" src="https://github.com/user-attachments/assets/502b1b8b-7b06-4259-85a9-b63dab0bfad0" />
 
-&nbsp;
+Caden: <img width="468" height="186" alt="Caden Signature" src="https://github.com/user-attachments/assets/4eff222a-32b5-4d4f-b62f-087d22658496" />
 
-Liam:
-
-Caden:
-
-![][image1]
-
-&nbsp;
-
-Advaith:
-
-&nbsp;
-
-&nbsp;
-
-[image1]: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKQAAAA0CAYAAAAE05MCAAAE3klEQVR4Xu2da6jURhTHj4pFRSyFCqJffIHQlgpVRBH1ig8UtNDS0g8tWloRFBRUUARFUQQfiAq+QEQKFYSWfmihtEpb2w8ipSJa8JOi4hMV36Li8/w7O72Tk+xukk2yydzzgz93c85MMpM5mZ0ks3OJFEVRFCVLzrBeOVKUttCdgoH4rPZXUdqCDcSLwqYohWOD8Ylj28O662wrSmFEjRexPVXYFCV3/iATfL8LuwxQRSmEqN4RRNkUJXeiAvI71kFhU5TcWUEmGL8RdhmgilIIJykcfB+wXgibohTCYwoHJLbfEjbFE0axjlLnOC1K7USWAb1ju8ukZMwBCgddPb2s5WkXMiA1GD3gc9Y/FA42q3usr/5PXS5Qvmu1z31q20pFkYF3g/VxIEX5QbkPOJ97Oj6lAnxCwSB8I+iuHKjDHNYM1lXhU0qODcIl0lFhUJ93a3+VioAZMGiwz6TDA1Cvs6zvpUMpJ2gwd0qWb9heX6kAaKjl0ugZqONAaVTKBxpqqTR6xiLS3rESoJE2SKOH6Nd1BUADdYVpV6gnZoNrQJYYNM6v0ughf7Iu1T5rQJYUNAxe//nOcAq+P9eALCGYatVV5v/JAJTbSglAowyVRg+JqqcGZMmYx3ogjR6CwNsnjWTsWLFCKQldoYdAHR9KYw34MIlYKQGYqVOWgJxCpiyunrMWuolScIUaj48xZQ4/9FJKABr9I2kskL4UDsIo/WgzJARLoTS74A6xfpFGpT00a6y8mEvBgMMYtt6FsZnSlRNzHJGvt3QIZlG6/RfBftYpMhfkt6xjZFbZ8JaiG+IEdQbhJuGrB9IOk8YmYJoc8r0vHXUo+jxYlrFuUfDijCMvmUTFVs6ezGnS0QCsz1jvZqQei8kc5z3paEDe5wG/OcJsdBlYUfqNzHga/ODY8TDf61lJeARSxC/+BpE5oe6ai83oRibPdelowg4y+ZK+ccojIA9TONisjrK+tAkjwOtbm3Zw0OUvqOx8acyYkWSO84V0NOAdMnmQNwk7KdjouBDigvQYS6YFd+mPKBx469xEMfiaTL7b0tEVQMXzZDeZY/SSjgbgZwSyXGNYk1nbWRco3OhRSspWMo9/4oKxqXu846wJgRTxGMfayLpD4TrEES4C3BDi0dZPrF2sVazprJlUMVChPLEnDQvIW/BVjDdDWJVWntwo/cVaw+qgaOB307dCnPy2925V51l7WZdr2wiirMGF3MFayVpLZpgAybI0000yQ4ikvX1icLA8Qa8hK9dIP7M+/C9nPNBjuvkHBN2JiXs+cFGhJ5Lld3WE6l9EAAsTIN1p6Sgxk8gE9r8Uru991jbWRJs4DdhR0nFaK3Q4n21F8FwtLe4JyWIsjP3MlcYM6UGd5UXP6CMdrPVkhg+JwYmJ+ywwC/As0TYI7oZbwf67DiirRenHktlf1gyhzrKeEz7FAV0sThLeAOTFFgr2ZOOD7tS4+8ySLPeH82rLiJsmJQZPKdi4rv4m8zgj7tSsN8n84N7dBx5qj3YTZcACyicYAfbZyjAGrz/d+o8IupW44M5XBmQaYUzYn/IF76ZxrDz4lNLt296kWPULuhUlPQio1dIowLeB+14e0qVYlFyIWnMczKbwNwL0tptIUfJABp0UHhbrOpJKocgg9GkJQkVRFKV0vAbu0Pg7qt2xugAAAABJRU5ErkJggg==>
+Advaith: <img width="502" height="396" alt="Advaith Signature" src="https://github.com/user-attachments/assets/4cf3d162-5770-45f1-b79b-687a4daadedc" />
