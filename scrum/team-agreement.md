@@ -1,6 +1,6 @@
 # **Team Details and Team Agreement**
 
-## *COSC 310 \- Tuesday September 22*
+## *COSC 310 \- Friday September 18*
 
 # **1\. Team Information**
 
