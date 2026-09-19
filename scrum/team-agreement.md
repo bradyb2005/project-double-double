@@ -1,4 +1,4 @@
-# **Team Details and Team Contract**
+# **Team Details and Team Agreement**
 
 ## *COSC 310 \- Tuesday September 22*
 
