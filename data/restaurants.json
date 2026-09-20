@@ -1,1 +1,38 @@
-
+[
+  {
+    "id": 1,
+    "name": "A&W",
+    "cuisine": "Burgers",
+    "phone": "250-763-5552",
+    "rating": "4.0",
+    "address": "2703 Hwy 97 N",
+    "location": {
+      "city": "Kelowna",
+      "province": "BC"
+    }
+  },
+  {
+    "id": 2,
+    "name": "Arashi Ramen",
+    "cuisine": "Ramen",
+    "phone": "236-970-8695",
+    "rating": "4.8",
+    "address": "1884 Dayton St",
+    "location": {
+      "city": "Kelowna",
+      "province": "BC"
+    }
+  },
+  {
+    "id": 3,
+    "name": "Cantina Del Centro",
+    "cuisine": "Mexican",
+    "phone": "778-484-0887",
+    "rating": "4.3",
+    "address": "271 Bernard Ave",
+    "location": {
+      "city": "Kelowna",
+      "province": "BC"
+    }
+  }
+]
