@@ -1,8 +1,13 @@
 name: Auto Label PR by Type
 
 on:
-  pull_request:
   workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR number to label manually'
+        required: true
+        type: number
+  pull_request:
     types: [opened, edited]
 
 jobs:
@@ -16,7 +21,25 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const body = context.payload.pull_request.body || '';
+            let prNumber;
+            let body = '';
+
+            // Handle manual run vs PR event
+            if (context.eventName === 'workflow_dispatch') {
+              prNumber = context.payload.inputs.pr_number;
+              const { data: pr } = await github.rest.pulls.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber
+              });
+              body = pr.body || '';
+            } else if (context.payload.pull_request) {
+              prNumber = context.payload.pull_request.number;
+              body = context.payload.pull_request.body || '';
+            } else {
+              core.info('No pull request found in event context.');
+              return;
+            }
 
             // Maps the exact template text to your created label names
             const labelMap = [
@@ -39,7 +62,10 @@ jobs:
               await github.rest.issues.addLabels({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: context.payload.pull_request.number,
+                issue_number: prNumber,
                 labels: labelsToAdd
               });
+              core.info(`Successfully added labels: ${labelsToAdd.join(', ')}`);
+            } else {
+              core.info('No matching checked boxes found.');
             }
