@@ -7,9 +7,6 @@ about: Standard template for project issues
 <!-- Provide a concise overview of the task or user story -->
 (text here)  
 
-### Implementation Details:
-- 
-
 ---
 
 ## Assignee
@@ -25,7 +22,7 @@ about: Standard template for project issues
 <!-- Check all labels that apply -->
 - [ ] frontend
 - [ ] backend
-
+---
 - [ ] new feature
 - [ ] bug fix
 - [ ] refactor
