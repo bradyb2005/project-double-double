@@ -154,14 +154,16 @@ jobs:
                       if (currentIssueId && blockerIssueId) {
                         // Link relationship via GraphQL mutation
                         await github.graphql(`
-                          mutation($issueId: ID!, $blockedById: ID!) {
-                            addBlockedBy(input: { issueId: $issueId, blockedById: $blockedById }) {
-                              clientMutationId
+                          mutation($issueId: ID!, $blockingIssueId: ID!) {
+                            addBlockedBy(input: { issueId: $issueId, blockingIssueId: $blockingIssueId }) {
+                              issue {
+                                id
+                              }
                             }
                           }
                         `, {
                           issueId: currentIssueId,
-                          blockedById: blockerIssueId
+                          blockingIssueId: blockerIssueId
                         });
                         core.info(`Linked native blocker: #${bNum} blocks #${issueNumber}`);
                       }
