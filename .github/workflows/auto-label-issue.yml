@@ -9,9 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       issues: write
+      contents: read
 
     steps:
-      - name: Parse Issue Body & Title to Assign Milestone, Labels, and Assignees
+      - name: Parse Issue Body & Title to Assign Milestone, Labels, Assignees, and Dependencies
         uses: actions/github-script@v7
         with:
           script: |
@@ -59,7 +60,6 @@ jobs:
             const assigneesToAdd = [];
 
             for (const user of validUsers) {
-              // Matches `- [x] @username` or `- [X] @username`
               const userRegex = new RegExp(`-\\s*\\[[xX]\\]\\s*@?${user}\\b`, 'i');
               if (userRegex.test(body)) {
                 assigneesToAdd.push(user);
@@ -91,7 +91,6 @@ jobs:
 
             const labelsToAdd = [];
             for (const label of labelCandidates) {
-              // Escapes slashes and matches `- [x] label`
               const escaped = label.replace('/', '\\/');
               const labelRegex = new RegExp(`-\\s*\\[[xX]\\]\\s*${escaped}\\b`, 'i');
               if (labelRegex.test(body)) {
@@ -107,4 +106,72 @@ jobs:
                 labels: labelsToAdd
               });
               core.info(`Added labels: ${labelsToAdd.join(', ')} to issue #${issueNumber}`);
+            }
+
+            // ----------------------------------------------------
+            // 4. Parse "Blocked by #..." and Link Native Relationships
+            // ----------------------------------------------------
+            // Matches "Blocked by #4", "Blocked by #4, #5", "Blocked by: #4 #5", etc.
+            const blockedLineMatch = body.match(/Blocked\s+by[:\s]*([#\d,\s]+)/i);
+
+            if (blockedLineMatch) {
+              const rawList = blockedLineMatch[1];
+              // Extract all digits following '#'
+              const matches = [...rawList.matchAll(/#(\d+)/g)];
+              const blockingNumbers = matches
+                .map(m => parseInt(m[1], 10))
+                .filter(num => num !== issueNumber); // Ignore self-references
+
+              if (blockingNumbers.length > 0) {
+                try {
+                  // Fetch the GraphQL node ID of the current issue
+                  const currentIssueQuery = `
+                    query($owner: String!, $repo: String!, $number: Int!) {
+                      repository(owner: $owner, name: $repo) {
+                        issue(number: $number) {
+                          id
+                        }
+                      }
+                    }
+                  `;
+                  const currentRes = await github.graphql(currentIssueQuery, {
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    number: issueNumber
+                  });
+                  const currentIssueId = currentRes?.repository?.issue?.id;
+
+                  for (const bNum of blockingNumbers) {
+                    try {
+                      // Fetch the GraphQL node ID for each blocker issue
+                      const blockerRes = await github.graphql(currentIssueQuery, {
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        number: bNum
+                      });
+                      const blockerIssueId = blockerRes?.repository?.issue?.id;
+
+                      if (currentIssueId && blockerIssueId) {
+                        // Link relationship via GraphQL mutation
+                        await github.graphql(`
+                          mutation($issueId: ID!, $blockedById: ID!) {
+                            addBlockedBy(input: { issueId: $issueId, blockedById: $blockedById }) {
+                              clientMutationId
+                            }
+                          }
+                        `, {
+                          issueId: currentIssueId,
+                          blockedById: blockerIssueId
+                        });
+                        core.info(`Linked native blocker: #${bNum} blocks #${issueNumber}`);
+                      }
+                    } catch (err) {
+                      // Silently skip if the link already exists or an issue number is invalid
+                      core.warning(`Could not link blocker #${bNum}: ${err.message}`);
+                    }
+                  }
+                } catch (err) {
+                  core.warning(`Failed to query GraphQL node IDs: ${err.message}`);
+                }
+              }
             }
