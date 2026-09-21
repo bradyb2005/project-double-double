@@ -9,8 +9,8 @@ about: Standard template for project issues
 
 ---
 
-## Assignee
-<!-- Check the person responsible for this task -->
+## Assignee(s)
+<!-- Check the person(s) responsible for this task -->
 - [ ] @bradyb2005
 - [ ] @advvaith
 - [ ] @mooz-55
@@ -20,8 +20,8 @@ about: Standard template for project issues
 
 ## Type of Change
 <!-- Check all labels that apply -->
-- [ ] frontend
 - [ ] backend
+- [ ] frontend
 ---
 - [ ] new feature
 - [ ] bug fix
@@ -33,4 +33,4 @@ about: Standard template for project issues
 
 ## Dependencies
 <!-- Reference prerequisite issues without creating subtasks -->
-* Blocked by #
+Blocked by #
