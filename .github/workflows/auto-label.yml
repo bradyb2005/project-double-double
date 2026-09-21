@@ -1,0 +1,71 @@
+name: Auto Label PR by Type
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR number to label manually'
+        required: true
+        type: number
+  pull_request:
+    types: [opened, edited]
+
+jobs:
+  label:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: Apply labels based on checkboxes
+        uses: actions/github-script@v7
+        with:
+          script: |
+            let prNumber;
+            let body = '';
+
+            // Handle manual run vs PR event
+            if (context.eventName === 'workflow_dispatch') {
+              prNumber = context.payload.inputs.pr_number;
+              const { data: pr } = await github.rest.pulls.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber
+              });
+              body = pr.body || '';
+            } else if (context.payload.pull_request) {
+              prNumber = context.payload.pull_request.number;
+              body = context.payload.pull_request.body || '';
+            } else {
+              core.info('No pull request found in event context.');
+              return;
+            }
+
+            // Maps the exact template text to your created label names
+            const labelMap = [
+              { regex: /- \[[xX]\]\s*New feature/i, label: 'new feature' },
+              { regex: /- \[[xX]\]\s*Bug fix/i, label: 'bug fix' },
+              { regex: /- \[[xX]\]\s*Refactor\s*\(no behavior change\)/i, label: 'refactor' },
+              { regex: /- \[[xX]\]\s*Documentation\s*\/\s*scrum notes/i, label: 'documentation' },
+              { regex: /- \[[xX]\]\s*Setup\s*\/\s*tooling\s*\/\s*CI/i, label: 'setup/tooling' }
+            ];
+
+            const labelsToAdd = [];
+
+            for (const item of labelMap) {
+              if (item.regex.test(body)) {
+                labelsToAdd.push(item.label);
+              }
+            }
+
+            if (labelsToAdd.length > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                labels: labelsToAdd
+              });
+              core.info(`Successfully added labels: ${labelsToAdd.join(', ')}`);
+            } else {
+              core.info('No matching checked boxes found.');
+            }
