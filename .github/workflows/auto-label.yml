@@ -2,6 +2,7 @@ name: Auto Label PR by Type
 
 on:
   pull_request:
+  workflow_dispatch:
     types: [opened, edited]
 
 jobs:
