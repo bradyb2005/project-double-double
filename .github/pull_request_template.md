@@ -10,6 +10,7 @@ Remove this if the PR will not close an issue. Add "Relates to #xx" instead. -->
 
 - [ ] New feature
 - [ ] Bug fix
+- [ ] Testing
 - [ ] Refactor (no behavior change)
 - [ ] Documentation / scrum notes
 - [ ] Setup / tooling / CI
