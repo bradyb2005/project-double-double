@@ -44,6 +44,7 @@ jobs:
             // Maps the exact template text to your created label names
             const labelMap = [
               { regex: /- \[[xX]\]\s*New feature/i, label: 'new feature' },
+              { regex: /- \[[xX]\]\s*Testing/i, label: 'testing' },
               { regex: /- \[[xX]\]\s*Bug fix/i, label: 'bug fix' },
               { regex: /- \[[xX]\]\s*Refactor\s*\(no behavior change\)/i, label: 'refactor' },
               { regex: /- \[[xX]\]\s*Documentation\s*\/\s*scrum notes/i, label: 'documentation' },
