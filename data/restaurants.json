@@ -6,6 +6,7 @@
     "phone": "250-763-5552",
     "rating": "4.0",
     "address": "2703 Hwy 97 N",
+    "zipcode": "V1X 4J8",
     "location": {
       "city": "Kelowna",
       "province": "BC"
@@ -18,6 +19,7 @@
     "phone": "236-970-8695",
     "rating": "4.8",
     "address": "1884 Dayton St",
+    "zipcode": "V1Y 7W6",
     "location": {
       "city": "Kelowna",
       "province": "BC"
@@ -30,6 +32,7 @@
     "phone": "778-484-0887",
     "rating": "4.3",
     "address": "271 Bernard Ave",
+    "zipcode": "V1Y 6N2",
     "location": {
       "city": "Kelowna",
       "province": "BC"
