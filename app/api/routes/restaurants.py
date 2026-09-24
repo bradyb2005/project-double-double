@@ -5,9 +5,9 @@ router = APIRouter()
 service = RestaurantService()
 
 @router.get("/health")
-def healthCheck():
+def health_check():
     return {"status": "healthy"}
 
 @router.get("/restaurants")
-def getRestaurants():
-    return service.fetchRestaurantList()
+def get_restaurants():
+    return service.fetch_restaurant_list()
