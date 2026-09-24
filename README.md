@@ -42,11 +42,13 @@ Version: M0 - Foundational Gate
     ```bash
     uvicorn app.main:app --reload
     ```
+    
 **API endpoint paths:**
-API is available at http://127.0.0.1:8000
-Health Check Endpoint at http://127.0.0.1:8000/health (Returns HTTP 200)
-Restaurant List Endpoint at http://127.0.0.1:8000/restaurants
-Docs path is available at http://127.0.0.1:8000/docs
+
+ - API is available at http://127.0.0.1:8000
+ - Health Check Endpoint at http://127.0.0.1:8000/health (Returns HTTP 200)
+ - Restaurant List Endpoint at http://127.0.0.1:8000/restaurants
+ - Docs path is available at http://127.0.0.1:8000/docs
 
 **Location of representative data:**
 Stored inside 'data/restaurants.json'
