@@ -2,12 +2,6 @@
 
 COSC 310 Final Project.
 Version: M0 - Foundational Gate
-Group Members:
-
-* Brady Bracken
-* Liam Aniceto
-* Caden Chandra
-* Advaith Madhu
 
 ### Required Python Version
 
@@ -47,7 +41,7 @@ Group Members:
 **Run in the root directory:**
     ```bash
     uvicorn app.main:app --reload
-
+    ```
 **API endpoint paths:**
 API is available at http://127.0.0.1:8000
 Health Check Endpoint at http://127.0.0.1:8000/health (Returns HTTP 200)
