@@ -7,10 +7,10 @@ By Project Double Double
 https://github.com/bradyb2005/project-double-double/
 
 ### Submitted Version
-(TBA)
+[M0: Foundational Gate](https://github.com/bradyb2005/project-double-double/releases/tag/foundation-gate)
 
 ### Commit
-(TBA)
+[8261ed079c1c005a9c13d38c0fbbd3be6237de97](https://github.com/bradyb2005/project-double-double/commit/8261ed079c1c005a9c13d38c0fbbd3be6237de97)
 
 ### Team Roster/GitHub usernames
 - Brady Bracken (@bradyb2005)
@@ -19,4 +19,8 @@ https://github.com/bradyb2005/project-double-double/
 - Advaith Madhu (@advvaith)
 
 ### Access Note
-Our repository is public, so you should have no issues accessing it.
+Our repository is public, so you should have no issues accessing it. 
+It has been shared on Friday, September 25th at approximately 4:45PM to:
+- @Gemarodri
+- @Anubhav2806
+- @Lauraquiroga
