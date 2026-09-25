@@ -4,5 +4,5 @@ class RestaurantService:
     def __init__(self):
         self.repository = RestaurantRepository()
 
-    def fetchRestaurantList(self):
-        return self.repository.getAllRestaurants()
+    def fetch_restaurant_list(self):
+        return self.repository.get_all_restaurants()
