@@ -4,7 +4,7 @@ class RestaurantRepository:
     def __init__(self, file_path: str = "data/restaurants.json"):
         self.filePath = file_path  
 
-    def getAllRestaurants(self):
+    def get_all_restaurants(self):
         try:
             with open(self.filePath, "r") as file:
                 data = json.load(file)
