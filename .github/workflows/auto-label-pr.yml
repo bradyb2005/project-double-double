@@ -1,4 +1,4 @@
-name: Auto Label PR by Type
+name: Auto Label PR and Assign Milestone
 
 on:
   workflow_dispatch:
@@ -15,14 +15,16 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
+      issues: write
 
     steps:
-      - name: Apply labels based on checkboxes
+      - name: Apply labels and milestone
         uses: actions/github-script@v7
         with:
           script: |
             let prNumber;
             let body = '';
+            let title = '';
 
             // Handle manual run vs PR event
             if (context.eventName === 'workflow_dispatch') {
@@ -33,15 +35,17 @@ jobs:
                 pull_number: prNumber
               });
               body = pr.body || '';
+              title = pr.title || '';
             } else if (context.payload.pull_request) {
               prNumber = context.payload.pull_request.number;
               body = context.payload.pull_request.body || '';
+              title = context.payload.pull_request.title || '';
             } else {
               core.info('No pull request found in event context.');
               return;
             }
 
-            // Maps the exact template text to your created label names
+            // 1. Process Checkbox Labels
             const labelMap = [
               { regex: /- \[[xX]\]\s*New feature/i, label: 'new feature' },
               { regex: /- \[[xX]\]\s*Testing/i, label: 'testing' },
@@ -52,7 +56,6 @@ jobs:
             ];
 
             const labelsToAdd = [];
-
             for (const item of labelMap) {
               if (item.regex.test(body)) {
                 labelsToAdd.push(item.label);
@@ -69,4 +72,39 @@ jobs:
               core.info(`Successfully added labels: ${labelsToAdd.join(', ')}`);
             } else {
               core.info('No matching checked boxes found.');
+            }
+
+            // 2. Process Milestone from Title tag (e.g. [M1], [M0], [M2])
+            const milestoneMatch = title.match(/\[M(\d+)\]/i);
+            if (milestoneMatch) {
+              const milestoneNum = milestoneMatch[1];
+              core.info(`Detected milestone prefix M${milestoneNum} in title.`);
+
+              // Fetch existing open milestones in the repo
+              const { data: milestones } = await github.rest.issues.listMilestones({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'open'
+              });
+
+              // Look for a milestone title starting with "Milestone X" or "M X"
+              const targetMilestone = milestones.find(m => {
+                const titleLower = m.title.toLowerCase();
+                return (
+                  titleLower.includes(`milestone ${milestoneNum}`) ||
+                  titleLower.startsWith(`m${milestoneNum}`)
+                );
+              });
+
+              if (targetMilestone) {
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prNumber,
+                  milestone: targetMilestone.number
+                });
+                core.info(`Assigned PR to milestone: "${targetMilestone.title}" (ID: ${targetMilestone.number})`);
+              } else {
+                core.warning(`Could not find an open milestone matching "Milestone ${milestoneNum}".`);
+              }
             }
