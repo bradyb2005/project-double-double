@@ -13,3 +13,10 @@ class RestaurantRepository:
             raise FileNotFoundError(f"File not found: {self.filePath}")
         except json.JSONDecodeError:
             raise ValueError(f"Error is not valid JSON: {self.filePath}")
+
+    def save_restaurants(self, restaurants):
+        try:
+            with open(self.filePath, "w") as file:
+                json.dump(restaurants, file, indent=4)
+        except Exception as e:
+            raise IOError(f"Error saving data to {self.filePath}: {e}")
