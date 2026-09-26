@@ -6,3 +6,9 @@ class RestaurantService:
 
     def fetch_restaurant_list(self):
         return self.repository.get_all_restaurants()
+
+    def create_restaurant(self, restaurant: dict):
+        restaurants = self.repository.get_all_restaurants()
+        restaurants.append(restaurant)
+        self.repository.save_restaurants(restaurants)
+        return restaurant
