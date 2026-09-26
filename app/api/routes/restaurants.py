@@ -11,3 +11,7 @@ def health_check():
 @router.get("/restaurants")
 def get_restaurants():
     return service.fetch_restaurant_list()
+
+@router.post("/restaurants")
+def create_restaurant(restaurant: dict):
+    return service.create_restaurant(restaurant)
