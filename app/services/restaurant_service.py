@@ -27,12 +27,12 @@ class RestaurantService:
         if not data.phone or not re.match(phone_pattern, data.phone.strip()):
             raise ValueError("Invalid phone number format. Must be ###-###-#### or ##########")
 
+        # Strip spaces and convert to uppercase for postal code validation
         cleaned_postal = data.postalcode.replace(" ", "").upper()
+        # The below regex checks for the Canadian postal code format: letter-number-letter-number-letter-number.
         postal_pattern = r"^[A-Z]\d[A-Z]\d[A-Z]\d$"
         if not re.match(postal_pattern, cleaned_postal):
             raise ValueError("Invalid postal code format. Must alternate letter and number")
-
-        data.postalcode = cleaned_postal
 
     def create_restaurant(self, restaurant: RestaurantCreate):
         self.validate_restaurant_data(restaurant)
