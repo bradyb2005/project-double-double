@@ -14,8 +14,6 @@ class RestaurantService:
         # 1. Non-optional attributes not empty[cite: 2]
         required_strings = [
             data.name,
-            data.cuisine,
-            data.phone,
             data.address,
             data.postalcode,
             data.location.city,
