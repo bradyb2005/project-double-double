@@ -5,6 +5,13 @@ from app.services.restaurant_service import RestaurantService
 from app.repositories.restaurant_repository import RestaurantRepository
 
 @pytest.fixture
+def client():
+    """Returns a test client for the FastAPI app."""
+    from fastapi.testclient import TestClient
+    from app.main import app
+    return TestClient(app)
+
+@pytest.fixture
 def valid_restaurant_payload():
     """Returns valid raw restaurant data for testing."""
     return {
