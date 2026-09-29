@@ -24,7 +24,9 @@ class RestaurantService:
 
         # The below regex just means the phone number be ###-###-#### or ##########.
         phone_pattern = r"^(\d{3}-\d{3}-\d{4}|\d{10})$"
-        if not data.phone or not re.match(phone_pattern, data.phone.strip()):
+        if data.phone is not None and (
+            not data.phone.strip() or not re.match(phone_pattern, data.phone.strip())
+        ):
             raise ValueError("Invalid phone number format. Must be ###-###-#### or ##########")
 
         # Strip spaces and convert to uppercase for postal code validation
