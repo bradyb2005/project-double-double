@@ -38,7 +38,7 @@
 
 ## Milestone 1 - First Vertical Slice
 
-### Entry 1: Restaurant route testing
+### Entry: Restaurant route testing
 
 - **Date:** Wednesday, September 30th
 - **Student(s):** @bradyb2005
@@ -59,7 +59,7 @@
 - **Validation:** Ran `python -m pytest`, and verified that testing does not create a restaurant.
 - **PR:** #27
 
-### Entry 2: Pycache .gitignore
+### Entry: Pycache .gitignore
 
 - **Date:** Wednesday, September 30th
 - **Student(s):** @bradyb2005
@@ -84,7 +84,7 @@
 - **Validation:** Ran `python -m pytest`, and verified that new pycache files/folders won't appear in VS Code's source control panel.
 - **PR:** #27
 
-### Entry 3: Pycache .gitignore
+### Entry: Pycache .gitignore
 
 - **Date:** Wednesday, September 30th
 - **Student(s):** @bradyb2005
