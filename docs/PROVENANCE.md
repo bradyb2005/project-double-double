@@ -33,3 +33,23 @@
 - **PR:** N/A
 ---
 ## Milestone 1 - First Vertical Slice
+
+### Entry: GitHub Actions PR label modification
+- **Date:** Thursday, September 24
+- **Student(s):** @bradyb2005
+- **Artifact:** `.github/workflows/auto-label-pr.yml`
+- **Label:**
+  - [x] AI-GENERATED 🤖
+  - [ ] AI-ASSISTED 🤝
+  - [ ] AI-REVISED ✍️
+  - [ ] NO-AI ❌
+- **AI Tool Used:**
+  - [x] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+  - [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+  - [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+  - [ ] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+  - [ ] Other: ____
+- **Purpose:** I don't know YML so I had Gemini refactor the existing GitHub automation to auto assign a PR's author to assignee and the remaining 3 group members as reviewers.
+- **Influence:** AI fully generated the revised YML code.
+- **Validation:** Unable to validate until PR is merged.
+- **PR:** #28
