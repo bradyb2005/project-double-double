@@ -1,4 +1,5 @@
 import json
+import os
 
 class RestaurantRepository:
     def __init__(self, file_path: str = "data/restaurants.json"):
@@ -14,9 +15,11 @@ class RestaurantRepository:
         except json.JSONDecodeError:
             raise ValueError(f"Error is not valid JSON: {self.filePath}")
 
-    def save_restaurants(self, restaurants):
-        try:
-            with open(self.filePath, "w") as file:
-                json.dump(restaurants, file, indent=4)
-        except Exception as e:
+    def save_restaurants(self, restaurants):  
+        temp_path = f"{self.filePath}.tmp"  
+        try:  
+            with open(temp_path, "w") as file:  
+                json.dump(restaurants, file, indent=4)  
+            os.replace(temp_path, self.filePath)  
+        except Exception as e:  
             raise IOError(f"Error saving data to {self.filePath}: {e}")
