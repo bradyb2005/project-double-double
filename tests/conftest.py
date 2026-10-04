@@ -40,6 +40,7 @@ def restaurants_json(tmp_path):
             "address": "123 Test St",
             "postalcode": "A1B2C3",
             "phone": "123-456-7890",
+            "rating": "4.9",
             "location": {
                 "city": "Test City",
                 "province": "Test Province"
@@ -51,6 +52,7 @@ def restaurants_json(tmp_path):
             "address": "456 Test Ave",
             "postalcode": "D4E5F6",
             "phone": "987-654-3210",
+            "rating": "3.3",
             "location": {
                 "city": "Another City",
                 "province": "Another Province"

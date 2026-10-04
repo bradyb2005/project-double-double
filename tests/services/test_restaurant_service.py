@@ -26,3 +26,11 @@ def test_create_restaurant_invalid_postalcode(restaurant_service, valid_restaura
     with pytest.raises(ValueError) as excinfo:
         restaurant_service.create_restaurant(valid_restaurant_create)
     assert "Invalid postal code format" in str(excinfo.value)
+    
+def test_fetch_restaurant_with_known_id(restaurant_service):
+    restaurant = restaurant_service.fetch_restaurant_details(1)
+    assert restaurant['name'] == "Test Restaurant 1"
+    
+def test_fetch_restaurant_with_invalid_id(restaurant_service):
+    with pytest.raises(ValueError, match="Restaurant not found"):
+        restaurant_service.fetch_restaurant_details(99999)

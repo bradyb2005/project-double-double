@@ -12,3 +12,13 @@ class RestaurantCreate(BaseModel):
     address: str
     postalcode: str
     location: Location
+    
+class RestaurantRead(BaseModel):
+    id: int
+    name: str
+    cuisine: Optional[str] = None
+    phone: Optional[str] = None
+    address: str
+    postalcode: str
+    location: Location
+    rating: str
