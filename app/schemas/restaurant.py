@@ -21,4 +21,4 @@ class RestaurantRead(BaseModel):
     address: str
     postalcode: str
     location: Location
-    rating: str
+    rating: Optional[str] = "0.0"
