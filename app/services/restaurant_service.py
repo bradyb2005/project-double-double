@@ -48,3 +48,9 @@ class RestaurantService:
         self.repository.save_restaurants(restaurants)
 
         return restaurant_dict
+    
+    def fetch_restaurant_details(self, id: int):
+        restaurant = self.repository.get_restaurant_by_id(id)
+        if restaurant is None:
+            raise ValueError("Restaurant not found")
+        return restaurant
