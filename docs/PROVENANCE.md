@@ -124,3 +124,28 @@
 - **Influence:** AI fully generated the revised YML code.
 - **Validation:** Unable to validate until PR is merged.
 - **PR:** #28
+
+### Entry: Restaurant route testing
+
+- **Date:** Tuesday, October 6th
+- **Student(s):** @Lxamwastaken
+- **Artifact:** `tests/conftest.py` `tests/services/test_menu_item_service.py`
+- **Label:**
+  - [ ] AI-GENERATED 🤖
+  - [x] AI-ASSISTED 🤝
+  - [ ] AI-REVISED ✍️
+  - [ ] NO-AI ❌
+- **AI Tool Used:**
+  - [ ] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+  - [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+  - [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+  - [x] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+  - [ ] Other: ____
+- **Purpose:** 
+  - Assisted with understanding pytest fixtures and creating service-layer tests for the menu item feature.
+  - Helped identify missing test fixture data (`"menu": []`) required by the new menu functionality.
+- **Influence:**
+  - Helped diagnose and resolve test failures caused by missing menu data in test fixtures.
+- **Validation:** 
+  - Ran `python -m pytest`, and verified that testing passes 13/13
+- **PR:** #30
