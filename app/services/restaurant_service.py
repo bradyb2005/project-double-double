@@ -91,5 +91,5 @@ class RestaurantService:
        if item.price <= 0:
               raise ValueError("Item price must be greater than 0")
 
-       if item.category not in allowed_categories:
+       if item.category.strip().lower() not in [item.lower() for item in allowed_categories]:
               raise ValueError("Invalid category")
