@@ -73,3 +73,4 @@ def restaurant_service(restaurant_repository):
     service = RestaurantService()
     service.repository = restaurant_repository  # Inject the test repository
     return service
+
