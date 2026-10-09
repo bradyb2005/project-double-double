@@ -25,5 +25,10 @@ def create_restaurant(restaurant: RestaurantCreate):
 def create_menu_item(restaurant_id: int, item: ItemCreate):
     try:
         return service.create_menu_item(restaurant_id, item)
+      
+@router.get("/restaurants/names")
+def get_all_restaurant_names():
+    try:
+        return service.fetch_all_restaurant_names()
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
