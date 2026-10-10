@@ -74,3 +74,10 @@ def restaurant_service(restaurant_repository):
     service.repository = restaurant_repository  # Inject the test repository
     return service
 
+@pytest.fixture
+def make_update_payload():
+    """Returns a helper function to create RestaurantUpdate instances without importing."""
+    from app.schemas.restaurant import RestaurantUpdate
+    def _make(**kwargs):
+        return RestaurantUpdate(**kwargs)
+    return _make

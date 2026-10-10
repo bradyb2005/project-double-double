@@ -124,3 +124,24 @@
 - **Influence:** AI fully generated the revised YML code.
 - **Validation:** Unable to validate until PR is merged.
 - **PR:** #28
+
+
+### Entry: GitHub Actions PR label modification
+- **Date:** Saturday, October 10
+- **Student(s):** @mooz-55
+- **Artifact:** `tests/rservices/test_restaurant_service`
+- **Label:**
+  - [ ] AI-GENERATED 🤖
+  - [ ] AI-ASSISTED 🤝
+  - [x] AI-REVISED ✍️
+  - [ ] NO-AI ❌
+- **AI Tool Used:**
+  - [x] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+  - [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+  - [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+  - [ ] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+  - [ ] Other: ____
+- **Purpose:** Neeeded some help formatting and organizing the tests. I had the base and conditions needed to be tested, but was not completely fammiliar with the python formatting so I wrote my own and used Gemini to review. I then took the format and wrote my own tests under for the otheer conditions.
+- **Influence:** AI checked over my test code and fixed formatting and syntax errors
+- **Validation:** Unable to validate until PR is merged.
+- **PR:** #33
