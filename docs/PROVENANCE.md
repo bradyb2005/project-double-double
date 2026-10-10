@@ -124,3 +124,25 @@
 - **Influence:** AI fully generated the revised YML code.
 - **Validation:** Unable to validate until PR is merged.
 - **PR:** #28
+
+
+
+### Entry: Dummy data for menu items
+- **Date:** Saturday, October 10
+- **Student(s):** @advvaith~
+- **Artifact:** `data/menus.json`
+- **Label:**
+  - [x] AI-GENERATED 🤖
+  - [ ] AI-ASSISTED 🤝
+  - [ ] AI-REVISED ✍️
+  - [ ] NO-AI ❌
+- **AI Tool Used:**
+  - [] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+  - [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+  - [x] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+  - [ ] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+  - [ ] Other: ____
+- **Purpose:** dummy data for the view menu endpoint
+- **Influence:** got dummy data to proceed
+- **Validation:** read the output to see if it checks out
+- **PR:** #25
