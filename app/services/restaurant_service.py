@@ -10,6 +10,9 @@ class RestaurantService:
     def fetch_restaurant_list(self):
         return self.repository.get_all_restaurants()
 
+    def fetch_all_restaurant_names(self):
+        return self.repository.get_all_restaurant_names()
+
     def validate_restaurant_data(self, data: RestaurantCreate) -> None:
         # 1. Non-optional attributes not empty[cite: 2]
         required_strings = [

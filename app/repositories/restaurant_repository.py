@@ -31,3 +31,8 @@ class RestaurantRepository:
             if restaurant['id'] == id:
                 return restaurant
         
+
+    def get_all_restaurant_names(self):
+        restaurants = self.get_all_restaurants()
+        return [restaurant['name'] for restaurant in restaurants]
+    

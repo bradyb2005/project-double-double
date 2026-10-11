@@ -33,3 +33,10 @@ def test_fetch_restaurant_details_error_404(client):
 def test_fetch_restaurant_details_error_422(client):
     response = client.get("/restaurants/abc")
     assert response.status_code == 422
+
+def test_fetch_restaurant_names_success(client):
+    response = client.get("/restaurants/names")
+    assert response.status_code == 200
+    assert isinstance(response.json(), list)
+    assert "Test Restaurant 1" in response.json()
+    assert "Test Restaurant 2" in response.json()

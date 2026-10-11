@@ -34,3 +34,7 @@ def test_fetch_restaurant_with_known_id(restaurant_service):
 def test_fetch_restaurant_with_invalid_id(restaurant_service):
     with pytest.raises(ValueError, match="Restaurant not found"):
         restaurant_service.fetch_restaurant_details(99999)
+
+def test_fetch_all_restaurant_names(restaurant_service):
+    names = restaurant_service.fetch_all_restaurant_names()
+    assert names == ["Test Restaurant 1", "Test Restaurant 2"]
