@@ -3,6 +3,8 @@ import pytest
 from app.schemas.restaurant import RestaurantCreate, Location
 from app.services.restaurant_service import RestaurantService
 from app.repositories.restaurant_repository import RestaurantRepository
+from app.services.menu_service import MenuService
+from app.repositories.menu_repository import MenuRepository
 
 @pytest.fixture
 def client():
@@ -74,4 +76,45 @@ def restaurant_service(restaurant_repository):
     """Returns a RestaurantService instance using the provided repository."""
     service = RestaurantService()
     service.repository = restaurant_repository  # Inject the test repository
+    return service
+
+@pytest.fixture
+def menus_json(tmp_path):
+    """Creates a temporary JSON file with menu data for testing."""
+    data = [
+        {
+            "id": 1,
+            "restaurant_id": 1,
+            "category": "Appetizer",
+            "name": "Test Soup",
+            "description": "A test soup",
+            "price": 5.99
+        },
+        {
+            "id": 2,
+            "restaurant_id": 1,
+            "category": "Main",
+            "name": "Test Pasta",
+            "description": "A test pasta",
+            "price": 12.50
+        },
+        {
+            "id": 3,
+            "restaurant_id": 2,
+            "category": "Main",
+            "name": "Test Steak",
+            "description": "A test steak",
+            "price": 18.75
+        }
+    ]
+    file_path = tmp_path / "menus.json"
+    with open(file_path, 'w') as f:
+        json.dump(data, f)
+    return str(file_path)
+
+@pytest.fixture
+def menu_service(menus_json):
+    """Returns a MenuService instance using the temporary JSON file."""
+    service = MenuService()
+    service.repository = MenuRepository(file_path=menus_json)  # Inject the test repository
     return service
