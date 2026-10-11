@@ -23,6 +23,14 @@ class RestaurantRepository:
             os.replace(temp_path, self.filePath)  
         except Exception as e:  
             raise IOError(f"Error saving data to {self.filePath}: {e}")
+        
+    def get_restaurant_by_id(self, id: int):
+        restaurants = self.get_all_restaurants()
+        
+        for restaurant in restaurants:
+            if restaurant['id'] == id:
+                return restaurant
+        
 
     def get_all_restaurant_names(self):
         restaurants = self.get_all_restaurants()

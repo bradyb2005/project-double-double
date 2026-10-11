@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "restaurant_id": 1,
+    "category": "Burgers",
+    "name": "Teen Burger",
+    "description": "Wendy's favourite: bacon, cheddar cheese, lettuce, tomato, onion, pickles, and house sauce on a beef patty.",
+    "price": 8.49
+  },
+  {
+    "id": 2,
+    "restaurant_id": 1,
+    "category": "Burgers",
+    "name": "Papa Burger",
+    "description": "Two beef patties topped with cheese, onions, pickles, and A&W classic sauce.",
+    "price": 9.79
+  },
+  {
+    "id": 3,
+    "restaurant_id": 1,
+    "category": "Sides",
+    "name": "Hand-Breaded Onion Rings",
+    "description": "Thick-cut onion rings hand-breaded and fried golden, served with a side of seasoning.",
+    "price": 3.99
+  },
+  {
+    "id": 4,
+    "restaurant_id": 1,
+    "category": "Beverages",
+    "name": "A&W Root Beer",
+    "description": "Classic draft root beer served ice cold in a frosty mug.",
+    "price": 2.29
+  },
+  {
+    "id": 5,
+    "restaurant_id": 2,
+    "category": "Ramen",
+    "name": "Tonkotsu Ramen",
+    "description": "Rich 12-hour pork bone broth with chashu pork, soft egg, green onion, and wood ear mushrooms.",
+    "price": 16.95
+  },
+  {
+    "id": 6,
+    "restaurant_id": 2,
+    "category": "Ramen",
+    "name": "Spicy Miso Ramen",
+    "description": "Miso broth with chili oil, ground pork, corn, bean sprouts, and a marinated soft egg.",
+    "price": 17.50
+  },
+  {
+    "id": 7,
+    "restaurant_id": 2,
+    "category": "Appetizers",
+    "name": "Chicken Karaage",
+    "description": "Japanese fried chicken thigh marinated in ginger and soy, served with house mayo.",
+    "price": 8.95
+  },
+  {
+    "id": 8,
+    "restaurant_id": 2,
+    "category": "Appetizers",
+    "name": "Pork Gyoza",
+    "description": "Six pan-fried pork and cabbage dumplings with ponzu dipping sauce.",
+    "price": 7.25
+  },
+  {
+    "id": 9,
+    "restaurant_id": 2,
+    "category": "Rice Bowls",
+    "name": "Donburi Chicken Bowl",
+    "description": "Grilled chicken thigh over steamed rice with teriyaki glaze and sesame seeds.",
+    "price": 14.50
+  },
+  {
+    "id": 10,
+    "restaurant_id": 3,
+    "category": "Tacos",
+    "name": "Carne Asada Tacos",
+    "description": "Three grilled steak tacos with cilantro, onion, salsa verde, and lime on corn tortillas.",
+    "price": 12.75
+  },
+  {
+    "id": 11,
+    "restaurant_id": 3,
+    "category": "Tacos",
+    "name": "Baja Fish Tacos",
+    "description": "Crispy battered fish, cabbage slaw, chipotle crema, and pickled onion, three per order.",
+    "price": 13.50
+  },
+  {
+    "id": 12,
+    "restaurant_id": 3,
+    "category": "Burritos",
+    "name": "Carnitas Burrito",
+    "description": "Slow-braised pork, refried beans, rice, pico de gallo, and cheese wrapped in a flour tortilla.",
+    "price": 14.25
+  },
+  {
+    "id": 13,
+    "restaurant_id": 3,
+    "category": "Sides",
+    "name": "Chips and Guacamole",
+    "description": "House-made tortilla chips with fresh guacamole and salsa roja.",
+    "price": 6.50
+  },
+  {
+    "id": 14, 
+    "restaurant_id": 3,
+    "category": "Beverages",
+    "name": "Horchata",
+    "description": "Rice and cinnamon agua fresca served over ice.",
+    "price": 3.75
+  },
+  {
+    "id": 15,
+    "restaurant_id": 1,
+    "category": "Sides",
+    "name": "Russet Thick-Cut Fries",
+    "description": "Sea-salted thick-cut fries cooked in Trans-Fat free canola oil.",
+    "price": 3.49
+  }
+]
