@@ -1,7 +1,7 @@
 import re
 from app.repositories.restaurant_repository import RestaurantRepository
 from app.schemas.restaurant import RestaurantCreate
-
+from app.schemas.menu_item import ItemCreate
 
 class RestaurantService:
     def __init__(self):
@@ -51,3 +51,48 @@ class RestaurantService:
         self.repository.save_restaurants(restaurants)
 
         return restaurant_dict
+
+    def create_menu_item(self, restaurant_id: int, item: ItemCreate):
+        restaurant = self.repository.get_restaurant_by_id(restaurant_id)
+        if restaurant is None:
+            raise ValueError("Restaurant not found")
+        
+        self.validate_menu_item_data(item)
+
+        item_dict = item.model_dump()
+
+        menu = restaurant.get("menu", [])
+
+        new_id = max((menu_item.get("id", 0) for menu_item in menu),default=0) + 1
+
+        item_dict = {"id": new_id, **item_dict}
+
+        return self.repository.add_menu_item(restaurant_id, item_dict)
+
+
+    def validate_menu_item_data(self, item):
+       allowed_categories = [
+           "Starters",
+            "Pizza",
+            "Pasta",
+            "Mains",
+            "Vegetarian",
+            "Dim Sum",
+            "Rolls",
+            "Nigiri",
+            "Burgers",
+            "Sides",
+            "Bread",
+            "Tacos",
+            "Burritos",
+            "Dessert",
+            "Drinks",
+       ]
+       if not item.name.strip():
+           raise ValueError("Item name cannot be empty")
+
+       if item.price <= 0:
+              raise ValueError("Item price must be greater than 0")
+
+       if item.category.strip().lower() not in [item.lower() for item in allowed_categories]:
+              raise ValueError("Invalid category")
