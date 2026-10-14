@@ -1,6 +1,6 @@
 import re
 from app.repositories.restaurant_repository import RestaurantRepository
-from app.schemas.restaurant import RestaurantCreate
+from app.schemas.restaurant import RestaurantCreate, RestaurantFilter
 from app.schemas.menu_item import ItemCreate
 
 class RestaurantService:
@@ -96,3 +96,44 @@ class RestaurantService:
 
        if item.category.strip().lower() not in [item.lower() for item in allowed_categories]:
               raise ValueError("Invalid category")
+
+    def search_and_filter_restaurants(self, filter: RestaurantFilter) -> list[dict]:
+        restaurants = self.repository.get_all_restaurants()
+        results = restaurants
+
+        if filter.search:
+            search_term = filter.search.strip().lower()
+            results = [
+                r for r in results
+                if search_term in r.get("name", "").lower() 
+                or search_term in r.get("cuisine", "").lower()
+            ]
+
+        if filter.cuisine:
+            cuisine_term = filter.cuisine.strip().lower()
+            results = [
+                r for r in results
+                if cuisine_term == r.get("cuisine", "").strip().lower()
+            ]
+
+        if filter.city:
+            city_term = filter.city.strip().lower()
+            results = [
+                r for r in results
+                if city_term == r.get("location", {}).get("city", "").strip().lower()
+            ]
+
+        if filter.province:
+            province_term = filter.province.strip().lower()
+            results = [
+                r for r in results
+                if province_term == r.get("location", {}).get("province", "").strip().lower()
+            ]
+
+        if filter.rating is not None:
+            results = [
+                r for r in results
+                if r.get("rating", 0) >= filter.rating
+            ]
+
+        return results
