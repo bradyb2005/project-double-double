@@ -10,6 +10,9 @@ class RestaurantService:
     def fetch_restaurant_list(self):
         return self.repository.get_all_restaurants()
 
+    def fetch_all_restaurant_names(self):
+        return self.repository.get_all_restaurant_names()
+
     def validate_restaurant_data(self, data: RestaurantCreate) -> None:
         # 1. Non-optional attributes not empty[cite: 2]
         required_strings = [
@@ -91,7 +94,7 @@ class RestaurantService:
        if item.price <= 0:
               raise ValueError("Item price must be greater than 0")
 
-       if item.category not in allowed_categories:
+       if item.category.strip().lower() not in [item.lower() for item in allowed_categories]:
               raise ValueError("Invalid category")
 
     def update_menu_item(self,restaurant_id: int,item_id: int,item: ItemCreate):
