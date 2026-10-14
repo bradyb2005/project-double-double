@@ -22,3 +22,10 @@ def test_create_restaurant_error_400(client, valid_restaurant_payload):
     valid_restaurant_payload["phone"] = "invalid-phone"
     response = client.post("/restaurants", json=valid_restaurant_payload)
     assert response.status_code == 400
+
+def test_fetch_restaurant_names_success(client):
+    response = client.get("/restaurants/names")
+    assert response.status_code == 200
+    assert isinstance(response.json(), list)
+    assert "Test Restaurant 1" in response.json()
+    assert "Test Restaurant 2" in response.json()
