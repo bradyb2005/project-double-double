@@ -27,3 +27,10 @@ def create_menu_item(restaurant_id: int, item: ItemCreate):
         return service.create_menu_item(restaurant_id, item)
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+
+@router.put("/restaurants/{restaurant_id}/menu/{item_id}")
+def update_menu_item(restaurant_id: int,item_id: int,item: ItemCreate):
+    try:
+        return service.update_menu_item(restaurant_id,item_id,item)
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail=str(e))

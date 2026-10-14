@@ -93,3 +93,27 @@ class RestaurantService:
 
        if item.category not in allowed_categories:
               raise ValueError("Invalid category")
+
+    def update_menu_item(self,restaurant_id: int,item_id: int,item: ItemCreate):
+        self.validate_menu_item_data(item)
+
+        restaurants = self.repository.get_all_restaurants()
+
+        for restaurant in restaurants:
+             if restaurant["id"] == restaurant_id:
+
+                item_dict = item.model_dump()
+                item_dict["id"] = item_id
+
+                for index, menu_item in enumerate(restaurant["menu"]):
+                    if menu_item["id"] == item_id:
+
+                        restaurant["menu"][index] = item_dict
+
+                        self.repository.save_restaurants(restaurants)
+
+                    return item_dict
+
+                raise ValueError("Menu item not found")
+
+             raise ValueError("Restaurant not found")

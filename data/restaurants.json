@@ -13,12 +13,12 @@
         },
         "menu": [
             {
-                "id": 1,
-                "name": "Teen Burger",
-                "price": 8.99,
+                "name": "Mama Burger",
+                "price": 10.99,
                 "category": "Burgers",
-                "image": "",
-                "availability": true
+                "image": "/burger.jpg",
+                "availability": true,
+                "id": 1
             }
         ]
     },
