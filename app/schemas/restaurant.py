@@ -14,8 +14,8 @@ class RestaurantCreate(BaseModel):
     location: Location
 
 class RestaurantFilter(BaseModel):
-    search: Optional[str] = None
-    cuisine: Optional[str] = None
-    city: Optional[str] = None
-    province: Optional[str] = None
-    rating: Optional[float] = None
+    search: Optional[str] = Field(default=None, description="Search term for restaurant name or cuisine")
+    cuisine: Optional[str] = Field(default=None, description="Type of cuisine restaurant serves")
+    city: Optional[str] = Field(default=None, description="City location")
+    province: Optional[str] = Field(default=None, description="Province location")
+    rating: Optional[float] = Field(default=None, description="Minimum rating")
