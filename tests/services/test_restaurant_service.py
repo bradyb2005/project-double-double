@@ -29,4 +29,4 @@ def test_create_restaurant_invalid_postalcode(restaurant_service, valid_restaura
 
 def test_fetch_all_restaurant_names(restaurant_service):
     names = restaurant_service.fetch_all_restaurant_names()
-    assert names == ["Test Restaurant 1", "Test Restaurant 2"]
+    assert names == ["Test Restaurant 1", "Test Restaurant 2", "Test Restaurant 3"]
