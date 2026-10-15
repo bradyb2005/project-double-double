@@ -10,7 +10,17 @@
         "location": {
             "city": "Kelowna",
             "province": "BC"
-        }
+        },
+        "menu": [
+            {
+                "id": 1,
+                "name": "Teen Burger",
+                "price": 8.99,
+                "category": "Burgers",
+                "image": "",
+                "availability": true
+            }
+        ]
     },
     {
         "id": 2,
@@ -23,7 +33,8 @@
         "location": {
             "city": "Kelowna",
             "province": "BC"
-        }
+        },
+        "menu": []
     },
     {
         "id": 3,
@@ -36,18 +47,7 @@
         "location": {
             "city": "Kelowna",
             "province": "BC"
-        }
-    },
-    {
-        "id": 4,
-        "name": "testName",
-        "cuisine": "testCuisine",
-        "phone": "6047045012",
-        "address": "0948w5490ave",
-        "postalcode": "V4M4K2",
-        "location": {
-            "city": "citytest",
-            "province": "provtest"
-        }
+        },
+        "menu": []
     }
 ]
