@@ -29,3 +29,50 @@ def test_fetch_restaurant_names_success(client):
     assert isinstance(response.json(), list)
     assert "Test Restaurant 1" in response.json()
     assert "Test Restaurant 2" in response.json()
+
+def test_get_restaurants_search_query(client):
+    response = client.get("/restaurants?search=mexican")
+    assert response.status_code == 200
+    data = response.json()
+    assert len(data) == 1
+    assert data[0]["name"] == "Test Restaurant 2"
+
+def test_get_restaurants_filter_by_cuisine(client):
+    response = client.get("/restaurants?cuisine=Italian")
+    assert response.status_code == 200
+    data = response.json()
+    assert len(data) == 2
+    assert all(r["cuisine"] == "Italian" for r in data)
+
+def test_get_restaurants_filter_by_city(client):
+    response = client.get("/restaurants?city=Test City")
+    assert response.status_code == 200
+    data = response.json()
+    assert len(data) == 1
+    assert data[0]["name"] == "Test Restaurant 1"
+
+def test_get_restaurants_filter_by_province(client):
+    response = client.get("/restaurants?province=Another Province")
+    assert response.status_code == 200
+    data = response.json()
+    assert len(data) == 2
+    assert all(r["location"]["province"] == "Another Province" for r in data)
+
+def test_get_restaurants_filter_by_rating(client):
+    response = client.get("/restaurants?rating=4.0")
+    assert response.status_code == 200
+    data = response.json()
+    assert len(data) == 2
+    assert all(r["rating"] >= 4.0 for r in data)
+
+def test_get_restaurants_multi_query(client):
+    response = client.get("/restaurants?cuisine=Italian&rating=4.0")
+    assert response.status_code == 200
+    data = response.json()
+    assert len(data) == 1
+    assert data[0]["name"] == "Test Restaurant 1"
+
+def test_get_restaurants_no_match(client):
+    response = client.get("/restaurants?search=nonexistent")
+    assert response.status_code == 200
+    assert response.json() == []
