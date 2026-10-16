@@ -5,6 +5,7 @@ from app.services.restaurant_service import RestaurantService
 from app.repositories.restaurant_repository import RestaurantRepository
 from app.services.menu_service import MenuService
 from app.repositories.menu_repository import MenuRepository
+from app.schemas.menu_item import ItemCreate
 
 @pytest.fixture
 def client():
@@ -46,7 +47,8 @@ def restaurants_json(tmp_path):
             "location": {
                 "city": "Test City",
                 "province": "Test Province"
-            }
+            },
+            "menu": []
         },
         {
             "id": 2,
@@ -58,7 +60,8 @@ def restaurants_json(tmp_path):
             "location": {
                 "city": "Another City",
                 "province": "Another Province"
-            }
+            },
+            "menu": []
         }
     ]
     file_path = tmp_path / "restaurants.json"
@@ -119,3 +122,18 @@ def menu_service(menus_json):
     service.repository = MenuRepository(file_path=menus_json)  # Inject the test repository
     return service
 
+@pytest.fixture
+def valid_menu_item_payload():
+    """Returns valid menu item data for testing."""
+    return {
+        "name": "Test Item",
+        "price": 9.99,
+        "category": "Burgers",
+        "image": "http://example.com/image.jpg",
+        "availability": True
+    }
+
+@pytest.fixture
+def valid_menu_item_create(valid_menu_item_payload):
+    """Returns a valid ItemCreate object for testing."""
+    return ItemCreate(**valid_menu_item_payload)
