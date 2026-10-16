@@ -1,6 +1,6 @@
 import json
 import pytest
-from app.schemas.restaurant import RestaurantCreate, Location
+from app.schemas.restaurant import RestaurantCreate, Location, RestaurantFilter
 from app.services.restaurant_service import RestaurantService
 from app.repositories.restaurant_repository import RestaurantRepository
 from app.schemas.menu_item import ItemCreate
@@ -17,9 +17,11 @@ def valid_restaurant_payload():
     """Returns valid raw restaurant data for testing."""
     return {
         "name": "Test Restaurant",
+        "cuisine": "Italian",
         "address": "123 Test St",
         "postalcode": "A1B2C3",
         "phone": "123-456-7890",
+        "rating": 4.5,
         "location": {
             "city": "Test City",
             "province": "Test Province"
@@ -32,16 +34,23 @@ def valid_restaurant_create(valid_restaurant_payload):
     return RestaurantCreate(**valid_restaurant_payload)
 
 @pytest.fixture
+def valid_restaurant_filter():
+    """Returns a valid RestaurantFilter object for testing."""
+    return RestaurantFilter(cuisine="Italian", city="Test City", province="Test Province")
+
+
+@pytest.fixture
 def restaurants_json(tmp_path):
     """Creates a temporary JSON file with restaurant data for testing."""
     data = [
         {
             "id": 1,
             "name": "Test Restaurant 1",
+            "cuisine": "Italian",
             "address": "123 Test St",
             "postalcode": "A1B2C3",
             "phone": "123-456-7890",
-            "rating": "4.9",
+            "rating": 4.5,
             "location": {
                 "city": "Test City",
                 "province": "Test Province"
@@ -70,12 +79,27 @@ def restaurants_json(tmp_path):
         {
             "id": 2,
             "name": "Test Restaurant 2",
+            "cuisine": "Mexican",
             "address": "456 Test Ave",
             "postalcode": "D4E5F6",
             "phone": "987-654-3210",
-            "rating": "3.3",
+            "rating": 4.0,
             "location": {
                 "city": "Another City",
+                "province": "Another Province"
+            },
+            "menu": []
+        },
+        {
+            "id": 3,
+            "name": "Test Restaurant 3",
+            "cuisine": "Italian",
+            "address": "789 Test Rd",
+            "postalcode": "G7H8I9",
+            "phone": "555-123-4567",
+            "rating": 3.2,
+            "location": {
+                "city": "Yet Another City",
                 "province": "Another Province"
             },
             "menu": []
@@ -113,3 +137,10 @@ def valid_menu_item_payload():
 def valid_menu_item_create(valid_menu_item_payload):
     """Returns a valid ItemCreate object for testing."""
     return ItemCreate(**valid_menu_item_payload)
+
+@pytest.fixture
+def restaurant_filter():
+    """Factory fixture to create RestaurantFilter instances with custom parameters."""
+    def _create_filter(**kwargs):
+        return RestaurantFilter(**kwargs)
+    return _create_filter

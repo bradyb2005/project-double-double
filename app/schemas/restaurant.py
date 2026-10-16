@@ -1,5 +1,5 @@
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 class Location(BaseModel):
     city: str
@@ -12,7 +12,7 @@ class RestaurantCreate(BaseModel):
     address: str
     postalcode: str
     location: Location
-    
+
 class RestaurantRead(BaseModel):
     id: int
     name: str
@@ -21,4 +21,11 @@ class RestaurantRead(BaseModel):
     address: str
     postalcode: str
     location: Location
-    rating: Optional[str] = "0.0"
+    rating: Optional[float] = 0.0
+
+class RestaurantFilter(BaseModel):
+    search: Optional[str] = Field(default=None, description="Search term for restaurant name or cuisine")
+    cuisine: Optional[str] = Field(default=None, description="Type of cuisine restaurant serves")
+    city: Optional[str] = Field(default=None, description="City location")
+    province: Optional[str] = Field(default=None, description="Province location")
+    rating: Optional[float] = Field(default=None, description="Minimum rating")

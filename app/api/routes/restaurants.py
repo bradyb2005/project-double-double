@@ -1,7 +1,7 @@
-from fastapi import APIRouter, HTTPException, status
-from app.schemas.restaurant import RestaurantCreate, RestaurantRead
+from fastapi import APIRouter, Depends, HTTPException, status
+from app.schemas.restaurant import RestaurantCreate, RestaurantFilter, RestaurantRead
 from app.services.restaurant_service import RestaurantService
-from app.schemas.menu_item import ItemCreate, ItemRead
+from app.schemas.menu_item import ItemCreate, ItemRead, ItemUpdate
 
 router = APIRouter()
 service = RestaurantService()
@@ -10,9 +10,12 @@ service = RestaurantService()
 def health_check():
     return {"status": "healthy"}
 
-@router.get("/restaurants", response_model=list[RestaurantRead])
-def get_restaurants():
-    return service.fetch_restaurant_list()
+@router.get("/restaurants")
+def get_restaurants(filter: RestaurantFilter = Depends()):
+    try:
+        return service.search_and_filter_restaurants(filter)
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
 @router.post("/restaurants", status_code=status.HTTP_201_CREATED)
 def create_restaurant(restaurant: RestaurantCreate):
@@ -35,17 +38,24 @@ def create_menu_item(restaurant_id: int, item: ItemCreate):
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
+@router.put("/restaurants/{restaurant_id}/menu/{item_id}")
+def update_menu_item(restaurant_id: int,item_id: int,item: ItemUpdate):
+    try:
+        return service.update_menu_item(restaurant_id,item_id,item)
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail=str(e))
+
+# /restaurants/names must be defined before /restaurants/{id}, or "names" is parsed as an id
 @router.get("/restaurants/names")
 def get_all_restaurant_names():
     try:
         return service.fetch_all_restaurant_names()
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
-    
+
 @router.get("/restaurants/{id}", response_model=RestaurantRead)
 def get_restaurant_details(id: int):
     try:
         return service.fetch_restaurant_details(id)
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
-

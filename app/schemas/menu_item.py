@@ -11,3 +11,11 @@ class ItemCreate(BaseModel):
 
 class ItemRead(ItemCreate):
     id: int
+
+class ItemUpdate(BaseModel):
+    name: Optional[str] = None
+    price: Optional[float] = None
+    category: Optional[str] = None
+    image: Optional[str] = None
+    availability: Optional[bool] = None
+    description: Optional[str] = None
