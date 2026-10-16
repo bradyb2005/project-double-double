@@ -34,6 +34,29 @@ def test_fetch_restaurant_details_error_422(client):
     response = client.get("/restaurants/abc")
     assert response.status_code == 422
 
+def test_get_menu_by_restaurant_success(client):
+    response = client.get("/restaurants/1/menu")
+    assert response.status_code == 200
+    assert len(response.json()) == 2
+    assert response.json()[0]["id"] == 1
+    assert response.json()[0]["name"] == "Test Soup"
+    assert response.json()[0]["description"] == "A test soup"
+    assert response.json()[0]["availability"] is True
+
+def test_get_menu_by_restaurant_empty_menu(client):
+    response = client.get("/restaurants/2/menu")
+    assert response.status_code == 200
+    assert response.json() == []
+
+def test_get_menu_by_restaurant_error_404(client):
+    response = client.get("/restaurants/99999/menu")
+    assert response.status_code == 404
+    assert response.json()["detail"] == "Restaurant not found"
+
+def test_get_menu_by_restaurant_error_422(client):
+    response = client.get("/restaurants/abc/menu")
+    assert response.status_code == 422
+
 def test_fetch_restaurant_names_success(client):
     response = client.get("/restaurants/names")
     assert response.status_code == 200

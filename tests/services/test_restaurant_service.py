@@ -35,6 +35,18 @@ def test_fetch_restaurant_with_invalid_id(restaurant_service):
     with pytest.raises(ValueError, match="Restaurant not found"):
         restaurant_service.fetch_restaurant_details(99999)
 
+def test_fetch_restaurant_menu_with_known_id(restaurant_service):
+    menu = restaurant_service.fetch_restaurant_menu(1)
+    assert isinstance(menu, list)
+    assert [item["name"] for item in menu] == ["Test Soup", "Test Pasta"]
+
+def test_fetch_restaurant_menu_empty(restaurant_service):
+    assert restaurant_service.fetch_restaurant_menu(2) == []
+
+def test_fetch_restaurant_menu_with_invalid_id(restaurant_service):
+    with pytest.raises(ValueError, match="Restaurant not found"):
+        restaurant_service.fetch_restaurant_menu(99999)
+
 def test_fetch_all_restaurant_names(restaurant_service):
     names = restaurant_service.fetch_all_restaurant_names()
     assert names == ["Test Restaurant 1", "Test Restaurant 2"]

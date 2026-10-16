@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, status
 from app.schemas.restaurant import RestaurantCreate, RestaurantRead
 from app.services.restaurant_service import RestaurantService
-from app.schemas.menu_item import ItemCreate
+from app.schemas.menu_item import ItemCreate, ItemRead
 
 router = APIRouter()
 service = RestaurantService()
@@ -20,6 +20,13 @@ def create_restaurant(restaurant: RestaurantCreate):
         return service.create_restaurant(restaurant)
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+
+@router.get("/restaurants/{restaurant_id}/menu", response_model=list[ItemRead])
+def get_menu_items(restaurant_id: int):
+    try:
+        return service.fetch_restaurant_menu(restaurant_id)
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
 
 @router.post("/restaurants/{restaurant_id}/menu", status_code=status.HTTP_201_CREATED)
 def create_menu_item(restaurant_id: int, item: ItemCreate):

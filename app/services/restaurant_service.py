@@ -58,6 +58,12 @@ class RestaurantService:
             raise ValueError("Restaurant not found")
         return restaurant
 
+    def fetch_restaurant_menu(self, restaurant_id: int):
+        restaurant = self.repository.get_restaurant_by_id(restaurant_id)
+        if restaurant is None:
+            raise ValueError("Restaurant not found")
+        return restaurant.get("menu", [])
+
     def create_menu_item(self, restaurant_id: int, item: ItemCreate):
         restaurant = self.repository.get_restaurant_by_id(restaurant_id)
         if restaurant is None:

@@ -7,3 +7,7 @@ class ItemCreate(BaseModel):
     category: str
     image: str #Need to figure out how to validate only image urls
     availability: bool = True
+    description: Optional[str] = None
+
+class ItemRead(ItemCreate):
+    id: int
