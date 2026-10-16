@@ -148,4 +148,26 @@
   - Helped diagnose and resolve test failures caused by missing menu data in test fixtures.
 - **Validation:** 
   - Ran `python -m pytest`, and verified that testing passes 13/13
-- **PR:** #30
+- **PR:** #31
+
+**Date:** Tuesday, October 16th
+- **Student(s):** @Lxamwastaken
+- **Artifact:** `services/restaurant_service.py` 
+- **Label:**
+  - [ ] AI-GENERATED 🤖
+  - [x] AI-ASSISTED 🤝
+  - [ ] AI-REVISED ✍️
+  - [ ] NO-AI ❌
+- **AI Tool Used:**
+  - [ ] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+  - [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+  - [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+  - [x] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+  - [ ] Other: ____
+- **Purpose:** 
+  - Assisted solving bug where errors occured updating a single part of an item
+- **Influence:**
+  - Helped diagnose and resolve error that arose when manually testing
+- **Validation:** 
+  - Tested updating only item price of restaurant ID 1 and item ID 1 to $150.00
+- **PR:** #36
