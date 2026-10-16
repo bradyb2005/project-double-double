@@ -116,7 +116,7 @@ class RestaurantService:
               raise ValueError("Invalid category")
 
     def update_restaurant(self,restaurant_id: int, restaurant: RestaurantUpdate):
-        self.validate_phone_postal(restaurant) #validate phonee and postal code if changed 
+        self.validate_phone_postal(restaurant) #validate phone and postal code if changed
         restaurants = self.repository.get_all_restaurants()
 
         restaurant_dict = restaurant.model_dump(exclude_unset=True) #ignore missing fields
