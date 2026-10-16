@@ -1,7 +1,7 @@
 # Project Double Double
 
 COSC 310 Final Project.
-Version: M0 - Foundational Gate
+Version: M1 - First Vertical Slice
 
 ### Required Python Version
 
@@ -67,7 +67,7 @@ project-double-double/
 │   │   └── routes/       # Endpoint paths (/health, /restaurants)
 │   ├── core/             # App configuration settings (Currently not in use)
 │   ├── repositories/     # Data access layer (File reading logic)
-│   ├── schemas/          # Data transfer objects and Pydantic models (Currently not in use)
+│   ├── schemas/          # Data transfer objects and Pydantic models
 │   ├── services/         # Business & application logic layer
 │   ├── main.py           # Application entry point
 │   └── pyproject.toml    # Application configurations and dependencies
