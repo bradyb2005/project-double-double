@@ -1,5 +1,5 @@
-from fastapi import APIRouter, HTTPException, status
-from app.schemas.restaurant import RestaurantCreate
+from fastapi import APIRouter, Depends, HTTPException, status
+from app.schemas.restaurant import RestaurantCreate, RestaurantFilter
 from app.services.restaurant_service import RestaurantService
 from app.schemas.menu_item import ItemCreate, ItemUpdate
 
@@ -11,8 +11,11 @@ def health_check():
     return {"status": "healthy"}
 
 @router.get("/restaurants")
-def get_restaurants():
-    return service.fetch_restaurant_list()
+def get_restaurants(filter: RestaurantFilter = Depends()):
+    try:
+        return service.search_and_filter_restaurants(filter)
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
 @router.post("/restaurants", status_code=status.HTTP_201_CREATED)
 def create_restaurant(restaurant: RestaurantCreate):
