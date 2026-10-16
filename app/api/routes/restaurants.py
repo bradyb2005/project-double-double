@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, status
 from app.schemas.restaurant import RestaurantCreate
 from app.services.restaurant_service import RestaurantService
-from app.schemas.menu_item import ItemCreate
+from app.schemas.menu_item import ItemCreate, ItemUpdate
 
 router = APIRouter()
 service = RestaurantService()
@@ -29,7 +29,7 @@ def create_menu_item(restaurant_id: int, item: ItemCreate):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
 @router.put("/restaurants/{restaurant_id}/menu/{item_id}")
-def update_menu_item(restaurant_id: int,item_id: int,item: ItemCreate):
+def update_menu_item(restaurant_id: int,item_id: int,item: ItemUpdate):
     try:
         return service.update_menu_item(restaurant_id,item_id,item)
     except ValueError as e:

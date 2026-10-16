@@ -14,7 +14,7 @@
         "menu": [
             {
                 "name": "Mama Burger",
-                "price": 10.99,
+                "price": 150.0,
                 "category": "Burgers",
                 "image": "/burger.jpg",
                 "availability": true,
