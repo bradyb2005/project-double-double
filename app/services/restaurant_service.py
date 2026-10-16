@@ -106,10 +106,11 @@ class RestaurantService:
             "Dessert",
             "Drinks",
        ]
-       if not item.name.strip():
-           raise ValueError("Item name cannot be empty")
+       if item.name is not None:
+           if not item.name.strip():
+            raise ValueError("Item name cannot be empty")
 
-       if item.price <= 0:
+       if item.price is not None and item.price <= 0:
               raise ValueError("Item price must be greater than 0")
 
        if item.category.strip().lower() not in [item.lower() for item in allowed_categories]:
@@ -141,3 +142,27 @@ class RestaurantService:
                 return updated_restaurant
         #if not found by id
         raise ValueError(f"Restaurant of ID {restaurant_id} not found")
+
+    def update_menu_item(self,restaurant_id: int,item_id: int,item: ItemCreate):
+        self.validate_menu_item_data(item)
+
+        restaurants = self.repository.get_all_restaurants()
+
+        for restaurant in restaurants:
+             if restaurant["id"] == restaurant_id:
+
+                item_dict = item.model_dump(exclude_unset=True)
+                item_dict["id"] = item_id
+
+                for index, menu_item in enumerate(restaurant["menu"]):
+                    if menu_item["id"] == item_id:
+
+                        restaurant["menu"][index].update(item_dict)
+
+                        self.repository.save_restaurants(restaurants)
+
+                    return item_dict
+
+                raise ValueError("Menu item not found")
+
+             raise ValueError("Restaurant not found")
