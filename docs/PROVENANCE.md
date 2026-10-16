@@ -149,3 +149,27 @@
 - **Validation:** 
   - Ran `python -m pytest`, and verified that testing passes 13/13
 - **PR:** #30
+
+### Entry: Search/Filter tests creation
+
+- **Date:** Thursday, Oct 15th
+- **Student(s):** @bradyb2005
+- **Artifact:** `tests/conftest.py`, `tests/services/test_restaurant_service.py`, `tests/api/routes/test_restaurant_routes.py`
+- **Label:**
+  - [x] AI-GENERATED 🤖
+  - [ ] AI-ASSISTED 🤝
+  - [ ] AI-REVISED ✍️
+  - [ ] NO-AI ❌
+- **AI Tool Used:**
+  - [x] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+  - [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+  - [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+  - [ ] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+  - [ ] Other: ____
+- **Purpose:** 
+  - Provide automated unit and integration test coverage for the search and filter restaurant feature
+- **Influence:**
+  - Generated tests across the service and routing layer.
+- **Validation:** 
+  - Manually approved these tests and ran them using `python -m pytest`.
+- **PR:** #37
