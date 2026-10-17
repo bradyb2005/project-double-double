@@ -33,13 +33,14 @@ Version: M1 - First Vertical Slice
 3. Install dependencies
 
    ```bash
-   pip install -r requirements.txt
+   pip install -r backend/app/requirements.txt
    ```
 
 ### How to start the application
 
-**Run in the root directory:**
+**Run in the `backend/` directory:**
     ```bash
+    cd backend
     uvicorn app.main:app --reload
     ```
     
@@ -51,31 +52,35 @@ Version: M1 - First Vertical Slice
  - Docs path is available at http://127.0.0.1:8000/docs
 
 **Location of representative data:**
-Stored inside 'data/restaurants.json'
+Stored inside 'backend/data/restaurants.json'
 
 ### How to run tests:
 
+Run in the `backend/` directory:
+
 ```bash
+cd backend
 python -m pytest
 ```
 
 ### Brief repository structure
 ```text
 project-double-double/
-├── app/                  # Main application package
-│   ├── api/              # API router handling
-│   │   └── routes/       # Endpoint paths (/health, /restaurants)
-│   ├── core/             # App configuration settings (Currently not in use)
-│   ├── repositories/     # Data access layer (File reading logic)
-│   ├── schemas/          # Data transfer objects and Pydantic models
-│   ├── services/         # Business & application logic layer
-│   ├── main.py           # Application entry point
-│   └── pyproject.toml    # Application configurations and dependencies
-├── data/                 # Data persistence layer
-│   └── restaurants.json  # Database file
-├── scrum/                # Scrum artifacts
-│   └── team-agreement.md # Team workflows and versions
-├── tests/                # Test suite modules
-│   └── test_main.py      # Automated test specifications
+├── backend/              # FastAPI backend (run uvicorn and pytest from here)
+│   ├── app/              # Main application package
+│   │   ├── api/          # API router handling
+│   │   │   └── routes/   # Endpoint paths (/health, /restaurants)
+│   │   ├── core/         # App configuration settings (Currently not in use)
+│   │   ├── repositories/ # Data access layer (File reading logic)
+│   │   ├── schemas/      # Data transfer objects and Pydantic models
+│   │   ├── services/     # Business & application logic layer
+│   │   ├── main.py       # Application entry point
+│   │   └── pyproject.toml # Application configurations and dependencies
+│   ├── data/             # Data persistence layer
+│   │   └── restaurants.json # Database file
+│   ├── tests/            # Test suite modules
+│   │   └── test_main.py  # Automated test specifications
+│   └── pytest.ini        # Pytest configuration
+├── docs/                 # Documentation and provenance log
 └── README.md             # Setup and developer documentation
 ```
