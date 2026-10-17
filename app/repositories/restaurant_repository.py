@@ -10,7 +10,7 @@ class RestaurantRepository:
             with open(self.filePath, "r") as file:
                 data = json.load(file)
             return data
-        except FileNotFoundError:
+        except FileNotFoundError: 
             raise FileNotFoundError(f"File not found: {self.filePath}")
         except json.JSONDecodeError:
             raise ValueError(f"Error is not valid JSON: {self.filePath}")
