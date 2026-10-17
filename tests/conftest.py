@@ -145,6 +145,8 @@ def make_update_payload():
     def _make(**kwargs):
         return RestaurantUpdate(**kwargs)
     return _make
+
+@pytest.fixture
 def restaurant_filter():
     """Factory fixture to create RestaurantFilter instances with custom parameters."""
     def _create_filter(**kwargs):
