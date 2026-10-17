@@ -1,0 +1,136 @@
+/* RUBRIC — design tokens.
+   The only per-project decision is --hue. Everything else derives from it. */
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("fonts/jetbrains-mono-latin-wght-normal.woff2") format("woff2");
+  font-weight: 100 800;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Big Shoulders Display";
+  src: url("fonts/big-shoulders-display-latin-300-normal.woff2") format("woff2");
+  font-weight: 300;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Big Shoulders Display";
+  src: url("fonts/big-shoulders-display-latin-400-normal.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+
+:root {
+  /* ---- THE ONE DECISION ----
+     Rubric's color is #FF0A01. Other presets exist for other projects: <html data-hue="oxblood|vermilion|cobalt|…">.
+     Equal OKLCH lightness is NOT equal contrast, so each preset carries its own tuned --field-l and --chroma.
+     Paper on #FF0A01 is 3.6:1: right for headlines and art, below WCAG AA for small text. That is the brand's one
+     deliberate exception; <html data-contrast="aa"> swaps in #DA0A01 (4.7:1) where AA is required. */
+  --hue: 29.48;
+  --chroma: 0.2560;
+  --field-l: 0.6297;   /* default: #FF0A01 */
+  --fg2-mix: 100%;     /* how much paper stays in muted text on a field; the default must match its named preset */
+  /* ---- Palette: every color is a shade of --hue ---- */
+  --field: oklch(var(--field-l) var(--chroma) var(--hue));  /* full-bleed color sections */
+  --field-deep: oklch(calc(var(--field-l) - 0.14) calc(var(--chroma) * 0.85) var(--hue));
+  --ink: oklch(0.27 calc(var(--chroma) * 0.45) var(--hue)); /* text on paper */
+  --paper: oklch(0.965 0.012 var(--hue));                   /* tinted off-white, never #fff */
+  --paper-sunk: oklch(0.925 0.022 var(--hue));
+
+  /* ---- Type ---- */
+  --f-display: "Big Shoulders Display", "Arial Narrow", sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --t-hero: clamp(64px, 12vw, 152px);
+  --t-h2: clamp(48px, 7vw, 96px);
+  --t-h3: clamp(32px, 3.4vw, 44px);
+  --t-body: 15px;
+  --t-small: 13px;
+  --t-label: 12px;
+  --t-micro: 11px;
+
+  --lh-display: 0.92;
+  --lh-body: 1.65;
+  --track-label: 0.14em;
+
+  /* ---- Space: 4px grid, stepped (never fluid) ---- */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 64px;
+  --s-9: 96px;
+  --s-10: 128px;
+
+  --gutter: 20px;
+  --header-h: 72px;
+  --section-y: var(--s-8);
+  --max: 1280px;
+
+  /* ---- Shape: small radii, hairline rings, no drop shadows ---- */
+  --r: 3px;
+  --r-lg: 5px;
+
+  /* ---- Control sizing ---- */
+  --hit: 44px; /* minimum touch target */
+
+  /* ---- Motion ---- */
+  --ease: cubic-bezier(0.2, 0.7, 0.1, 1);
+  --dur: 160ms;
+}
+
+/* ---- Hue presets (default is vermilion). Custom hue: set all three vars yourself,
+   then run the contrast audit; raise --field-l down until paper-on-field passes 5.5:1. ---- */
+[data-hue="rubric"]    { --hue: 29.48; --chroma: 0.2560; --field-l: 0.6297; --fg2-mix: 100%; }  /* #FF0A01  3.6:1 */
+[data-hue="oxblood"]   { --hue: 29.23; --chroma: 0.1951; --field-l: 0.4755; --fg2-mix: 90%; }   /* #B00000  6.7:1 */
+/* AA variant of the brand red: the same color nudged to #DA0A01 (4.7:1). Use where WCAG AA is required. */
+:root[data-contrast="aa"]:not([data-hue]), [data-hue="rubric"][data-contrast="aa"] { --hue: 29.59; --chroma: 0.2268; --field-l: 0.5601; --fg2-mix: 100%; }
+[data-hue="vermilion"] { --hue: 35;  --chroma: 0.17; --field-l: 0.52; --fg2-mix: 90%; }
+[data-hue="cobalt"]    { --hue: 262; --chroma: 0.20; --field-l: 0.48; --fg2-mix: 90%; }
+[data-hue="pine"]      { --hue: 150; --chroma: 0.12; --field-l: 0.45; --fg2-mix: 90%; }
+[data-hue="ochre"]     { --hue: 75;  --chroma: 0.11; --field-l: 0.45; --fg2-mix: 90%; }
+[data-hue="magenta"]   { --hue: 340; --chroma: 0.20; --field-l: 0.50; --fg2-mix: 90%; }
+[data-hue="teal"]      { --hue: 205; --chroma: 0.10; --field-l: 0.45; --fg2-mix: 90%; }
+
+@media (min-width: 600px) {
+  :root { --gutter: 32px; --section-y: var(--s-9); }
+}
+@media (min-width: 1024px) {
+  :root { --gutter: 48px; --section-y: var(--s-10); --header-h: 88px; }
+}
+
+/* ---- Section modes: components read only these semantic vars ---- */
+.mode-field,
+[data-art="full"] .art-footer {
+  --bg: var(--field);
+  --fg: var(--paper);
+  --fg-2: color-mix(in oklch, var(--paper) var(--fg2-mix, 90%), var(--field));
+  --line: color-mix(in oklch, var(--paper) 42%, var(--field));
+  --ring: inset 0 0 0 1px var(--line);   /* resolved per mode: vars substitute where declared */
+  --panel: var(--field-deep);
+  --btn-bg: var(--paper);
+  --btn-fg: var(--field-deep);
+  --btn-bg-hover: color-mix(in oklch, var(--paper) 84%, var(--field-deep));   /* paper button dims a little */
+  --plate-bg: var(--field-deep);
+  --plate-fg: var(--paper);
+}
+.mode-paper {
+  --bg: var(--paper);
+  --fg: var(--ink);
+  --fg-2: color-mix(in oklch, var(--ink) 76%, var(--paper));
+  --line: color-mix(in oklch, var(--ink) 30%, var(--paper));
+  --ring: inset 0 0 0 1px var(--line);
+  --panel: var(--paper-sunk);
+  --btn-bg: var(--field);
+  --btn-fg: var(--paper);
+  --btn-bg-hover: color-mix(in oklch, var(--field) 76%, var(--ink));   /* red button darkens: hover also gains contrast */
+  --plate-bg: var(--field);
+  --plate-fg: var(--paper);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur: 0ms; }
+}
