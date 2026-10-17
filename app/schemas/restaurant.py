@@ -13,6 +13,16 @@ class RestaurantCreate(BaseModel):
     postalcode: str
     location: Location
 
+class RestaurantRead(BaseModel):
+    id: int
+    name: str
+    cuisine: Optional[str] = None
+    phone: Optional[str] = None
+    address: str
+    postalcode: str
+    location: Location
+    rating: Optional[float] = 0.0
+
 class RestaurantFilter(BaseModel):
     search: Optional[str] = Field(default=None, description="Search term for restaurant name or cuisine")
     cuisine: Optional[str] = Field(default=None, description="Type of cuisine restaurant serves")

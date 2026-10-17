@@ -55,7 +55,26 @@ def restaurants_json(tmp_path):
                 "city": "Test City",
                 "province": "Test Province"
             },
-            "menu": []
+            "menu": [
+                {
+                    "id": 1,
+                    "name": "Test Soup",
+                    "description": "A test soup",
+                    "price": 5.99,
+                    "category": "Starters",
+                    "image": "",
+                    "availability": True
+                },
+                {
+                    "id": 2,
+                    "name": "Test Pasta",
+                    "description": "A test pasta",
+                    "price": 12.50,
+                    "category": "Pasta",
+                    "image": "",
+                    "availability": True
+                }
+            ]
         },
         {
             "id": 2,

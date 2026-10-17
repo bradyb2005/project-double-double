@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from app.schemas.restaurant import RestaurantCreate, RestaurantFilter
+from app.schemas.restaurant import RestaurantCreate, RestaurantFilter, RestaurantRead
 from app.services.restaurant_service import RestaurantService
-from app.schemas.menu_item import ItemCreate, ItemUpdate
+from app.schemas.menu_item import ItemCreate, ItemRead, ItemUpdate
 
 router = APIRouter()
 service = RestaurantService()
@@ -24,6 +24,13 @@ def create_restaurant(restaurant: RestaurantCreate):
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
+@router.get("/restaurants/{restaurant_id}/menu", response_model=list[ItemRead])
+def get_menu_items(restaurant_id: int):
+    try:
+        return service.fetch_restaurant_menu(restaurant_id)
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+
 @router.post("/restaurants/{restaurant_id}/menu", status_code=status.HTTP_201_CREATED)
 def create_menu_item(restaurant_id: int, item: ItemCreate):
     try:
@@ -37,10 +44,18 @@ def update_menu_item(restaurant_id: int,item_id: int,item: ItemUpdate):
         return service.update_menu_item(restaurant_id,item_id,item)
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail=str(e))
-    
+
+# /restaurants/names must be defined before /restaurants/{id}, or "names" is parsed as an id
 @router.get("/restaurants/names")
 def get_all_restaurant_names():
     try:
         return service.fetch_all_restaurant_names()
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+
+@router.get("/restaurants/{id}", response_model=RestaurantRead)
+def get_restaurant_details(id: int):
+    try:
+        return service.fetch_restaurant_details(id)
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
