@@ -95,8 +95,6 @@ def test_update_restaurant_missing_id(restaurant_service): #searching for a rest
         restaurant_service.update_restaurant(65769, updated_restaurant)
     assert "Restaurant of ID 65769 not found" in str(excinfo.value)
 
-    
-
 # --- Search and Filter Tests ---
 
 def test_search_and_filter_no_params_returns_all(restaurant_service, restaurant_filter):
