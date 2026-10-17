@@ -59,6 +59,9 @@ def get_all_restaurant_names():
 def update_restaurant_by_id(restaurant_id: int, restaurant: RestaurantUpdate):
     try:
         return service.update_restaurant(restaurant_id, restaurant)
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+    
 @router.get("/restaurants/{id}", response_model=RestaurantRead)
 def get_restaurant_details(id: int):
     try:

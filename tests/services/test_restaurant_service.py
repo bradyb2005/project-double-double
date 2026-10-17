@@ -50,7 +50,7 @@ def test_fetch_restaurant_menu_with_invalid_id(restaurant_service):
 
 def test_fetch_all_restaurant_names(restaurant_service):
     names = restaurant_service.fetch_all_restaurant_names()
-    assert names == ["Test Restaurant 1", "Test Restaurant 2"]
+    assert names == ["Test Restaurant 1", "Test Restaurant 2", "Test Restaurant 3"]
 
 def test_update_restaurant_correct(restaurant_service): #test updating a restaurant with valid data.
     updated_restaurant = RestaurantUpdate(name="NewRestaurantName", address="123 st", postalcode="V1V1V1", phone="123-456-7890", location={"city": "NewCity", "province": "NewProvince"})
@@ -95,7 +95,7 @@ def test_update_restaurant_missing_id(restaurant_service): #searching for a rest
         restaurant_service.update_restaurant(65769, updated_restaurant)
     assert "Restaurant of ID 65769 not found" in str(excinfo.value)
 
-    assert names == ["Test Restaurant 1", "Test Restaurant 2", "Test Restaurant 3"]
+    
 
 # --- Search and Filter Tests ---
 

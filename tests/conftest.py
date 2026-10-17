@@ -150,3 +150,10 @@ def restaurant_filter():
     def _create_filter(**kwargs):
         return RestaurantFilter(**kwargs)
     return _create_filter
+
+@pytest.fixture
+def restaurant_filter():
+    """Factory fixture to create RestaurantFilter instances with custom parameters."""
+    def _create_filter(**kwargs):
+        return RestaurantFilter(**kwargs)
+    return _create_filter
