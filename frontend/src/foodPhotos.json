@@ -1,0 +1,107 @@
+{
+ "teen-burger": {
+  "src": "/food/teen-burger.jpg",
+  "title": "Cheeseburger.jpg",
+  "author": "Renee Comet (photographer)",
+  "license": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Cheeseburger.jpg"
+ },
+ "papa-burger": {
+  "src": "/food/papa-burger.jpg",
+  "title": "Double Classic Smash - Smashburger, Brighton 2023-11-18.jpg",
+  "author": "Andy Li",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Double_Classic_Smash%E2%84%A2_-_Smashburger,_Brighton_2023-11-18.jpg"
+ },
+ "onion-rings": {
+  "src": "/food/onion-rings.jpg",
+  "title": "Onion Rings - Gourmet Burger Kitchen 2023-10-03.jpg",
+  "author": "Andy Li",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Onion_Rings_-_Gourmet_Burger_Kitchen_2023-10-03.jpg"
+ },
+ "root-beer": {
+  "src": "/food/root-beer.jpg",
+  "title": "Root beer in glass mug.jpg",
+  "author": "Markmark28",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Root_beer_in_glass_mug.jpg"
+ },
+ "fries": {
+  "src": "/food/fries.jpg",
+  "title": "Plate of thick-cut french fries (frites) served with a side of dipping sauces (ketchup and mayonnaise) at Clyde Common in Portland, Oregon (May 2008).jpg",
+  "author": "Ryan Snyder",
+  "license": "CC BY 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Plate_of_thick-cut_french_fries_(frites)_served_with_a_side_of_dipping_sauces_(ketchup_and_mayonnaise)_at_Clyde_Common_in_Portland,_Oregon_(May_2008).jpg"
+ },
+ "tonkotsu-ramen": {
+  "src": "/food/tonkotsu-ramen.jpg",
+  "title": "Tonkotsu ramen in Tokyo.jpg",
+  "author": "Syced",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Tonkotsu_ramen_in_Tokyo.jpg"
+ },
+ "miso-ramen": {
+  "src": "/food/miso-ramen.jpg",
+  "title": "Takeout spicy miso ramen.jpg",
+  "author": "~delta",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Takeout_spicy_miso_ramen.jpg"
+ },
+ "karaage": {
+  "src": "/food/karaage.jpg",
+  "title": "Chicken karaage 006.jpg",
+  "author": "Ocdp",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Chicken_karaage_006.jpg"
+ },
+ "gyoza": {
+  "src": "/food/gyoza.jpg",
+  "title": "10pc Gyoza plate.jpg",
+  "author": "Wesoree",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:10pc_Gyoza_plate.jpg"
+ },
+ "chicken-bowl": {
+  "src": "/food/chicken-bowl.jpg",
+  "title": "Donburi Rice bowl of Chicken Teriyaki with Tomato.jpg",
+  "author": "TechnoKittyCat",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Donburi_Rice_bowl_of_Chicken_Teriyaki_with_Tomato.jpg"
+ },
+ "carne-asada-tacos": {
+  "src": "/food/carne-asada-tacos.jpg",
+  "title": "001 Tacos de carnitas, carne asada y al pastor.jpg",
+  "author": "Larry Miller",
+  "license": "CC BY-SA 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:001_Tacos_de_carnitas,_carne_asada_y_al_pastor.jpg"
+ },
+ "fish-tacos": {
+  "src": "/food/fish-tacos.jpg",
+  "title": "Tacos de pescado en Maneadero, Ensenada, Baja California 01.jpg",
+  "author": "Isaacvp",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Tacos_de_pescado_en_Maneadero,_Ensenada,_Baja_California_01.jpg"
+ },
+ "carnitas-burrito": {
+  "src": "/food/carnitas-burrito.jpg",
+  "title": "Carnitas burrito, super dorado.jpg",
+  "author": "Simon Wright",
+  "license": "CC BY 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Carnitas_burrito,_super_dorado.jpg"
+ },
+ "chips-guac": {
+  "src": "/food/chips-guac.jpg",
+  "title": "Chips, guacamole, and salsa - Massachusetts.jpg",
+  "author": "Daderot",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Chips,_guacamole,_and_salsa_-_Massachusetts.jpg"
+ },
+ "horchata": {
+  "src": "/food/horchata.jpg",
+  "title": "Benifaió - Orxata.jpg",
+  "author": "Francesc Fort",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Benifai%C3%B3_-_Orxata.jpg"
+ }
+}
