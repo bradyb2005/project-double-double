@@ -139,6 +139,12 @@ def valid_menu_item_create(valid_menu_item_payload):
     return ItemCreate(**valid_menu_item_payload)
 
 @pytest.fixture
+def make_update_payload():
+    """Returns a helper function to create RestaurantUpdate instances without importing."""
+    from app.schemas.restaurant import RestaurantUpdate
+    def _make(**kwargs):
+        return RestaurantUpdate(**kwargs)
+    return _make
 def restaurant_filter():
     """Factory fixture to create RestaurantFilter instances with custom parameters."""
     def _create_filter(**kwargs):

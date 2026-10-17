@@ -173,6 +173,16 @@
   - Ran `python -m pytest`, and verified that testing passes 13/13
 - **PR:** #31
 
+
+
+### Entry: GitHub Actions PR label modification
+- **Date:** Saturday, October 10
+- **Student(s):** @mooz-55
+- **Artifact:** `tests/rservices/test_restaurant_service`
+- **Label:**
+  - [ ] AI-GENERATED 🤖
+  - [ ] AI-ASSISTED 🤝
+  - [x] AI-REVISED ✍️
 ### Entry: Search/Filter tests creation
 
 - **Date:** Thursday, Oct 15th
@@ -189,6 +199,12 @@
   - [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
   - [ ] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
   - [ ] Other: ____
+- **Purpose:** Neeeded some help formatting and organizing the tests. I had the base and conditions needed to be tested, but was not completely fammiliar with the python formatting so I wrote my own and used Gemini to review. I then took the format and wrote my own tests under for the otheer conditions.
+- **Influence:** AI checked over my test code and fixed formatting and syntax errors
+- **Validation:** Unable to validate until PR is merged.
+- **PR:** #33
+
+**Date:** Friday, October 16th
 - **Purpose:** 
   - Provide automated unit and integration test coverage for the search and filter restaurant feature
 - **Influence:**
