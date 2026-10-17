@@ -10,10 +10,10 @@ https://github.com/bradyb2005/project-double-double/
 https://github.com/users/bradyb2005/projects/3
 
 ### Submitted Version
-[M1: First Vertical Slice](https://github.com/bradyb2005/project-double-double/releases/tag/foundation-gate)
+[M1: First Vertical Slice](https://github.com/bradyb2005/project-double-double/releases/tag/m1-vertical-slice) (tag `m1-vertical-slice`)
 
 ### Commit
-TBA
+The commit the `m1-vertical-slice` tag points to (full SHA is in the Canvas submission PDF).
 
 ### Team Roster/GitHub usernames
 - Brady Bracken (@bradyb2005)
