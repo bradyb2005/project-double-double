@@ -357,5 +357,5 @@
   - [ ] Other: ____
 - **Purpose:** M1 requires the README to reflect the implementation, and the submission doc linked to the wrong tag
 - **Influence:** generated the endpoint table, architecture, frontend, testing and CI sections and the updated structure tree, and corrected the tag link and commit line in the submission doc
-- **Validation:** checked the endpoint table against the generated OpenAPI schema and read the rendered text for accuracy
+- **Validation:** compared the endpoint table (methods, paths, success and error codes) against the generated OpenAPI schema with a script, all 9 endpoints match. Have not viewed the rendered README on GitHub yet
 - **PR:** #TBD
