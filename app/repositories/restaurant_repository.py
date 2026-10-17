@@ -35,7 +35,7 @@ class RestaurantRepository:
         restaurants = self.get_all_restaurants()
         for restaurant in restaurants:
             if restaurant["id"] == restaurant_id:
-                restaurant["menu"].append(item)
+                restaurant.setdefault("menu", []).append(item)
                 self.save_restaurants(restaurants)
                 return item
         return None
