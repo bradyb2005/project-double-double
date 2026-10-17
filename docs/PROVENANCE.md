@@ -218,3 +218,23 @@
 - **Validation:** 
   - Tested updating only item price of restaurant ID 1 and item ID 1 to $150.00
 - **PR:** #36
+
+**Date:** Friday, October 16th
+- **Student(s):** @Lxamwastaken
+- **Artifact:** `tests/services/test_menu_item_service.py` 
+- **Label:**
+  - [x] AI-GENERATED 🤖
+  - [ ] AI-ASSISTED 🤝
+  - [ ] AI-REVISED ✍️
+  - [ ] NO-AI ❌
+- **AI Tool Used:**
+  - [ ] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+  - [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+  - [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+  - [x] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+  - [ ] Other: ____
+- **Purpose:** 
+  - Generated test cases to fix known errors
+- **Influence:**
+  - Helped create test case when manually found error arose
+- **PR:** #39
