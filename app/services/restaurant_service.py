@@ -1,9 +1,7 @@
 import re
 from app.repositories.restaurant_repository import RestaurantRepository
-from app.schemas.restaurant import RestaurantCreate, RestaurantFilter
-from app.schemas.menu_item import ItemCreate
-from app.schemas.restaurant import RestaurantCreate, RestaurantUpdate
-
+from app.schemas.restaurant import RestaurantCreate, RestaurantFilter, RestaurantUpdate
+from app.schemas.menu_item import ItemCreate, ItemUpdate
 
 class RestaurantService:
     def __init__(self):
@@ -63,7 +61,7 @@ class RestaurantService:
 
         restaurant_dict = restaurant.model_dump()
         new_id = max((r.get("id", 0) for r in restaurants), default=0) + 1
-        restaurant_dict = {"id": new_id, **restaurant_dict}
+        restaurant_dict = {"id": new_id, **restaurant_dict, "menu": []}
 
         restaurants.append(restaurant_dict)
         self.repository.save_restaurants(restaurants)
@@ -125,7 +123,7 @@ class RestaurantService:
        if item.price is not None and item.price <= 0:
               raise ValueError("Item price must be greater than 0")
 
-       if item.category.strip().lower() not in [item.lower() for item in allowed_categories]:
+       if item.category is not None and item.category.strip().lower() not in [c.lower() for c in allowed_categories]:
               raise ValueError("Invalid category")
 
     def update_restaurant(self,restaurant_id: int, restaurant: RestaurantUpdate):
@@ -195,26 +193,21 @@ class RestaurantService:
 
         return results
 
-    def update_menu_item(self,restaurant_id: int,item_id: int,item: ItemCreate):
+    def update_menu_item(self, restaurant_id: int, item_id: int, item: ItemUpdate):
         self.validate_menu_item_data(item)
 
         restaurants = self.repository.get_all_restaurants()
+        restaurant = next((r for r in restaurants if r["id"] == restaurant_id), None)
+        if restaurant is None:
+            raise ValueError("Restaurant not found")
 
-        for restaurant in restaurants:
-             if restaurant["id"] == restaurant_id:
+        item_dict = item.model_dump(exclude_unset=True)
+        item_dict["id"] = item_id
 
-                item_dict = item.model_dump(exclude_unset=True)
-                item_dict["id"] = item_id
+        for menu_item in restaurant.get("menu", []):
+            if menu_item["id"] == item_id:
+                menu_item.update(item_dict)
+                self.repository.save_restaurants(restaurants)
+                return item_dict
 
-                for index, menu_item in enumerate(restaurant["menu"]):
-                    if menu_item["id"] == item_id:
-
-                        restaurant["menu"][index].update(item_dict)
-
-                        self.repository.save_restaurants(restaurants)
-
-                    return item_dict
-
-                raise ValueError("Menu item not found")
-
-             raise ValueError("Restaurant not found")
+        raise ValueError("Menu item not found")
