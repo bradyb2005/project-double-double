@@ -12,8 +12,8 @@ https://github.com/users/bradyb2005/projects/3
 ### Submitted Version
 [M1: First Vertical Slice](https://github.com/bradyb2005/project-double-double/releases/tag/m1-vertical-slice) (tag `m1-vertical-slice`)
 
-### Commit
-The commit the `m1-vertical-slice` tag points to (full SHA is in the Canvas submission PDF).
+### Commit Identifier
+[158022f2ff9c9ae5daf02121507454ca7c563f97](https://github.com/bradyb2005/project-double-double/commit/158022f2ff9c9ae5daf02121507454ca7c563f97)
 
 ### Team Roster/GitHub usernames
 - Brady Bracken (@bradyb2005)
