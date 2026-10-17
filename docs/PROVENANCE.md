@@ -315,7 +315,7 @@
   - [ ] Other: ____
 - **Purpose:** M1 requires CI that runs pytest automatically in a clean environment on push and pull request
 - **Influence:** generated the workflow (backend pytest job, plus a frontend lint and build job)
-- **Validation:** copied the repo into a clean directory, installed the dependencies in a fresh venv and ran the same steps. 56 tests passed and the frontend lint and build succeeded. The workflow has not run on GitHub yet
+- **Validation:** copied the repo into a clean directory, installed the dependencies in a fresh venv and ran the same steps. 56 tests passed and the frontend lint and build succeeded. The workflow also ran on GitHub for PR #44 and both jobs passed
 - **PR:** #44
 
 
