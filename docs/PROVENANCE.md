@@ -254,3 +254,45 @@
 - **Influence:**
   - Helped create test case when manually found error arose
 - **PR:** #39
+
+
+### Entry: Frontend scaffold
+- **Date:** Friday, October 16
+- **Student(s):** @advvaith~
+- **Artifact:** `frontend/`
+- **Label:**
+  - [x] AI-GENERATED 🤖
+  - [ ] AI-ASSISTED 🤝
+  - [ ] AI-REVISED ✍️
+  - [ ] NO-AI ❌
+- **AI Tool Used:**
+  - [ ] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+  - [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+  - [x] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+  - [ ] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+  - [ ] Other: ____
+- **Purpose:** React + Vite frontend for browsing restaurants and menus, built on the merged backend endpoints
+- **Influence:** generated the whole frontend (pages, API client, Vite proxy to the backend)
+- **Validation:** ran it against the backend and checked the pages load restaurant and menu data
+- **PR:** #42
+
+
+### Entry: start.sh setup and launch script
+- **Date:** Friday, October 16
+- **Student(s):** @advvaith~
+- **Artifact:** `start.sh`, `README.md`, `.gitignore`
+- **Label:**
+  - [x] AI-GENERATED 🤖
+  - [ ] AI-ASSISTED 🤝
+  - [ ] AI-REVISED ✍️
+  - [ ] NO-AI ❌
+- **AI Tool Used:**
+  - [ ] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+  - [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+  - [x] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+  - [ ] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+  - [ ] Other: ____
+- **Purpose:** one command to install Python, Node and all dependencies, then start the backend and frontend on any OS. Also fixed the README setup steps and added manual steps for every platform
+- **Influence:** generated the script and the README changes
+- **Validation:** ran `./start.sh` with a fresh venv, checked the backend, frontend and `/api` proxy returned 200 and that Ctrl+C left no processes running. Windows and Linux steps untested
+- **PR:** #TBD
