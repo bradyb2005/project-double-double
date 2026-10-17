@@ -7,7 +7,24 @@ Version: M1 - First Vertical Slice
 
 * `3.12+`
 
-### Setup Instructions
+### Quick start (one command)
+
+```bash
+git clone https://github.com/bradyb2005/project-double-double.git
+cd project-double-double
+./start.sh
+```
+
+`start.sh` installs anything missing (Python 3.12+, Node 20.19+, a `.venv`, the backend and frontend dependencies), then starts both servers:
+
+ - Backend at http://127.0.0.1:8000 (API docs at `/docs`)
+ - Frontend at http://localhost:5173
+
+Press Ctrl+C to stop both. Use `./start.sh --setup-only` to install without starting. Works on macOS, Linux and Windows (Git Bash / WSL).
+
+### Setup Instructions (manual)
+
+Prerequisites: Python 3.12+ and Node.js 20.19+ (with npm), plus Git.
 
 1. Clone the repo:
 
@@ -15,35 +32,70 @@ Version: M1 - First Vertical Slice
    git clone https://github.com/bradyb2005/project-double-double.git
    cd project-double-double
    ```
-2. Create and activate virtual enviroment
+2. Create the virtual environment (from the repo root)
 
+   macOS / Linux:
    ```bash
-   python -m venv .venv
+   python3 -m venv .venv
    ```
 
-   For MacOS / Linux:
+   Windows (PowerShell or Command Prompt):
+   ```powershell
+   py -m venv .venv
+   ```
+3. Activate it
+
+   macOS / Linux (bash / zsh):
    ```bash
-   source .venv/bin/activate.ps1
+   source .venv/bin/activate
    ```
 
-   For Windows:
-   ```bash
-   .venv/Scripts/activate.ps1
+   Windows PowerShell:
+   ```powershell
+   .venv\Scripts\Activate.ps1
    ```
-3. Install dependencies
+   If PowerShell blocks the script, run `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` once and retry.
+
+   Windows Command Prompt:
+   ```bat
+   .venv\Scripts\activate.bat
+   ```
+
+   Windows Git Bash:
+   ```bash
+   source .venv/Scripts/activate
+   ```
+4. Install backend dependencies (same command on every platform)
 
    ```bash
    pip install -r backend/app/requirements.txt
    ```
+5. Install frontend dependencies (same command on every platform)
+
+   ```bash
+   cd frontend
+   npm install
+   cd ..
+   ```
 
 ### How to start the application
 
-**Run in the `backend/` directory:**
-    ```bash
-    cd backend
-    uvicorn app.main:app --reload
-    ```
-    
+Use two terminals, both starting at the repo root. Activate the venv (step 3 above) in the backend terminal.
+
+**Terminal 1, backend (run in the `backend/` directory):**
+```bash
+cd backend
+uvicorn app.main:app --reload
+```
+
+**Terminal 2, frontend (run in the `frontend/` directory):**
+```bash
+cd frontend
+npm run dev
+```
+
+The frontend is at http://localhost:5173 and proxies `/api/*` to the backend, so start the backend first.
+
 **API endpoint paths:**
 
  - API is available at http://127.0.0.1:8000
