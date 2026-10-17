@@ -254,3 +254,108 @@
 - **Influence:**
   - Helped create test case when manually found error arose
 - **PR:** #39
+
+
+### Entry: Frontend scaffold
+- **Date:** Friday, October 16
+- **Student(s):** @advvaith~
+- **Artifact:** `frontend/`
+- **Label:**
+  - [x] AI-GENERATED 🤖
+  - [ ] AI-ASSISTED 🤝
+  - [ ] AI-REVISED ✍️
+  - [ ] NO-AI ❌
+- **AI Tool Used:**
+  - [ ] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+  - [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+  - [x] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+  - [ ] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+  - [ ] Other: ____
+- **Purpose:** React + Vite frontend for browsing restaurants and menus, built on the merged backend endpoints
+- **Influence:** generated the whole frontend (pages, API client, Vite proxy to the backend)
+- **Validation:** ran it against the backend and checked the pages load restaurant and menu data
+- **PR:** #42
+
+
+### Entry: start.sh setup and launch script
+- **Date:** Friday, October 16
+- **Student(s):** @advvaith~
+- **Artifact:** `start.sh`, `README.md`, `.gitignore`
+- **Label:**
+  - [x] AI-GENERATED 🤖
+  - [ ] AI-ASSISTED 🤝
+  - [ ] AI-REVISED ✍️
+  - [ ] NO-AI ❌
+- **AI Tool Used:**
+  - [ ] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+  - [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+  - [x] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+  - [ ] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+  - [ ] Other: ____
+- **Purpose:** one command to install Python, Node and all dependencies, then start the backend and frontend on any OS. Also fixed the README setup steps and added manual steps for every platform
+- **Influence:** generated the script and the README changes
+- **Validation:** ran `./start.sh` with a fresh venv, checked the backend, frontend and `/api` proxy returned 200 and that Ctrl+C left no processes running. Windows and Linux steps untested
+- **PR:** #43
+
+
+### Entry: GitHub Actions CI workflow
+- **Date:** Friday, October 16
+- **Student(s):** @advvaith~
+- **Artifact:** `.github/workflows/ci.yml`
+- **Label:**
+  - [x] AI-GENERATED 🤖
+  - [ ] AI-ASSISTED 🤝
+  - [ ] AI-REVISED ✍️
+  - [ ] NO-AI ❌
+- **AI Tool Used:**
+  - [ ] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+  - [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+  - [x] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+  - [ ] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+  - [ ] Other: ____
+- **Purpose:** M1 requires CI that runs pytest automatically in a clean environment on push and pull request
+- **Influence:** generated the workflow (backend pytest job, plus a frontend lint and build job)
+- **Validation:** copied the repo into a clean directory, installed the dependencies in a fresh venv and ran the same steps. 56 tests passed and the frontend lint and build succeeded. The workflow has not run on GitHub yet
+- **PR:** #44
+
+
+### Entry: OpenAPI documentation for all endpoints
+- **Date:** Friday, October 16
+- **Student(s):** @advvaith~
+- **Artifact:** `backend/app/api/routes/restaurants.py`, `backend/app/main.py`, `backend/app/schemas/error.py`, `backend/app/schemas/restaurant.py`, `backend/app/schemas/menu_item.py`, `backend/tests/test_openapi_docs.py`
+- **Label:**
+  - [x] AI-GENERATED 🤖
+  - [ ] AI-ASSISTED 🤝
+  - [ ] AI-REVISED ✍️
+  - [ ] NO-AI ❌
+- **AI Tool Used:**
+  - [ ] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+  - [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+  - [x] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+  - [ ] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+  - [ ] Other: ____
+- **Purpose:** M1 requires every endpoint to have a description, a response model and documented status codes and errors
+- **Influence:** generated the summaries, descriptions, response models, error response documentation and the tests that check them. No endpoint behaviour was changed
+- **Validation:** ran the full test suite (61 passed) and sent the same 17 requests to the old and new code on temporary data. Responses were identical except that create and update now also return `rating: 0.0`
+- **PR:** #45
+
+
+### Entry: README and M1 submission doc update
+- **Date:** Friday, October 16
+- **Student(s):** @advvaith~
+- **Artifact:** `README.md`, `docs/submissions/m1-first-vertical-slice.md`
+- **Label:**
+  - [x] AI-GENERATED 🤖
+  - [ ] AI-ASSISTED 🤝
+  - [ ] AI-REVISED ✍️
+  - [ ] NO-AI ❌
+- **AI Tool Used:**
+  - [ ] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+  - [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+  - [x] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+  - [ ] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+  - [ ] Other: ____
+- **Purpose:** M1 requires the README to reflect the implementation, and the submission doc linked to the wrong tag
+- **Influence:** generated the endpoint table, architecture, frontend, testing and CI sections and the updated structure tree, and corrected the tag link and commit line in the submission doc
+- **Validation:** compared the endpoint table (methods, paths, success and error codes) against the generated OpenAPI schema with a script, all 9 endpoints match. Have not viewed the rendered README on GitHub yet
+- **PR:** #43
