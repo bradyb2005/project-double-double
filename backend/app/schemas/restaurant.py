@@ -1,5 +1,6 @@
 from typing import Optional
 from pydantic import BaseModel, Field
+from app.schemas.menu_item import ItemRead
 
 class Location(BaseModel):
     city: str
@@ -30,6 +31,9 @@ class RestaurantRead(BaseModel):
     postalcode: str
     location: Location
     rating: Optional[float] = 0.0
+
+class RestaurantWithMenu(RestaurantRead):
+    menu: list[ItemRead] = Field(default_factory=list, description="Menu items embedded in the restaurant")
 
 class RestaurantFilter(BaseModel):
     search: Optional[str] = Field(default=None, description="Search term for restaurant name or cuisine")

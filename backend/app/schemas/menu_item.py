@@ -19,3 +19,7 @@ class ItemUpdate(BaseModel):
     image: Optional[str] = None
     availability: Optional[bool] = None
     description: Optional[str] = None
+
+# update_menu_item returns only the id plus the fields that were changed
+class ItemUpdated(ItemUpdate):
+    id: int
