@@ -295,7 +295,7 @@
 - **Purpose:** one command to install Python, Node and all dependencies, then start the backend and frontend on any OS. Also fixed the README setup steps and added manual steps for every platform
 - **Influence:** generated the script and the README changes
 - **Validation:** ran `./start.sh` with a fresh venv, checked the backend, frontend and `/api` proxy returned 200 and that Ctrl+C left no processes running. Windows and Linux steps untested
-- **PR:** #TBD
+- **PR:** #43
 
 
 ### Entry: GitHub Actions CI workflow
@@ -316,7 +316,7 @@
 - **Purpose:** M1 requires CI that runs pytest automatically in a clean environment on push and pull request
 - **Influence:** generated the workflow (backend pytest job, plus a frontend lint and build job)
 - **Validation:** copied the repo into a clean directory, installed the dependencies in a fresh venv and ran the same steps. 56 tests passed and the frontend lint and build succeeded. The workflow has not run on GitHub yet
-- **PR:** #TBD
+- **PR:** #44
 
 
 ### Entry: OpenAPI documentation for all endpoints
@@ -337,7 +337,7 @@
 - **Purpose:** M1 requires every endpoint to have a description, a response model and documented status codes and errors
 - **Influence:** generated the summaries, descriptions, response models, error response documentation and the tests that check them. No endpoint behaviour was changed
 - **Validation:** ran the full test suite (61 passed) and sent the same 17 requests to the old and new code on temporary data. Responses were identical except that create and update now also return `rating: 0.0`
-- **PR:** #TBD
+- **PR:** #45
 
 
 ### Entry: README and M1 submission doc update
@@ -358,4 +358,4 @@
 - **Purpose:** M1 requires the README to reflect the implementation, and the submission doc linked to the wrong tag
 - **Influence:** generated the endpoint table, architecture, frontend, testing and CI sections and the updated structure tree, and corrected the tag link and commit line in the submission doc
 - **Validation:** compared the endpoint table (methods, paths, success and error codes) against the generated OpenAPI schema with a script, all 9 endpoints match. Have not viewed the rendered README on GitHub yet
-- **PR:** #TBD
+- **PR:** #43
