@@ -125,6 +125,29 @@
 - **Validation:** Unable to validate until PR is merged.
 - **PR:** #28
 
+
+
+### Entry: Dummy data for menu items
+- **Date:** Saturday, October 10
+- **Student(s):** @advvaith~
+- **Artifact:** `data/menus.json`
+- **Label:**
+  - [x] AI-GENERATED 🤖
+  - [ ] AI-ASSISTED 🤝
+  - [ ] AI-REVISED ✍️
+  - [ ] NO-AI ❌
+- **AI Tool Used:**
+  - [] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+  - [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+  - [x] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+  - [ ] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+  - [ ] Other: ____
+- **Purpose:** dummy data for the view menu endpoint
+- **Influence:** got dummy data to proceed
+- **Validation:** read the output to see if it checks out
+- **PR:** #25
+
+
 ### Entry: Restaurant route testing
 
 - **Date:** Tuesday, October 6th
@@ -160,6 +183,15 @@
   - [ ] AI-GENERATED 🤖
   - [ ] AI-ASSISTED 🤝
   - [x] AI-REVISED ✍️
+### Entry: Search/Filter tests creation
+
+- **Date:** Thursday, Oct 15th
+- **Student(s):** @bradyb2005
+- **Artifact:** `tests/conftest.py`, `tests/services/test_restaurant_service.py`, `tests/api/routes/test_restaurant_routes.py`
+- **Label:**
+  - [x] AI-GENERATED 🤖
+  - [ ] AI-ASSISTED 🤝
+  - [ ] AI-REVISED ✍️
   - [ ] NO-AI ❌
 - **AI Tool Used:**
   - [x] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
@@ -173,6 +205,15 @@
 - **PR:** #33
 
 **Date:** Friday, October 16th
+- **Purpose:** 
+  - Provide automated unit and integration test coverage for the search and filter restaurant feature
+- **Influence:**
+  - Generated tests across the service and routing layer.
+- **Validation:** 
+  - Manually approved these tests and ran them using `python -m pytest`.
+- **PR:** #37
+
+**Date:** Tuesday, October 16th
 - **Student(s):** @Lxamwastaken
 - **Artifact:** `services/restaurant_service.py` 
 - **Label:**
