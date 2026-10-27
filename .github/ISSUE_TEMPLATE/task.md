@@ -4,8 +4,16 @@ about: Standard template for project issues
 ---
 
 ## Description
-<!-- Provide a concise overview of the task or user story -->
+<!-- Provide a concise overview of the task-->
 (text here)  
+
+## User Story
+<!-- Provide a user story for the task-->
+(text here)
+
+## Acceptance Criteria
+<!-- Provide acceptance criteria. ie: What should be tested in order for the user story to be satisfied? -->
+- text here
 
 ---
 
