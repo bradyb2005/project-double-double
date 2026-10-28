@@ -64,6 +64,20 @@ def test_update_restaurant_correct(restaurant_service): #test updating a restaur
     assert result["location"]["city"] == "NewCity"
     assert result["location"]["province"] == "NewProvince"
 
+def test_update_restaurant_id_2(restaurant_service):
+    updated_restaurant = RestaurantUpdate(
+        name="Updated Mexican Spot",
+        address="999 New St"
+    )
+    
+    result = restaurant_service.update_restaurant(2, updated_restaurant)
+    
+    assert result["name"] == "Updated Mexican Spot"
+    assert result["address"] == "999 New St"
+    
+    rest_1 = restaurant_service.fetch_restaurant_details(1)
+    assert rest_1["name"] == "Test Restaurant 1"
+
 def test_update_restaurant_missing(restaurant_service): #test updating a restaurant with missing data.
     updated_restaurant = RestaurantUpdate(name="", address="   ") #spaces and empty
     
