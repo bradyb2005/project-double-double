@@ -35,7 +35,6 @@ def test_update_menu_item_invalid_price(restaurant_service, valid_menu_item_crea
         restaurant_service.update_menu_item(1, created_item["id"], updated_item_data)
     assert "greater than 0" in str(excinfo.value)
 
-
 def test_update_menu_item_second_item_actually_changes(restaurant_service):
     restaurant_service.update_menu_item(1, 2, ItemUpdate(price=1.23))
     menu = restaurant_service.fetch_restaurant_menu(1)

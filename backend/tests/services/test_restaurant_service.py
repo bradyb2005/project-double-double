@@ -9,6 +9,7 @@ def test_create_restaurant_success(restaurant_service, valid_restaurant_create):
     assert result["phone"] == valid_restaurant_create.phone
     assert result["location"]["city"] == valid_restaurant_create.location.city
     assert result["location"]["province"] == valid_restaurant_create.location.province
+    assert result["menu"] == []
 
 def test_create_restaurant_missing_required_field(restaurant_service, valid_restaurant_create):
     valid_restaurant_create.name = ""
