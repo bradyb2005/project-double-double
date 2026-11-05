@@ -42,6 +42,7 @@ class UserBase(BaseModel):
     @field_validator('phone')
     @classmethod
     def clean_phone(cls, value: Optional[str]) -> Optional[str]:
+        """Cleans the phone number by removing non-digit characters."""
         if value is None:
             return value
         return "".join(char for char in value if char.isdigit())
