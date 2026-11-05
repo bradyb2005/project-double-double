@@ -14,6 +14,7 @@ class Province(str, Enum):
     SK = "SK"
     AB = "AB"
     NL = "NL"
+
 class Address(BaseModel):
     street: str
     city: str
@@ -64,8 +65,9 @@ class UserUpdate(UserBase):
     phone: Optional[str] = Field(default=None, pattern=r"^\d{10}$")
     address: Optional[Address] = None
     is_active: Optional[bool] = None
+
 class User(UserBase):
-    """Schema for returning user data, excluding sensitive information."""
+    """Schema for what is saved to users.json."""
     id: int
     created_at: datetime
     updated_at: datetime
