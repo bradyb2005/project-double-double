@@ -399,3 +399,23 @@
 - **Influence:** Updated the `role` field in `UserCreate` to use the `UserRole` Enum type, and provided the syntax for setting an Enum default value.
 - **Validation:** Verified no errors in implementation.
 - **PR:** #66
+
+### Entry: Refactor schemas using Base class inheritance
+- **Date:** Thursday, November 5
+- **Student(s):** @bradyb2005
+- **Artifact:** `backend/app/schemas/user.py`
+- **Label:**
+- [ ] AI-GENERATED 🤖
+- [x] AI-ASSISTED 🤝
+- [ ] AI-REVISED ✍️
+- [ ] NO-AI ❌
+- **AI Tool Used:**
+- [x] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+- [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+- [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+- [ ] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+- [ ] Other: ____
+- **Purpose:** Eliminate code duplication between User and UserCreate schemas.
+- **Influence:** Provided the UserBase inheritance pattern to share fields and validators across Pydantic models.
+- **Validation:** Ensured compliance with standard FastAPI/Pydantic DRY (Don't Repeat Yourself) architectural patterns.
+- **PR:** #66
