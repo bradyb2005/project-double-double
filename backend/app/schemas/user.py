@@ -1,5 +1,5 @@
 from datetime import datetime
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, field_validator
 from typing import Optional
 from enum import Enum
 
@@ -20,6 +20,11 @@ class Address(BaseModel):
     province: Province
     postalcode: str
 
+    @field_validator("postalcode")
+    @classmethod
+    def clean_postalcode(cls, value: str) -> str:
+        """Cleans the postal code by removing spaces and converting to uppercase."""
+        return value.replace(" ", "").upper()
 class UserRole(str, Enum):
     CUSTOMER = "customer"
     RESTAURANT = "restaurant"
