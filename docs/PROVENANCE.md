@@ -439,3 +439,23 @@
 - **Influence:** Generated a `UserUpdate` schema to support partial profile updates.
 - **Validation:** Cross-referenced existing code with the GitHub issue tracker (#51).
 - **PR:** #66
+
+### Entry: Add update_user method to JSON repository
+- **Date:** Thursday, November 5
+- **Student(s):** @bradyb2005
+- **Artifact:** `backend/app/repositories/user_repository.py`
+- **Label:**
+- [x] AI-GENERATED 🤖
+- [ ] AI-ASSISTED 🤝
+- [ ] AI-REVISED ✍️
+- [ ] NO-AI ❌
+- **AI Tool Used:**
+- [x] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+- [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+- [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+- [ ] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+- [ ] Other: ____
+- **Purpose:** Implement a method to update an existing user by ID within the JSON-based repository.
+- **Influence:** Generated the `update_user` repository method leveraging dictionary in-place modification and automatic `last_modified` timestamping, plus demonstrated integration with Pydantic's `model_dump(exclude_unset=True)`.
+- **Validation:** Ensured correct Python dictionary `.update()` behavior.
+- **PR:** #66
