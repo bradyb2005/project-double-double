@@ -2,7 +2,7 @@
 from datetime import datetime, timezone
 
 from backend.app.core.security import get_password_hash
-from backend.app.schemas.user import UserCreate
+from backend.app.schemas.user import UserCreate, UserUpdate
 
 
 class UserService:
@@ -31,3 +31,22 @@ class UserService:
         self.user_repository.save_users(users)
         
         return user_dict
+
+    def update_user(self, user_id: int, update_data: UserUpdate):
+        updated_user = self.user_repository.update_user(user_id, update_data)
+        if updated_user is None:
+            raise ValueError("User not found")
+        return updated_user
+
+    def deactivate_user(self, user_id: int):
+        updated_user = self.user_repository.get_user_by_id(user_id)
+        if updated_user is None:
+            raise ValueError("User not found")
+        if updated_user.get("is_active", False):
+            raise ValueError("User is already deactivated")
+        
+        updated_user["is_active"] = False
+        updated_user["last_modified"] = datetime.now(timezone.utc).isoformat()
+        self.user_repository.save_users(self.user_repository.get_all_users())
+
+        return updated_user
