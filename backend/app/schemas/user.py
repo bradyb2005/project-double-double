@@ -25,6 +25,7 @@ class Address(BaseModel):
     def clean_postalcode(cls, value: str) -> str:
         """Cleans the postal code by removing spaces and converting to uppercase."""
         return value.replace(" ", "").upper()
+    
 class UserRole(str, Enum):
     """Enumeration of user roles."""
     CUSTOMER = "customer"
@@ -55,6 +56,14 @@ class UserCreate(UserBase):
     """Schema for creating a new user, including the `password` field."""
     password: str = Field(..., min_length=8, max_length=128)
 
+class UserUpdate(UserBase):
+    """Schema for updating user information, allowing optional fields."""
+    firstname: Optional[str] = None
+    lastname: Optional[str] = None
+    email: Optional[EmailStr] = None
+    phone: Optional[str] = Field(default=None, pattern=r"^\d{10}$")
+    address: Optional[Address] = None
+    is_active: Optional[bool] = None
 class User(UserBase):
     """Schema for returning user data, excluding sensitive information."""
     id: int
