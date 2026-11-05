@@ -13,12 +13,14 @@ class UserRole(str, Enum):
     RESTAURANT = "restaurant"
 
 class UserCreate(BaseModel):
+    role: UserRole = UserRole.CUSTOMER
     firstname: str
     lastname: str
     email: str
     password: str
     phone: Optional[str] = None
     address: Optional[Address] = None
+    is_active: bool = True
 
 class User(BaseModel):
     id: int
