@@ -1,3 +1,4 @@
+from datetime import datetime
 from pydantic import BaseModel, EmailStr
 from typing import Optional
 from enum import Enum
@@ -42,4 +43,5 @@ class User(BaseModel):
     phone: Optional[str] = None
     address: Optional[Address] = None
     is_active: bool
-
+    created_at: datetime
+    last_modified: datetime
