@@ -26,11 +26,15 @@ class Address(BaseModel):
         """Cleans the postal code by removing spaces and converting to uppercase."""
         return value.replace(" ", "").upper()
 class UserRole(str, Enum):
+    """Enumeration of user roles."""
     CUSTOMER = "customer"
     RESTAURANT = "restaurant"
 
 class UserBase(BaseModel):
-    """Shared fields across all User schemas."""
+    """Shared fields across all User schemas.
+    The defaults are:
+    - role: UserRole.CUSTOMER
+    - is_active: True"""
     role: UserRole = UserRole.CUSTOMER
     firstname: str
     lastname: str
@@ -48,6 +52,7 @@ class UserBase(BaseModel):
         return "".join(char for char in value if char.isdigit())
 
 class UserCreate(UserBase):
+    """Schema for creating a new user, including the `password` field."""
     password: str = Field(..., min_length=8, max_length=128)
 
 class User(UserBase):
