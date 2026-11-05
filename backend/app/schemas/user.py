@@ -1,5 +1,5 @@
 from datetime import datetime
-from pydantic import BaseModel, EmailStr, field_validator
+from pydantic import BaseModel, EmailStr, Field, field_validator
 from typing import Optional
 from enum import Enum
 
@@ -29,24 +29,28 @@ class UserRole(str, Enum):
     CUSTOMER = "customer"
     RESTAURANT = "restaurant"
 
-class UserCreate(BaseModel):
+class UserBase(BaseModel):
+    """Shared fields across all User schemas."""
     role: UserRole = UserRole.CUSTOMER
     firstname: str
     lastname: str
     email: EmailStr
-    password: str
-    phone: Optional[str] = None
+    phone: Optional[str] = Field(default=None, pattern=r"^\d{10}$")
     address: Optional[Address] = None
     is_active: bool = True
 
-class User(BaseModel):
+    @field_validator('phone')
+    @classmethod
+    def clean_phone(cls, value: Optional[str]) -> Optional[str]:
+        if value is None:
+            return value
+        return "".join(char for char in value if char.isdigit())
+
+class UserCreate(UserBase):
+    password: str = Field(..., min_length=8, max_length=128)
+
+class User(UserBase):
+    """Schema for returning user data, excluding sensitive information."""
     id: int
-    role: UserRole
-    firstname: str
-    lastname: str
-    email: EmailStr
-    phone: Optional[str] = None
-    address: Optional[Address] = None
-    is_active: bool
     created_at: datetime
-    last_modified: datetime
+    updated_at: datetime
