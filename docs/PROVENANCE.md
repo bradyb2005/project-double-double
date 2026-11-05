@@ -360,7 +360,7 @@
 - **Validation:** compared the endpoint table (methods, paths, success and error codes) against the generated OpenAPI schema with a script, all 9 endpoints match. Have not viewed the rendered README on GitHub yet
 - **PR:** #43
 
-### Entry: README and M1 submission doc update
+### Entry: M1 bug checks/fixes for M2
 - **Date:** Friday, October 16
 - **Student(s):** @Lxamwastaken
 - **Artifact:** `app/backend/tests/services/test_restaurant_service.py`
