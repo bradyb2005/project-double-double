@@ -21,24 +21,23 @@ class UserService:
         user_dict["password_hash"] = get_password_hash(raw_password)
         
         new_id = max((u.get("id", 0) for u in users), default=0) + 1
-        now = datetime.now(timezone.utc).isoformat()
-        
         user_dict["id"] = new_id
-        user_dict["created_at"] = now
-        user_dict["last_modified"] = now
+        user_dict["created_at"] = datetime.now(timezone.utc).isoformat()
+        user_dict["last_modified"] = datetime.now(timezone.utc).isoformat()
         
         users.append(user_dict)
         self.user_repository.save_users(users)
         
         return user_dict
 
-    def update_user(self, user_id: int, update_data: UserUpdate):
-        updated_user = self.user_repository.update_user(user_id, update_data)
+    def update_user(self, user_id: int, update_data: UserUpdate) -> dict:
+        update_dict = update_data.model_dump(exclude_unset=True)
+        updated_user = self.user_repository.update_user(user_id, update_dict)
         if updated_user is None:
             raise ValueError("User not found")
         return updated_user
 
-    def deactivate_user(self, user_id: int):
+    def deactivate_user(self, user_id: int) -> dict:
         updated_user = self.user_repository.get_user_by_id(user_id)
         if updated_user is None:
             raise ValueError("User not found")
@@ -47,6 +46,5 @@ class UserService:
         
         updated_user["is_active"] = False
         updated_user["last_modified"] = datetime.now(timezone.utc).isoformat()
-        self.user_repository.save_users(self.user_repository.get_all_users())
-
+        self.user_repository.save_users(self.user_repository.update_user(user_id, updated_user))
         return updated_user
