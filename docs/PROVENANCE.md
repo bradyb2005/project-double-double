@@ -379,3 +379,23 @@
 - **Influence:** Generated the `CryptContext` configuration and the `get_password_hash` and `verify_password` utility functions using the `passlib` library.
 - **Validation:** Reviewed the implementation to ensure it matches standard passlib security practices and confirmed `passlib[bcrypt]` was successfully added to `requirements.txt`.
 - **PR:** #66
+
+### Entry: Fix role type annotation in UserCreate schema
+- **Date:** Thursday, November 5
+- **Student(s):** @bradyb2005
+- **Artifact:** `backend/app/schemas/user.py`
+- **Label:**
+- [ ] AI-GENERATED 🤖
+- [x] AI-ASSISTED 🤝
+- [ ] AI-REVISED ✍️
+- [ ] NO-AI ❌
+- **AI Tool Used:**
+- [x] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+- [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+- [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+- [ ] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+- [ ] Other: ____
+- **Purpose:** Didn't know how to set a default enum value in the `UserCreate` schema.
+- **Influence:** Updated the `role` field in `UserCreate` to use the `UserRole` Enum type, and provided the syntax for setting an Enum default value.
+- **Validation:** Verified no errors in implementation.
+- **PR:** #66
