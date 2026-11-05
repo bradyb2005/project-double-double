@@ -419,3 +419,23 @@
 - **Influence:** Provided the UserBase inheritance pattern to share fields and validators across Pydantic models.
 - **Validation:** Ensured compliance with standard FastAPI/Pydantic DRY (Don't Repeat Yourself) architectural patterns.
 - **PR:** #66
+
+### Entry: Revision suggestion to add UserUpdate schema
+- **Date:** Thursday, November 5
+- **Student(s):** @bradyb2005
+- **Artifact:** `backend/app/schemas/user.py`
+- **Label:**
+- [ ] AI-GENERATED 🤖
+- [ ] AI-ASSISTED 🤝
+- [x] AI-REVISED ✍️
+- [ ] NO-AI ❌
+- **AI Tool Used:**
+- [x] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+- [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+- [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+- [ ] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+- [ ] Other: ____
+- **Purpose:** Align Pydantic models with the M2 T1.1 GitHub issue acceptance criteria.
+- **Influence:** Generated a `UserUpdate` schema to support partial profile updates.
+- **Validation:** Cross-referenced existing code with the GitHub issue tracker (#51).
+- **PR:** #66
