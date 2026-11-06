@@ -1,8 +1,14 @@
-from fastapi import APIRouter, Depends, HTTPException, Path, status
-from app.schemas.error import ErrorResponse, HealthStatus
-from app.schemas.restaurant import RestaurantCreate, RestaurantFilter, RestaurantRead, RestaurantUpdate, RestaurantWithMenu
-from app.services.restaurant_service import RestaurantService
+from app.schemas.error import ErrorResponse, HealthStatus  # noqa: EXE002
 from app.schemas.menu_item import ItemCreate, ItemRead, ItemUpdate, ItemUpdated
+from app.schemas.restaurant import (
+    RestaurantCreate,
+    RestaurantFilter,
+    RestaurantRead,
+    RestaurantUpdate,
+    RestaurantWithMenu,
+)
+from app.services.restaurant_service import RestaurantService
+from fastapi import APIRouter, Depends, HTTPException, Path, status
 
 router = APIRouter()
 service = RestaurantService()
