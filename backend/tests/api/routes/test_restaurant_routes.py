@@ -1,5 +1,7 @@
 from unittest.mock import patch
+
 import pytest
+
 
 @pytest.fixture(autouse=True)
 def override_router_service(restaurant_service):
