@@ -519,3 +519,23 @@
 - **Influence:** Corrected the `is_active` check and refactored the method to correctly utilize the repository's `update_user` function without redundantly calling `save_users`.
 - **Validation:** Ensured correct Python boolean evaluation and prevented a type-mismatch crash during file I/O operations. No tests have been made yet, that will truly validate this fix.
 - **PR:** #66
+
+### Entry: Fix user route test environment compatibility
+- **Date:** Friday, November 6
+- **Student(s):** @bradyb2005
+- **Artifact:** `backend/tests/api/routes/test_user_routes.py`, `backend/tests/conftest.py`, `pyproject.toml`, `backend/app/requirements.txt`
+- **Label:**
+- [ ] AI-GENERATED 🤖
+- [ ] AI-ASSISTED 🤝
+- [x] AI-REVISED ✍️
+- [ ] NO-AI ❌
+- **AI Tool Used:**
+- [ ] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+- [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+- [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+- [x] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+- [ ] Other: ____
+- **Purpose:** Fix the user route test failure caused by the test dependency override and incompatible bcrypt version.
+- **Influence:** Corrected the test fixture imports and user data field, updated the invalid-input expectation, and constrained bcrypt to a Passlib-compatible version.
+- **Validation:** Reinstalled dependencies and ran `pytest`; all 68 tests passed.
+- **PR:** #66
