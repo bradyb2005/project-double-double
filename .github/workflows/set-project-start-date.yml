@@ -15,13 +15,16 @@ jobs:
           PROJECT_OWNER: bradyb2005
           PROJECT_NUMBER: 3
         with:
-          github-token: PROJECT_TOKEN
+          github-token: ${{ secrets.PROJECT_TOKEN }}
           script: |
             const branchName = context.payload.ref;
-            const issueMatch = branchName.match(/^(\d+)(?:[-/]|$)/);
+            const issueMatch = branchName.match(/(?:^|[-/])(\d+)$/);
 
             if (!issueMatch) {
-              core.info(`Skipping branch without a leading issue number: ${branchName}`);
+              core.warning(
+                `Skipping branch without a trailing issue number: ${branchName}. ` +
+                "Use a branch name such as 'user-auth-67' to set the issue start date."
+              );
               return;
             }
 
