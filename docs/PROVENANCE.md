@@ -559,3 +559,23 @@
 - **Influence:** Generated tests using the existing `users_json` and `user_repository` fixtures, including persistence checks and invalid input scenarios.
 - **Validation:** Ran the focused repository tests and the full test suite; all 77 tests passed.
 - **PR:** #66
+
+### Entry: Add user service tests
+- **Date:** Friday, November 6
+- **Student(s):** @bradyb2005
+- **Artifact:** `backend/tests/services/test_user_service.py`
+- **Label:**
+- [x] AI-GENERATED 🤖
+- [ ] AI-ASSISTED 🤝
+- [ ] AI-REVISED ✍️
+- [ ] NO-AI ❌
+- **AI Tool Used:**
+- [ ] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+- [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+- [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+- [x] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+- [ ] Other: ____
+- **Purpose:** Add service-level coverage for user registration, profile access, updates, deactivation, and validation acceptance criteria.
+- **Influence:** Generated tests using the existing user fixtures and schema types to verify customer defaults, restaurant roles, generated fields, partial updates, and error handling.
+- **Validation:** Ran the focused user service tests and the full test suite; all 89 tests passed.
+- **PR:** #66
