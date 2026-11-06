@@ -1,4 +1,4 @@
-from app.schemas.error import ErrorResponse, HealthStatus  # noqa: EXE002
+from app.schemas.error import ErrorResponse, HealthStatus
 from app.schemas.menu_item import ItemCreate, ItemRead, ItemUpdate, ItemUpdated
 from app.schemas.restaurant import (
     RestaurantCreate,
