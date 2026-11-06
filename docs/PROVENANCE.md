@@ -377,6 +377,206 @@
 - **Validation:** Implemented tests and ran them
 - **PR:** #65
 
+### Entry: Security setup for password hashing
+- **Date:** Thursday, November 5
+- **Student(s):** @bradyb2005
+- **Artifact:** `backend/app/core/security.py`, `backend/app/requirements.txt`
+- **Label:**
+- [x] AI-GENERATED 🤖
+- [ ] AI-ASSISTED 🤝
+- [ ] AI-REVISED ✍️
+- [ ] NO-AI ❌
+- **AI Tool Used:**
+- [x] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+- [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+- [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+- [ ] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+- [ ] Other: ____
+- **Purpose:** Needed to securely hash and verify user passwords for the JSON data storage using bcrypt.
+- **Influence:** Generated the `CryptContext` configuration and the `get_password_hash` and `verify_password` utility functions using the `passlib` library.
+- **Validation:** Reviewed the implementation to ensure it matches standard passlib security practices and confirmed `passlib[bcrypt]` was successfully added to `requirements.txt`.
+- **PR:** #66
+
+### Entry: Fix role type annotation in UserCreate schema
+- **Date:** Thursday, November 5
+- **Student(s):** @bradyb2005
+- **Artifact:** `backend/app/schemas/user.py`
+- **Label:**
+- [ ] AI-GENERATED 🤖
+- [x] AI-ASSISTED 🤝
+- [ ] AI-REVISED ✍️
+- [ ] NO-AI ❌
+- **AI Tool Used:**
+- [x] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+- [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+- [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+- [ ] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+- [ ] Other: ____
+- **Purpose:** Didn't know how to set a default enum value in the `UserCreate` schema.
+- **Influence:** Updated the `role` field in `UserCreate` to use the `UserRole` Enum type, and provided the syntax for setting an Enum default value.
+- **Validation:** Verified no errors in implementation.
+- **PR:** #66
+
+### Entry: Refactor schemas using Base class inheritance
+- **Date:** Thursday, November 5
+- **Student(s):** @bradyb2005
+- **Artifact:** `backend/app/schemas/user.py`
+- **Label:**
+- [ ] AI-GENERATED 🤖
+- [x] AI-ASSISTED 🤝
+- [ ] AI-REVISED ✍️
+- [ ] NO-AI ❌
+- **AI Tool Used:**
+- [x] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+- [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+- [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+- [ ] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+- [ ] Other: ____
+- **Purpose:** Eliminate code duplication between User and UserCreate schemas.
+- **Influence:** Provided the UserBase inheritance pattern to share fields and validators across Pydantic models.
+- **Validation:** Ensured compliance with standard FastAPI/Pydantic DRY (Don't Repeat Yourself) architectural patterns.
+- **PR:** #66
+
+### Entry: Revision suggestion to add UserUpdate schema
+- **Date:** Thursday, November 5
+- **Student(s):** @bradyb2005
+- **Artifact:** `backend/app/schemas/user.py`
+- **Label:**
+- [ ] AI-GENERATED 🤖
+- [ ] AI-ASSISTED 🤝
+- [x] AI-REVISED ✍️
+- [ ] NO-AI ❌
+- **AI Tool Used:**
+- [x] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+- [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+- [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+- [ ] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+- [ ] Other: ____
+- **Purpose:** Align Pydantic models with the M2 T1.1 GitHub issue acceptance criteria.
+- **Influence:** Generated a `UserUpdate` schema to support partial profile updates.
+- **Validation:** Cross-referenced existing code with the GitHub issue tracker (#51).
+- **PR:** #66
+
+### Entry: Add update_user method to JSON repository
+- **Date:** Thursday, November 5
+- **Student(s):** @bradyb2005
+- **Artifact:** `backend/app/repositories/user_repository.py`
+- **Label:**
+- [x] AI-GENERATED 🤖
+- [ ] AI-ASSISTED 🤝
+- [ ] AI-REVISED ✍️
+- [ ] NO-AI ❌
+- **AI Tool Used:**
+- [x] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+- [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+- [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+- [ ] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+- [ ] Other: ____
+- **Purpose:** Implement a method to update an existing user by ID within the JSON-based repository.
+- **Influence:** Generated the `update_user` repository method leveraging dictionary in-place modification and automatic `last_modified` timestamping, plus demonstrated integration with Pydantic's `model_dump(exclude_unset=True)`.
+- **Validation:** Ensured correct Python dictionary `.update()` behavior.
+- **PR:** #66
+
+### Entry: Review and correct UserService imports
+- **Date:** Thursday, November 5
+- **Student(s):** @bradyb2005
+- **Artifact:** `backend/app/services/user_service.py`
+- **Label:**
+- [ ] AI-GENERATED 🤖
+- [ ] AI-ASSISTED 🤝
+- [x] AI-REVISED ✍️
+- [ ] NO-AI ❌
+- **AI Tool Used:**
+- [x] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+- [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+- [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+- [ ] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+- [ ] Other: ____
+- **Purpose:** Review `user_service.py` logic and fix a bug with the `timezone` import.
+- **Influence:** Identified that `timezone` was incorrectly imported from the `time` module instead of `datetime` and provided the corrected import statement.
+- **Validation:** Visual code review of the provided screenshot against standard Python library documentation.
+- **PR:** #66
+
+### Entry: Fix logic bugs in deactivate_user method
+- **Date:** Thursday, November 5
+- **Student(s):** @bradyb2005
+- **Artifact:** `backend/app/services/user_service.py`
+- **Label:**
+- [ ] AI-GENERATED 🤖
+- [ ] AI-ASSISTED 🤝
+- [x] AI-REVISED ✍️
+- [ ] NO-AI ❌
+- **AI Tool Used:**
+- [x] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+- [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+- [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+- [ ] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+- [ ] Other: ____
+- **Purpose:** Resolve a boolean logic inversion and a data-persistence crash in the deactivation flow.
+- **Influence:** Corrected the `is_active` check and refactored the method to correctly utilize the repository's `update_user` function without redundantly calling `save_users`.
+- **Validation:** Ensured correct Python boolean evaluation and prevented a type-mismatch crash during file I/O operations. No tests have been made yet, that will truly validate this fix.
+- **PR:** #66
+
+### Entry: Fix user route test environment compatibility
+- **Date:** Friday, November 6
+- **Student(s):** @bradyb2005
+- **Artifact:** `backend/tests/api/routes/test_user_routes.py`, `backend/tests/conftest.py`, `pyproject.toml`, `backend/app/requirements.txt`
+- **Label:**
+- [ ] AI-GENERATED 🤖
+- [ ] AI-ASSISTED 🤝
+- [x] AI-REVISED ✍️
+- [ ] NO-AI ❌
+- **AI Tool Used:**
+- [ ] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+- [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+- [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+- [x] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+- [ ] Other: ____
+- **Purpose:** Fix the user route test failure caused by the test dependency override and incompatible bcrypt version.
+- **Influence:** Corrected the test fixture imports and user data field, updated the invalid-input expectation, and constrained bcrypt to a Passlib-compatible version.
+- **Validation:** Reinstalled dependencies and ran `pytest`; all 68 tests passed.
+- **PR:** #66
+
+### Entry: Add user repository tests
+- **Date:** Friday, November 6
+- **Student(s):** @bradyb2005
+- **Artifact:** `backend/tests/repositories/test_user_repository.py`
+- **Label:**
+- [x] AI-GENERATED 🤖
+- [ ] AI-ASSISTED 🤝
+- [ ] AI-REVISED ✍️
+- [ ] NO-AI ❌
+- **AI Tool Used:**
+- [ ] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+- [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+- [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+- [x] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+- [ ] Other: ____
+- **Purpose:** Add automated coverage for the user repository's file operations, lookups, updates, and error handling.
+- **Influence:** Generated tests using the existing `users_json` and `user_repository` fixtures, including persistence checks and invalid input scenarios.
+- **Validation:** Ran the focused repository tests and the full test suite; all 77 tests passed.
+- **PR:** #66
+
+### Entry: Add user service tests
+- **Date:** Friday, November 6
+- **Student(s):** @bradyb2005
+- **Artifact:** `backend/tests/services/test_user_service.py`
+- **Label:**
+- [x] AI-GENERATED 🤖
+- [ ] AI-ASSISTED 🤝
+- [ ] AI-REVISED ✍️
+- [ ] NO-AI ❌
+- **AI Tool Used:**
+- [ ] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+- [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+- [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+- [x] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+- [ ] Other: ____
+- **Purpose:** Add service-level coverage for user registration, profile access, updates, deactivation, and validation acceptance criteria.
+- **Influence:** Generated tests using the existing user fixtures and schema types to verify customer defaults, restaurant roles, generated fields, partial updates, and error handling.
+- **Validation:** Ran the focused user service tests and the full test suite; all 89 tests passed.
+- **PR:** #66
+
 ### Entry: Add project start date workflow
 - **Date:** Friday, November 6
 - **Student(s):** @bradyb2005

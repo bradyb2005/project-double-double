@@ -2,176 +2,174 @@ import pytest
 from app.schemas.restaurant import Location, RestaurantUpdate
 
 
-def test_create_restaurant_success(restaurant_service, valid_restaurant_create):
-    result = restaurant_service.create_restaurant(valid_restaurant_create)
-    assert result["name"] == valid_restaurant_create.name
-    assert result["address"] == valid_restaurant_create.address
-    assert result["postalcode"] == valid_restaurant_create.postalcode
-    assert result["phone"] == valid_restaurant_create.phone
-    assert result["location"]["city"] == valid_restaurant_create.location.city
-    assert result["location"]["province"] == valid_restaurant_create.location.province
-    assert result["menu"] == []
+class TestCreateRestaurant:
+    def test_create_restaurant_success(self, restaurant_service, valid_restaurant_create):
+        result = restaurant_service.create_restaurant(valid_restaurant_create)
+        assert result["name"] == valid_restaurant_create.name
+        assert result["address"] == valid_restaurant_create.address
+        assert result["postalcode"] == valid_restaurant_create.postalcode
+        assert result["phone"] == valid_restaurant_create.phone
+        assert result["location"]["city"] == valid_restaurant_create.location.city
+        assert result["location"]["province"] == valid_restaurant_create.location.province
+        assert result["menu"] == []
 
-def test_create_restaurant_missing_required_field(restaurant_service, valid_restaurant_create):
-    valid_restaurant_create.name = ""
-    with pytest.raises(ValueError) as excinfo:
-        restaurant_service.create_restaurant(valid_restaurant_create)
-    assert "Non-optional fields cannot be empty" in str(excinfo.value)
+    def test_create_restaurant_missing_required_field(self, restaurant_service, valid_restaurant_create):
+        valid_restaurant_create.name = ""
+        with pytest.raises(ValueError) as excinfo:
+            restaurant_service.create_restaurant(valid_restaurant_create)
+        assert "Non-optional fields cannot be empty" in str(excinfo.value)
 
-def test_create_restaurant_invalid_phone(restaurant_service, valid_restaurant_create):
-    valid_restaurant_create.phone = "1250-123-4567"  # Invalid phone format (extra number at the start)
-    with pytest.raises(ValueError) as excinfo:
-        restaurant_service.create_restaurant(valid_restaurant_create)
-    assert "Invalid phone number format" in str(excinfo.value)
+    def test_create_restaurant_invalid_phone(self, restaurant_service, valid_restaurant_create):
+        valid_restaurant_create.phone = "1250-123-4567"  # Invalid phone format (extra number at the start)
+        with pytest.raises(ValueError) as excinfo:
+            restaurant_service.create_restaurant(valid_restaurant_create)
+        assert "Invalid phone number format" in str(excinfo.value)
 
-def test_create_restaurant_invalid_postalcode(restaurant_service, valid_restaurant_create):
-    valid_restaurant_create.postalcode = "123456"  # Invalid postal code format (does not alternate letter/number)
-    with pytest.raises(ValueError) as excinfo:
-        restaurant_service.create_restaurant(valid_restaurant_create)
-    assert "Invalid postal code format" in str(excinfo.value)
-    
-def test_fetch_restaurant_with_known_id(restaurant_service):
-    restaurant = restaurant_service.fetch_restaurant_details(1)
-    assert restaurant['name'] == "Test Restaurant 1"
-    
-def test_fetch_restaurant_with_invalid_id(restaurant_service):
-    with pytest.raises(ValueError, match="Restaurant not found"):
-        restaurant_service.fetch_restaurant_details(99999)
+    def test_create_restaurant_invalid_postalcode(self, restaurant_service, valid_restaurant_create):
+        valid_restaurant_create.postalcode = "123456"  # Invalid postal code format (does not alternate letter/number)
+        with pytest.raises(ValueError) as excinfo:
+            restaurant_service.create_restaurant(valid_restaurant_create)
+        assert "Invalid postal code format" in str(excinfo.value)
 
-def test_fetch_restaurant_menu_with_known_id(restaurant_service):
-    menu = restaurant_service.fetch_restaurant_menu(1)
-    assert isinstance(menu, list)
-    assert [item["name"] for item in menu] == ["Test Soup", "Test Pasta"]
+class TestFetchRestaurantDetails:
+    def test_fetch_restaurant_with_known_id(self, restaurant_service):
+        restaurant = restaurant_service.fetch_restaurant_details(1)
+        assert restaurant['name'] == "Test Restaurant 1"
 
-def test_fetch_restaurant_menu_empty(restaurant_service):
-    assert restaurant_service.fetch_restaurant_menu(2) == []
+    def test_fetch_restaurant_with_invalid_id(self, restaurant_service):
+        with pytest.raises(ValueError, match="Restaurant not found"):
+            restaurant_service.fetch_restaurant_details(99999)
 
-def test_fetch_restaurant_menu_with_invalid_id(restaurant_service):
-    with pytest.raises(ValueError, match="Restaurant not found"):
-        restaurant_service.fetch_restaurant_menu(99999)
+class TestFetchRestaurantMenu:
+    def test_fetch_restaurant_menu_with_known_id(self, restaurant_service):
+        menu = restaurant_service.fetch_restaurant_menu(1)
+        assert isinstance(menu, list)
+        assert [item["name"] for item in menu] == ["Test Soup", "Test Pasta"]
 
-def test_fetch_all_restaurant_names(restaurant_service):
-    names = restaurant_service.fetch_all_restaurant_names()
-    assert names == ["Test Restaurant 1", "Test Restaurant 2", "Test Restaurant 3"]
+    def test_fetch_restaurant_menu_empty(self, restaurant_service):
+        assert restaurant_service.fetch_restaurant_menu(2) == []
 
-def test_update_restaurant_correct(restaurant_service): #test updating a restaurant with valid data.
-    updated_restaurant = RestaurantUpdate(
-        name="NewRestaurantName", 
-        address="123 st", 
-        postalcode="V1V1V1", 
-        phone="123-456-7890", 
-        location=Location(city="NewCity", province="NewProvince"))
-    
-    result = restaurant_service.update_restaurant(1, updated_restaurant)
-    
-    assert result["name"] == "NewRestaurantName"
-    assert result["address"] == "123 st"
-    assert result["postalcode"] == "V1V1V1"
-    assert result["phone"] == "123-456-7890"
-    assert result["location"]["city"] == "NewCity"
-    assert result["location"]["province"] == "NewProvince"
+    def test_fetch_restaurant_menu_with_invalid_id(self, restaurant_service):
+        with pytest.raises(ValueError, match="Restaurant not found"):
+            restaurant_service.fetch_restaurant_menu(99999)
 
-def test_update_restaurant_id_2(restaurant_service):
-    updated_restaurant = RestaurantUpdate(
-        name="Updated Mexican Spot",
-        address="999 New St"
-    )
-    
-    result = restaurant_service.update_restaurant(2, updated_restaurant)
-    
-    assert result["name"] == "Updated Mexican Spot"
-    assert result["address"] == "999 New St"
-    
-    rest_1 = restaurant_service.fetch_restaurant_details(1)
-    assert rest_1["name"] == "Test Restaurant 1"
+class TestFetchAllRestaurantNames:
+    def test_fetch_all_restaurant_names(self, restaurant_service):
+        names = restaurant_service.fetch_all_restaurant_names()
+        assert names == ["Test Restaurant 1", "Test Restaurant 2", "Test Restaurant 3"]
 
-def test_update_restaurant_missing(restaurant_service): #test updating a restaurant with missing data.
-    updated_restaurant = RestaurantUpdate(name="", address="   ") #spaces and empty
-    
-    result = restaurant_service.update_restaurant(1, updated_restaurant)
-    
-    assert result["name"] == "Test Restaurant 1"
-    assert result["address"] == "123 Test St"
+class TestUpdateRestaurant:
+    def test_update_restaurant_correct(self, restaurant_service): #test updating a restaurant with valid data.
+        updated_restaurant = RestaurantUpdate(
+            name="NewRestaurantName",
+            address="123 st",
+            postalcode="V1V1V1",
+            phone="123-456-7890",
+            location=Location(city="NewCity", province="NewProvince"))
 
-def test_update_restaurant_invalid_phone(restaurant_service): #test updating a restaurant with invalid phone number.
-    updated_restaurant = RestaurantUpdate(phone="ThisIsNotValid")  # Invalid phone format
-    
-    with pytest.raises(ValueError) as excinfo:
-        restaurant_service.update_restaurant(1, updated_restaurant)
-    assert "Invalid phone number format. Must be ###-###-#### or ##########" in str(excinfo.value)
+        result = restaurant_service.update_restaurant(1, updated_restaurant)
 
-def test_update_restaurant_invalid_postalcode(restaurant_service): #test updating a restaurant with invalid postal code.
-    updated_restaurant = RestaurantUpdate(postalcode="123456")  # Invalid postal code format
-    
-    with pytest.raises(ValueError) as excinfo:
-        restaurant_service.update_restaurant(1, updated_restaurant)
-    assert "Invalid postal code format. Must alternate letter and number" in str(excinfo.value)
+        assert result["name"] == "NewRestaurantName"
+        assert result["address"] == "123 st"
+        assert result["postalcode"] == "V1V1V1"
+        assert result["phone"] == "123-456-7890"
+        assert result["location"]["city"] == "NewCity"
+        assert result["location"]["province"] == "NewProvince"
 
-def test_update_restaurant_missing_id(restaurant_service): #searching for a restaurant that does not exist.
-    updated_restaurant = RestaurantUpdate(name="MissingRestaurant")
-    
-    with pytest.raises(ValueError) as excinfo:
-        restaurant_service.update_restaurant(65769, updated_restaurant)
-    assert "Restaurant of ID 65769 not found" in str(excinfo.value)
+    def test_update_restaurant_id_2(self, restaurant_service):
+        updated_restaurant = RestaurantUpdate(
+            name="Updated Mexican Spot",
+            address="999 New St"
+        )
 
-# --- Search and Filter Tests ---
+        result = restaurant_service.update_restaurant(2, updated_restaurant)
 
-def test_search_and_filter_no_params_returns_all(restaurant_service, restaurant_filter):
-    filters = restaurant_filter()
-    results = restaurant_service.search_and_filter_restaurants(filters)
-    assert len(results) == 3
+        assert result["name"] == "Updated Mexican Spot"
+        assert result["address"] == "999 New St"
 
+        rest_1 = restaurant_service.fetch_restaurant_details(1)
+        assert rest_1["name"] == "Test Restaurant 1"
 
-def test_search_by_name_case_insensitive(restaurant_service, restaurant_filter):
-    filters = restaurant_filter(search="restaurant 2")
-    results = restaurant_service.search_and_filter_restaurants(filters)
-    assert len(results) == 1
-    assert results[0]["name"] == "Test Restaurant 2"
+    def test_update_restaurant_missing(self, restaurant_service): #test updating a restaurant with missing data.
+        updated_restaurant = RestaurantUpdate(name="", address="   ") #spaces and empty
 
+        result = restaurant_service.update_restaurant(1, updated_restaurant)
 
-def test_search_by_cuisine_keyword(restaurant_service, restaurant_filter):
-    filters = restaurant_filter(search="italian")
-    results = restaurant_service.search_and_filter_restaurants(filters)
-    assert len(results) == 2
-    assert all("italian" in r["cuisine"].lower() for r in results)
+        assert result["name"] == "Test Restaurant 1"
+        assert result["address"] == "123 Test St"
 
+    def test_update_restaurant_invalid_phone(self, restaurant_service): #test updating a restaurant with invalid phone number.
+        updated_restaurant = RestaurantUpdate(phone="ThisIsNotValid")  # Invalid phone format
 
-def test_filter_by_exact_cuisine(restaurant_service, restaurant_filter):
-    filters = restaurant_filter(cuisine="Mexican")
-    results = restaurant_service.search_and_filter_restaurants(filters)
-    assert len(results) == 1
-    assert results[0]["name"] == "Test Restaurant 2"
+        with pytest.raises(ValueError) as excinfo:
+            restaurant_service.update_restaurant(1, updated_restaurant)
+        assert "Invalid phone number format. Must be ###-###-#### or ##########" in str(excinfo.value)
 
+    def test_update_restaurant_invalid_postalcode(self, restaurant_service): #test updating a restaurant with invalid postal code.
+        updated_restaurant = RestaurantUpdate(postalcode="123456")  # Invalid postal code format
 
-def test_filter_by_city(restaurant_service, restaurant_filter):
-    filters = restaurant_filter(city="Another City")
-    results = restaurant_service.search_and_filter_restaurants(filters)
-    assert len(results) == 1
-    assert results[0]["name"] == "Test Restaurant 2"
+        with pytest.raises(ValueError) as excinfo:
+            restaurant_service.update_restaurant(1, updated_restaurant)
+        assert "Invalid postal code format. Must alternate letter and number" in str(excinfo.value)
 
+    def test_update_restaurant_missing_id(self, restaurant_service): #searching for a restaurant that does not exist.
+        updated_restaurant = RestaurantUpdate(name="MissingRestaurant")
 
-def test_filter_by_province(restaurant_service, restaurant_filter):
-    filters = restaurant_filter(province="Another Province")
-    results = restaurant_service.search_and_filter_restaurants(filters)
-    assert len(results) == 2
-    assert all(r["location"]["province"] == "Another Province" for r in results)
+        with pytest.raises(ValueError) as excinfo:
+            restaurant_service.update_restaurant(65769, updated_restaurant)
+        assert "Restaurant of ID 65769 not found" in str(excinfo.value)
 
+    # --- Search and Filter Tests ---
 
-def test_filter_by_rating(restaurant_service, restaurant_filter):
-    filters = restaurant_filter(rating=4.0)
-    results = restaurant_service.search_and_filter_restaurants(filters)
-    assert len(results) == 2
-    assert all(r["rating"] >= 4.0 for r in results)
+class TestSearchAndFilterRestaurants:
+    def test_search_and_filter_no_params_returns_all(self, restaurant_service, restaurant_filter):
+        filters = restaurant_filter()
+        results = restaurant_service.search_and_filter_restaurants(filters)
+        assert len(results) == 3
 
+    def test_search_by_name_case_insensitive(self, restaurant_service, restaurant_filter):
+        filters = restaurant_filter(search="restaurant 2")
+        results = restaurant_service.search_and_filter_restaurants(filters)
+        assert len(results) == 1
+        assert results[0]["name"] == "Test Restaurant 2"
 
-def test_filter_multi_combination(restaurant_service, restaurant_filter):
-    filters = restaurant_filter(cuisine="Italian", province="Another Province", rating=3.0)
-    results = restaurant_service.search_and_filter_restaurants(filters)
-    assert len(results) == 1
-    assert results[0]["name"] == "Test Restaurant 3"
+    def test_search_by_cuisine_keyword(self, restaurant_service, restaurant_filter):
+        filters = restaurant_filter(search="italian")
+        results = restaurant_service.search_and_filter_restaurants(filters)
+        assert len(results) == 2
+        assert all("italian" in r["cuisine"].lower() for r in results)
 
+    def test_filter_by_exact_cuisine(self, restaurant_service, restaurant_filter):
+        filters = restaurant_filter(cuisine="Mexican")
+        results = restaurant_service.search_and_filter_restaurants(filters)
+        assert len(results) == 1
+        assert results[0]["name"] == "Test Restaurant 2"
 
-def test_filter_no_results(restaurant_service, restaurant_filter):
-    filters = restaurant_filter(search="NonExistentPlace")
-    results = restaurant_service.search_and_filter_restaurants(filters)
-    assert len(results) == 0
+    def test_filter_by_city(self, restaurant_service, restaurant_filter):
+        filters = restaurant_filter(city="Another City")
+        results = restaurant_service.search_and_filter_restaurants(filters)
+        assert len(results) == 1
+        assert results[0]["name"] == "Test Restaurant 2"
+
+    def test_filter_by_province(self, restaurant_service, restaurant_filter):
+        filters = restaurant_filter(province="Another Province")
+        results = restaurant_service.search_and_filter_restaurants(filters)
+        assert len(results) == 2
+        assert all(r["location"]["province"] == "Another Province" for r in results)
+
+    def test_filter_by_rating(self, restaurant_service, restaurant_filter):
+        filters = restaurant_filter(rating=4.0)
+        results = restaurant_service.search_and_filter_restaurants(filters)
+        assert len(results) == 2
+        assert all(r["rating"] >= 4.0 for r in results)
+
+    def test_filter_multi_combination(self, restaurant_service, restaurant_filter):
+        filters = restaurant_filter(cuisine="Italian", province="Another Province", rating=3.0)
+        results = restaurant_service.search_and_filter_restaurants(filters)
+        assert len(results) == 1
+        assert results[0]["name"] == "Test Restaurant 3"
+
+    def test_filter_no_results(self, restaurant_service, restaurant_filter):
+        filters = restaurant_filter(search="NonExistentPlace")
+        results = restaurant_service.search_and_filter_restaurants(filters)
+        assert len(results) == 0
