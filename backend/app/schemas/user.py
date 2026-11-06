@@ -71,4 +71,4 @@ class User(UserBase):
     """Schema for what is saved to users.json."""
     id: int
     created_at: datetime
-    updated_at: datetime
+    last_updated: datetime
