@@ -12,11 +12,12 @@ from backend.app.schemas.restaurant import (
 from backend.app.services.restaurant_service import RestaurantService
 
 router = APIRouter()
-service = RestaurantService()
 restaurant_filter_dependency = Depends()
 
 RestaurantId = Path(description="ID of the restaurant")
 ItemId = Path(description="ID of the menu item, unique within its restaurant")
+
+service_dependency = Depends(RestaurantService)
 
 @router.get(
     "/health",
@@ -42,7 +43,10 @@ def health_check():
     response_model=list[RestaurantWithMenu],
     responses={400: {"model": ErrorResponse, "description": "Invalid search or filter"}},
 )
-def get_restaurants(filter: RestaurantFilter = restaurant_filter_dependency):
+def get_restaurants(
+    filter: RestaurantFilter = restaurant_filter_dependency,
+    service: RestaurantService = service_dependency
+):
     try:
         return service.search_and_filter_restaurants(filter)
     except ValueError as e:
@@ -61,7 +65,7 @@ def get_restaurants(filter: RestaurantFilter = restaurant_filter_dependency):
     response_model=RestaurantWithMenu,
     responses={400: {"model": ErrorResponse, "description": "Empty required field, bad phone number or bad postal code"}},
 )
-def create_restaurant(restaurant: RestaurantCreate):
+def create_restaurant(restaurant: RestaurantCreate, service: RestaurantService = service_dependency):
     try:
         return service.create_restaurant(restaurant)
     except ValueError as e:
@@ -75,7 +79,7 @@ def create_restaurant(restaurant: RestaurantCreate):
     response_model=list[ItemRead],
     responses={404: {"model": ErrorResponse, "description": "Restaurant not found"}},
 )
-def get_menu_items(restaurant_id: int = RestaurantId):
+def get_menu_items(restaurant_id: int = RestaurantId, service: RestaurantService = service_dependency):
     try:
         return service.fetch_restaurant_menu(restaurant_id)
     except ValueError as e:
@@ -94,7 +98,7 @@ def get_menu_items(restaurant_id: int = RestaurantId):
     response_model=ItemRead,
     responses={400: {"model": ErrorResponse, "description": "Restaurant not found, empty name, price not above 0 or invalid category"}},
 )
-def create_menu_item(item: ItemCreate, restaurant_id: int = RestaurantId):
+def create_menu_item(item: ItemCreate, restaurant_id: int = RestaurantId, service: RestaurantService = service_dependency):
     try:
         return service.create_menu_item(restaurant_id, item)
     except ValueError as e:
@@ -112,7 +116,12 @@ def create_menu_item(item: ItemCreate, restaurant_id: int = RestaurantId):
     response_model_exclude_unset=True,
     responses={400: {"model": ErrorResponse, "description": "Restaurant or item not found, or an invalid value (empty name, price not above 0, invalid category)"}},
 )
-def update_menu_item(item: ItemUpdate, restaurant_id: int = RestaurantId, item_id: int = ItemId):
+def update_menu_item(
+    item: ItemUpdate,
+    restaurant_id: int = RestaurantId,
+    item_id: int = ItemId,
+    service: RestaurantService = service_dependency,
+):
     try:
         return service.update_menu_item(restaurant_id,item_id,item)
     except ValueError as e:
@@ -127,7 +136,7 @@ def update_menu_item(item: ItemUpdate, restaurant_id: int = RestaurantId, item_i
     response_model=list[str],
     responses={400: {"model": ErrorResponse, "description": "Restaurant data could not be read"}},
 )
-def get_all_restaurant_names():
+def get_all_restaurant_names(service: RestaurantService = service_dependency):
     try:
         return service.fetch_all_restaurant_names()
     except ValueError as e:
@@ -145,7 +154,11 @@ def get_all_restaurant_names():
     response_model=RestaurantWithMenu,
     responses={404: {"model": ErrorResponse, "description": "Restaurant not found, or the phone number or postal code is invalid"}},
 )
-def update_restaurant_by_id(restaurant: RestaurantUpdate, restaurant_id: int = RestaurantId):
+def update_restaurant_by_id(
+    restaurant: RestaurantUpdate,
+    restaurant_id: int = RestaurantId,
+    service: RestaurantService = service_dependency,
+):
     try:
         return service.update_restaurant(restaurant_id, restaurant)
     except ValueError as e:
@@ -159,7 +172,10 @@ def update_restaurant_by_id(restaurant: RestaurantUpdate, restaurant_id: int = R
     response_model=RestaurantRead,
     responses={404: {"model": ErrorResponse, "description": "Restaurant not found"}},
 )
-def get_restaurant_details(id: int = Path(description="ID of the restaurant")):
+def get_restaurant_details(
+    id: int = Path(description="ID of the restaurant"),
+    service: RestaurantService = service_dependency,
+):
     try:
         return service.fetch_restaurant_details(id)
     except ValueError as e:

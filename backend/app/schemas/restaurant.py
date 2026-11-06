@@ -22,7 +22,7 @@ class RestaurantUpdate(BaseModel):
     phone: str | None = None
     address: str | None = None
     postalcode: str | None = None
-    location: str | None = None
+    location: Location | None = None
 class RestaurantRead(BaseModel):
     id: int
     name: str
