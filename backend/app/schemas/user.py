@@ -1,7 +1,8 @@
 from datetime import datetime
-from pydantic import BaseModel, EmailStr, Field, field_validator
-from typing import Optional
 from enum import Enum
+
+from pydantic import BaseModel, EmailStr, Field, field_validator
+
 
 class Province(str, Enum):
     ON = "ON"
@@ -41,13 +42,13 @@ class UserBase(BaseModel):
     firstname: str
     lastname: str
     email: EmailStr
-    phone: Optional[str] = Field(default=None, pattern=r"^\d{10}$")
-    address: Optional[Address] = None
+    phone: str | None = Field(default=None, pattern=r"^\d{10}$")
+    address: Address | None = None
     is_active: bool = True
 
     @field_validator('phone')
     @classmethod
-    def clean_phone(cls, value: Optional[str]) -> Optional[str]:
+    def clean_phone(cls, value: str | None) -> str | None:
         """Cleans the phone number by removing non-digit characters."""
         if value is None:
             return value
@@ -59,12 +60,12 @@ class UserCreate(UserBase):
 
 class UserUpdate(UserBase):
     """Schema for updating user information. All fields are optional."""
-    firstname: Optional[str] = None
-    lastname: Optional[str] = None
-    email: Optional[EmailStr] = None
-    phone: Optional[str] = Field(default=None, pattern=r"^\d{10}$")
-    address: Optional[Address] = None
-    is_active: Optional[bool] = None
+    firstname: str | None = None
+    lastname: str | None = None
+    email: EmailStr | None = None
+    phone: str | None = Field(default=None, pattern=r"^\d{10}$")
+    address: Address | None = None
+    is_active: bool | None = None
 
 class User(UserBase):
     """Schema for what is saved to users.json."""
