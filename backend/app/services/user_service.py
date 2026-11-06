@@ -47,8 +47,8 @@ class UserService:
         
         return self.user_repository.update_user(user_id, {"is_active": False})
 
-    def view_user(self, user_id: int) -> dict:
+    def view_user(self, user_id: int):
         user = self.user_repository.get_user_by_id(user_id)
-        if user is None:
+        if not user:
             raise ValueError("User not found")
         return user
