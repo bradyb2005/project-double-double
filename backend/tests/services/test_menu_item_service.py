@@ -1,6 +1,7 @@
 import pytest
 from app.schemas.menu_item import ItemUpdate
 
+
 def test_create_menu_item(restaurant_service, valid_menu_item_create):
    result = restaurant_service.create_menu_item(1, valid_menu_item_create)
    assert result["name"] == valid_menu_item_create.name
@@ -16,8 +17,6 @@ def test_create_menu_item_invalid_price(restaurant_service, valid_menu_item_crea
 
 def test_update_menu_item(restaurant_service,valid_menu_item_create):
     created_item = restaurant_service.create_menu_item(1,valid_menu_item_create)
-
-    item_id = created_item["id"]
 
     updated_item_data = valid_menu_item_create.model_copy(update={"name": "Updated Name","price": 15.99})
 
