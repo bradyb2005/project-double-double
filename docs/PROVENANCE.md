@@ -363,7 +363,7 @@
 ### Entry: M1 bug checks/fixes for M2
 - **Date:** Friday, October 16
 - **Student(s):** @Lxamwastaken
-- **Artifact:** `app/backend/tests/services/test_restaurant_service.py`
+- **Artifact:** `backend/tests/services/test_restaurant_service.py`
 - **Label:**
   - [x] AI-GENERATED 🤖
   - [ ] AI-ASSISTED 🤝
