@@ -359,3 +359,23 @@
 - **Influence:** generated the endpoint table, architecture, frontend, testing and CI sections and the updated structure tree, and corrected the tag link and commit line in the submission doc
 - **Validation:** compared the endpoint table (methods, paths, success and error codes) against the generated OpenAPI schema with a script, all 9 endpoints match. Have not viewed the rendered README on GitHub yet
 - **PR:** #43
+
+### Entry: Add project start date workflow
+- **Date:** Friday, November 6
+- **Student(s):** @bradyb2005
+- **Artifact:** `.github/workflows/set-project-start-date.yml`
+- **Label:**
+  - [x] AI-GENERATED 🤖
+  - [ ] AI-ASSISTED 🤝
+  - [ ] AI-REVISED ✍️
+  - [ ] NO-AI ❌
+- **AI Tool Used:**
+  - [ ] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+  - [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+  - [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+  - [x] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+  - [ ] Other: ____
+- **Purpose:** Automatically set an issue's GitHub Project start date when a branch named with the issue number is created.
+- **Influence:** Generated a GitHub Actions workflow that parses the issue number from the branch name, locates the issue in the project, and updates its `Start date` field through the Projects GraphQL API.
+- **Validation:** Reviewed the workflow configuration and verified the YAML diff formatting. The workflow requires a `PROJECT_TOKEN` secret and a configured project number before live validation.
+- **PR:** #67
