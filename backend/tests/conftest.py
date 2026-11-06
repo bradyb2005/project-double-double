@@ -1,15 +1,17 @@
 import json
+
 import pytest
-from app.schemas.restaurant import RestaurantCreate, Location, RestaurantFilter
-from app.services.restaurant_service import RestaurantService
 from app.repositories.restaurant_repository import RestaurantRepository
 from app.schemas.menu_item import ItemCreate
+from app.schemas.restaurant import RestaurantCreate, RestaurantFilter
+from app.services.restaurant_service import RestaurantService
+
 
 @pytest.fixture
 def client():
     """Returns a test client for the FastAPI app."""
-    from fastapi.testclient import TestClient
     from app.main import app
+    from fastapi.testclient import TestClient
     return TestClient(app)
 
 @pytest.fixture
