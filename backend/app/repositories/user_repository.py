@@ -34,8 +34,8 @@ class UserRepository:
   def get_user_by_id(self, user_id: int):
     users = self.get_all_users()
     for user in users:
-      if user.get("id") == user_id:
-        return user
+        if isinstance(user, dict) and user.get("id") == user_id:
+            return user
     return None
 
   def update_user(self, user_id: int, update_data: dict):
