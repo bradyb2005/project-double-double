@@ -163,6 +163,7 @@ def valid_user_payload():
     return {
         "firstname": "Brady",
         "lastname": "Bracken",
+        "password": "SecurePassword123!",
         "email": "bradyryanbracken@gmail.com",
         "phone": "2508638425",
         "address": {
@@ -206,7 +207,7 @@ def users_json(tmp_path):
             },
             "is_active": True,
             "created_at": "2026-01-01T00:00:00Z",
-            "updated_at": "2026-01-01T00:00:00Z"
+            "last_updated": "2026-01-01T00:00:00Z"
         }
     ]
     file_path = tmp_path / "users.json"
@@ -230,9 +231,10 @@ def user_service(user_repository):
 @pytest.fixture(autouse=True)
 def override_user_dependency(user_service):
     """Overrides the FastAPI user service dependency for route tests."""
-    from backend.app.api.routes import users
-    from backend.app.main import app
-    from backend.app.services.user_service import UserService
+    from app.main import app
+    from app.services.user_service import UserService
+
+    from app.api.routes import users
 
     user_dependency = getattr(users, "get_user_service", UserService)
     app.dependency_overrides[user_dependency] = lambda: user_service

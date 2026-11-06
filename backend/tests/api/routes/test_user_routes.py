@@ -22,7 +22,7 @@ def test_create_user_success(client, valid_user_payload):
 def test_create_user_error_400(client, valid_user_payload):
     valid_user_payload["phone"] = "invalid-phone"
     response = client.post("/users", json=valid_user_payload)
-    assert response.status_code == 400
+    assert response.status_code == 422
 
 def test_fetch_user_details_success(client):
     response = client.get("/users/1")
