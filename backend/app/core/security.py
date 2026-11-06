@@ -22,16 +22,13 @@ def _get_jwt_secret() -> str:
         raise RuntimeError("SECRET_KEY must be configured to use access tokens")
     return secret
 
-
 def get_password_hash(password: str) -> str:
     """Takes a plain text password and returns a hashed string."""
     return pwd_context.hash(password)
 
-
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     """Checks if a plain text password matches the stored hashed version."""
     return pwd_context.verify(plain_password, hashed_password)
-
 
 def create_access_token(
     user_id: int,
@@ -43,7 +40,6 @@ def create_access_token(
     )
     payload = {"sub": str(user_id), "exp": expires_at}
     return jwt.encode(payload, _get_jwt_secret(), algorithm=JWT_ALGORITHM)
-
 
 def decode_access_token(token: str) -> int:
     """Validate a bearer token and return the user ID it contains."""
