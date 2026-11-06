@@ -9,7 +9,6 @@ router = APIRouter()
 service = UserService(UserRepository())
 UserId = Path(description="ID of the user")
 
-
 @router.get(
     "/users",
     tags=["Users"],
@@ -20,7 +19,6 @@ UserId = Path(description="ID of the user")
 )
 def get_users():
     return service.get_all_users()
-
 
 @router.post(
     "/users",
@@ -37,7 +35,6 @@ def create_user(user: UserCreate):
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
-
 @router.put(
     "/users/{user_id}",
     tags=["Users"],
@@ -52,6 +49,19 @@ def update_user(update_data: UserUpdate, user_id: int = UserId):
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
 
+@router.put(
+    "/users/{user_id}/deactivate",
+    tags=["Users"],
+    summary="Deactivate a user",
+    description="Deactivates a user. Deactivated users cannot log in.",
+    response_model=dict,
+    responses={404: {"model": ErrorResponse, "description": "User not found"}},
+)
+def deactivate_user(user_id: int = UserId):
+    try:
+        return service.deactivate_user(user_id)
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
 
 @router.get(
     "/users/{user_id}",
