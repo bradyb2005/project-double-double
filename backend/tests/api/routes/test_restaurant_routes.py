@@ -1,7 +1,6 @@
 import pytest
-
-from backend.app.main import app
-from backend.app.services.restaurant_service import RestaurantService
+from app.main import app
+from app.services.restaurant_service import RestaurantService
 
 
 @pytest.fixture(autouse=True)

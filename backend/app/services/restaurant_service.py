@@ -1,8 +1,8 @@
 import re
 
-from backend.app.repositories.restaurant_repository import RestaurantRepository
-from backend.app.schemas.menu_item import ItemCreate, ItemUpdate
-from backend.app.schemas.restaurant import (
+from app.repositories.restaurant_repository import RestaurantRepository
+from app.schemas.menu_item import ItemCreate, ItemUpdate
+from app.schemas.restaurant import (
     RestaurantCreate,
     RestaurantFilter,
     RestaurantUpdate,

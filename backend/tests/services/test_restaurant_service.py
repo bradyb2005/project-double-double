@@ -1,8 +1,5 @@
-from typing import cast
-
 import pytest
-
-from backend.app.schemas.restaurant import RestaurantUpdate
+from app.schemas.restaurant import Location, RestaurantUpdate
 
 
 def test_create_restaurant_success(restaurant_service, valid_restaurant_create):
@@ -63,7 +60,7 @@ def test_update_restaurant_correct(restaurant_service): #test updating a restaur
         address="123 st", 
         postalcode="V1V1V1", 
         phone="123-456-7890", 
-        location=cast(str, {"city": "NewCity", "province": "NewProvince"}))
+        location=Location(city="NewCity", province="NewProvince"))
     
     result = restaurant_service.update_restaurant(1, updated_restaurant)
     

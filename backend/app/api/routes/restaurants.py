@@ -1,15 +1,14 @@
-from fastapi import APIRouter, Depends, HTTPException, Path, status
-
-from backend.app.schemas.error import ErrorResponse, HealthStatus
-from backend.app.schemas.menu_item import ItemCreate, ItemRead, ItemUpdate, ItemUpdated
-from backend.app.schemas.restaurant import (
+from app.schemas.error import ErrorResponse, HealthStatus
+from app.schemas.menu_item import ItemCreate, ItemRead, ItemUpdate, ItemUpdated
+from app.schemas.restaurant import (
     RestaurantCreate,
     RestaurantFilter,
     RestaurantRead,
     RestaurantUpdate,
     RestaurantWithMenu,
 )
-from backend.app.services.restaurant_service import RestaurantService
+from app.services.restaurant_service import RestaurantService
+from fastapi import APIRouter, Depends, HTTPException, Path, status
 
 router = APIRouter()
 restaurant_filter_dependency = Depends()

@@ -1,6 +1,5 @@
 import pytest
-
-from backend.app.repositories.restaurant_repository import RestaurantRepository
+from app.repositories.restaurant_repository import RestaurantRepository
 
 
 def test_get_all_restaurants_returns_list():

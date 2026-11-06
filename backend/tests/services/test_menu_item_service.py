@@ -1,6 +1,5 @@
 import pytest
-
-from backend.app.schemas.menu_item import ItemUpdate
+from app.schemas.menu_item import ItemUpdate
 
 
 def test_create_menu_item(restaurant_service, valid_menu_item_create):
