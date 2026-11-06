@@ -1,11 +1,13 @@
-from unittest.mock import patch
 import pytest
+from app.main import app
+from app.services.restaurant_service import RestaurantService
+
 
 @pytest.fixture(autouse=True)
-def override_router_service(restaurant_service):
-    """Forces the router to use the temporary test file instead of data/restaurants.json"""
-    with patch("app.api.routes.restaurants.service", restaurant_service):
-        yield
+def override_dependency(restaurant_service):
+    app.dependency_overrides[RestaurantService] = lambda: restaurant_service
+    yield
+    app.dependency_overrides.clear()
 
 def test_get_restaurants(client):
     response = client.get("/restaurants")
