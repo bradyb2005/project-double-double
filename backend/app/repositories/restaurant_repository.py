@@ -1,9 +1,15 @@
 import json
 import os
+from pathlib import Path
+
 
 class RestaurantRepository:
-    def __init__(self, file_path: str = "data/restaurants.json"):
-        self.filePath = file_path  
+    def __init__(self, file_path=None):
+        if file_path:
+            self.filePath = file_path
+        else:
+            base_dir = Path(__file__).resolve().parent.parent.parent
+            self.filePath = base_dir / "data" / "restaurants.json"
 
     def get_all_restaurants(self):
         try:
@@ -21,8 +27,8 @@ class RestaurantRepository:
             with open(temp_path, "w") as file:  
                 json.dump(restaurants, file, indent=4)  
             os.replace(temp_path, self.filePath)  
-        except Exception as e:  
-            raise IOError(f"Error saving data to {self.filePath}: {e}")
+        except (OSError, TypeError, ValueError) as e:
+            raise OSError(f"Error saving data to {self.filePath}: {e}")
         
     def get_restaurant_by_id(self, restaurant_id: int):
         restaurants = self.get_all_restaurants()

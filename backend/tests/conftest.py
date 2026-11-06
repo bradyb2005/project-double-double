@@ -1,15 +1,25 @@
 import json
+
 import pytest
-from app.schemas.restaurant import RestaurantCreate, Location, RestaurantFilter
-from app.services.restaurant_service import RestaurantService
+from app.main import app
 from app.repositories.restaurant_repository import RestaurantRepository
 from app.schemas.menu_item import ItemCreate
+from app.schemas.restaurant import RestaurantCreate, RestaurantFilter
+from app.services.restaurant_service import RestaurantService
+
+
+@pytest.fixture(autouse=True)
+def override_dependency(restaurant_service):
+    """Overrides the FastAPI service dependency to use the test repository fixture."""
+    app.dependency_overrides[RestaurantService] = lambda: restaurant_service
+    yield
+    app.dependency_overrides.clear()
 
 @pytest.fixture
 def client():
     """Returns a test client for the FastAPI app."""
-    from fastapi.testclient import TestClient
     from app.main import app
+    from fastapi.testclient import TestClient
     return TestClient(app)
 
 @pytest.fixture
