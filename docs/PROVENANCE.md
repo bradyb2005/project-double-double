@@ -479,3 +479,23 @@
 - **Influence:** Identified that `timezone` was incorrectly imported from the `time` module instead of `datetime` and provided the corrected import statement.
 - **Validation:** Visual code review of the provided screenshot against standard Python library documentation.
 - **PR:** #66
+
+### Entry: Fix logic bugs in deactivate_user method
+- **Date:** Thursday, November 5
+- **Student(s):** @bradyb2005
+- **Artifact:** `backend/app/services/user_service.py`
+- **Label:**
+- [ ] AI-GENERATED 🤖
+- [ ] AI-ASSISTED 🤝
+- [x] AI-REVISED ✍️
+- [ ] NO-AI ❌
+- **AI Tool Used:**
+- [x] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+- [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+- [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+- [ ] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+- [ ] Other: ____
+- **Purpose:** Resolve a boolean logic inversion and a data-persistence crash in the deactivation flow.
+- **Influence:** Corrected the `is_active` check and refactored the method to correctly utilize the repository's `update_user` function without redundantly calling `save_users`.
+- **Validation:** Ensured correct Python boolean evaluation and prevented a type-mismatch crash during file I/O operations. No tests have been made yet, that will truly validate this fix.
+- **PR:** #66
