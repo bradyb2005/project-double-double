@@ -1,8 +1,8 @@
 
 from datetime import UTC, datetime
 
-from backend.app.core.security import get_password_hash
-from backend.app.schemas.user import UserCreate, UserUpdate
+from app.core.security import get_password_hash
+from app.schemas.user import UserCreate, UserUpdate
 
 
 class UserService:
