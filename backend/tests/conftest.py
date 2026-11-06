@@ -11,8 +11,9 @@ from backend.app.services.restaurant_service import RestaurantService
 @pytest.fixture
 def client():
     """Returns a test client for the FastAPI app."""
-    from backend.app.main import app
     from fastapi.testclient import TestClient
+
+    from backend.app.main import app
     return TestClient(app)
 
 @pytest.fixture

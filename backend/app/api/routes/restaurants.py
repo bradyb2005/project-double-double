@@ -13,6 +13,7 @@ from backend.app.services.restaurant_service import RestaurantService
 
 router = APIRouter()
 service = RestaurantService()
+restaurant_filter_dependency = Depends()
 
 RestaurantId = Path(description="ID of the restaurant")
 ItemId = Path(description="ID of the menu item, unique within its restaurant")
@@ -41,7 +42,7 @@ def health_check():
     response_model=list[RestaurantWithMenu],
     responses={400: {"model": ErrorResponse, "description": "Invalid search or filter"}},
 )
-def get_restaurants(filter: RestaurantFilter = Depends()):
+def get_restaurants(filter: RestaurantFilter = restaurant_filter_dependency):
     try:
         return service.search_and_filter_restaurants(filter)
     except ValueError as e:
