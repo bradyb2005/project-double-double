@@ -8,13 +8,6 @@ from app.schemas.restaurant import RestaurantCreate, RestaurantFilter
 from app.services.restaurant_service import RestaurantService
 
 
-@pytest.fixture(autouse=True)
-def override_dependency(restaurant_service):
-    """Overrides the FastAPI service dependency to use the test repository fixture."""
-    app.dependency_overrides[RestaurantService] = lambda: restaurant_service
-    yield
-    app.dependency_overrides.clear()
-
 @pytest.fixture
 def client():
     """Returns a test client for the FastAPI app."""
@@ -154,6 +147,13 @@ def restaurant_filter():
     def _create_filter(**kwargs):
         return RestaurantFilter(**kwargs)
     return _create_filter
+
+@pytest.fixture(autouse=True)
+def override_restaurant_dependency(restaurant_service):
+    """Overrides the FastAPI service dependency to use the test repository fixture."""
+    app.dependency_overrides[RestaurantService] = lambda: restaurant_service
+    yield
+    app.dependency_overrides.clear()
 # endregion
 
 # region User Fixtures
@@ -173,3 +173,70 @@ def valid_user_payload():
         },
         "is_active": True
     }
+
+@pytest.fixture
+def valid_user_create(valid_user_payload):
+    """Returns a valid UserCreate Pydantic model instance."""
+    from backend.app.schemas.user import UserCreate
+    return UserCreate(**valid_user_payload)
+
+@pytest.fixture
+def valid_user_update():
+    """Returns a valid UserUpdate instance for partial updates."""
+    from backend.app.schemas.user import UserUpdate
+    return UserUpdate(firstname="UpdatedName", is_active=False)
+
+@pytest.fixture
+def users_json(tmp_path):
+    """Creates a temporary JSON file with sample user data for isolated testing."""
+    import json
+    data = [
+        {
+            "id": 1,
+            "role": "customer",
+            "firstname": "John",
+            "lastname": "Doe",
+            "email": "john.doe@example.com",
+            "phone": "2505550100",
+            "address": {
+                "street": "100 Main St",
+                "city": "Kelowna",
+                "province": "BC",
+                "postalcode": "V1Y1Y1"
+            },
+            "is_active": True,
+            "created_at": "2026-01-01T00:00:00Z",
+            "updated_at": "2026-01-01T00:00:00Z"
+        }
+    ]
+    file_path = tmp_path / "users.json"
+    with open(file_path, "w") as f:
+        json.dump(data, f)
+    return str(file_path)
+
+@pytest.fixture
+def user_repository(users_json):
+    """Returns a UserRepository instance using the temporary JSON file."""
+    from backend.app.repositories.user_repository import UserRepository
+    return UserRepository(file_path=users_json)
+
+@pytest.fixture
+def user_service(user_repository):
+    """Returns a UserService instance injected with the test repository."""
+    from backend.app.services.user_service import UserService
+    service = UserService(user_repository=user_repository)
+    return service
+
+@pytest.fixture(autouse=True)
+def override_user_dependency(user_service):
+    """Overrides the FastAPI user service dependency for route tests."""
+    from backend.app.api.routes import users
+    from backend.app.main import app
+    from backend.app.services.user_service import UserService
+
+    user_dependency = getattr(users, "get_user_service", UserService)
+    app.dependency_overrides[user_dependency] = lambda: user_service
+    yield
+    app.dependency_overrides.clear()
+    
+# endregion
