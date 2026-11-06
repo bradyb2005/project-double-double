@@ -596,3 +596,23 @@
 - **Influence:** Generated a GitHub Actions workflow that parses the issue number from the branch name, locates the issue in the project, and updates its `Start date` field through the Projects GraphQL API.
 - **Validation:** Reviewed the workflow configuration and verified the YAML diff formatting. The workflow requires a `PROJECT_TOKEN` secret and a configured project number before live validation.
 - **PR:** #67
+
+### Entry: Add JWT security and automatic local secret setup
+- **Date:** Friday, November 6
+- **Student(s):** @bradyb2005
+- **Artifacts:** `backend/app/core/security.py`, `backend/app/requirements.txt`, `pyproject.toml`, `start.sh`, `.env` configuration, `.gitignore`, `README.md`, `.vscode/settings.json`
+- **Label:**
+  - [x] AI-GENERATED 🤖
+  - [ ] AI-ASSISTED 🤝
+  - [ ] AI-REVISED ✍️
+  - [ ] NO-AI ❌
+- **AI Tool Used:**
+  - [ ] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+  - [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+  - [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+  - [x] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+  - [ ] Other: ____
+- **Purpose:** Add JWT-based access-token security for M2 login and make the project downloadable and runnable without committing a secret key.
+- **Influence:** Added token creation and validation to `security.py`, added the `PyJWT` dependency, generated a local `.env` secret from `start.sh`, loaded the secret at runtime, ignored `.env`, and documented the setup behavior.
+- **Validation:** Ran the full test suite with 102 tests passing, verified JWT creation and tamper rejection, checked `start.sh` syntax, and ran `./start.sh --setup-only` to confirm local secret generation.
+- **PR:** N/A
