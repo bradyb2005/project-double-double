@@ -616,3 +616,43 @@
 - **Influence:** Added token creation and validation to `security.py`, added the `PyJWT` dependency, generated a local `.env` secret from `start.sh`, loaded the secret at runtime, ignored `.env`, and documented the setup behavior.
 - **Validation:** Ran the full test suite with 102 tests passing, verified JWT creation and tamper rejection, checked `start.sh` syntax, and ran `./start.sh --setup-only` to confirm local secret generation.
 - **PR:** N/A
+
+### Entry: Add login service tests
+- **Date:** Friday, November 6
+- **Student(s):** @bradyb2005
+- **Artifact:** `backend/tests/services/test_login_service.py`, `backend/tests/conftest.py`
+- **Label:**
+  - [ ] AI-GENERATED 🤖
+  - [x] AI-ASSISTED 🤝
+  - [ ] AI-REVISED ✍️
+  - [ ] NO-AI ❌
+- **AI Tool Used:**
+  - [ ] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+  - [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+  - [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+  - [x] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+  - [ ] Other: ____
+- **Purpose:** Add service-level coverage for successful login, missing accounts, incorrect passwords, and inactive accounts.
+- **Influence:** Assisted with organizing shared login fixtures and identifying the service behaviors that require tests.
+- **Validation:** Ran the focused login tests and the full test suite; all 110 tests passed.
+- **PR:** N/A
+
+### Entry: Add login route tests
+- **Date:** Friday, November 6
+- **Student(s):** @bradyb2005
+- **Artifact:** `backend/tests/api/routes/test_login_routes.py`, `backend/tests/conftest.py`
+- **Label:**
+  - [ ] AI-GENERATED 🤖
+  - [x] AI-ASSISTED 🤝
+  - [ ] AI-REVISED ✍️
+  - [ ] NO-AI ❌
+- **AI Tool Used:**
+  - [ ] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+  - [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+  - [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+  - [x] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+  - [ ] Other: ____
+- **Purpose:** Add route-level coverage for successful login, invalid credentials, authentication headers, and request validation.
+- **Influence:** Assisted with configuring the FastAPI dependency override and checking the expected HTTP status codes.
+- **Validation:** Ran the focused login and user route tests; all 14 tests passed.
+- **PR:** N/A
