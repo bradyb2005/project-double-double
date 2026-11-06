@@ -18,8 +18,14 @@ user_service_dependency = Depends(get_user_service)
     tags=["Users"],
     summary="List all users",
     description="Returns a list of all users.",
+    status_code=status.HTTP_200_OK,
     response_model=list[dict],
-    responses={400: {"model": ErrorResponse, "description": "User data could not be read"}},
+    responses={
+        status.HTTP_400_BAD_REQUEST: {
+            "model": ErrorResponse,
+            "description": "User data could not be read",
+        }
+    },
 )
 def get_users(user_service: UserService = user_service_dependency):
     return user_service.get_all_users()
@@ -44,8 +50,14 @@ def create_user(user: UserCreate, user_service: UserService = user_service_depen
     tags=["Users"],
     summary="Update a user",
     description="Partially updates a user: only the fields sent are changed.",
+    status_code=status.HTTP_200_OK,
     response_model=dict,
-    responses={404: {"model": ErrorResponse, "description": "User not found"}},
+    responses={
+        status.HTTP_404_NOT_FOUND: {
+            "model": ErrorResponse,
+            "description": "User not found",
+        }
+    },
 )
 def update_user(
     update_data: UserUpdate,
@@ -62,8 +74,14 @@ def update_user(
     tags=["Users"],
     summary="Deactivate a user",
     description="Deactivates a user. Deactivated users cannot log in.",
+    status_code=status.HTTP_200_OK,
     response_model=dict,
-    responses={404: {"model": ErrorResponse, "description": "User not found"}},
+    responses={
+        status.HTTP_404_NOT_FOUND: {
+            "model": ErrorResponse,
+            "description": "User not found",
+        }
+    },
 )
 def deactivate_user(
     user_id: int = UserId,
@@ -79,8 +97,14 @@ def deactivate_user(
     tags=["Users"],
     summary="Get user details",
     description="Returns one user's details.",
+    status_code=status.HTTP_200_OK,
     response_model=User,
-    responses={404: {"model": ErrorResponse, "description": "User not found"}},
+    responses={
+        status.HTTP_404_NOT_FOUND: {
+            "model": ErrorResponse,
+            "description": "User not found",
+        }
+    },
 )
 def view_user(
     user_id: int = UserId,
