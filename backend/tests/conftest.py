@@ -228,6 +228,33 @@ def user_service(user_repository):
     service = UserService(user_repository=user_repository)
     return service
 
+@pytest.fixture
+def login_user():
+    """Returns a user with a valid password for login tests."""
+    from app.core.security import get_password_hash
+
+    return {
+        "id": 1,
+        "email": "john.doe@example.com",
+        "password_hash": get_password_hash("SecurePassword123!"),
+        "is_active": True,
+    }
+
+@pytest.fixture
+def login_repository(login_user):
+    """Returns a repository that looks up the login test user by email."""
+    class LoginRepository:
+        def get_user_by_email(self, email):
+            return login_user if email == login_user["email"] else None
+
+    return LoginRepository()
+
+@pytest.fixture
+def login_service(login_repository):
+    """Returns a LoginService using the login test repository."""
+    from app.services.login_service import LoginService
+    return LoginService(login_repository)
+
 @pytest.fixture(autouse=True)
 def override_user_dependency(user_service):
     """Overrides the FastAPI user service dependency for route tests."""
