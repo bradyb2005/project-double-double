@@ -1,5 +1,8 @@
+from typing import cast
+
 import pytest
 from app.schemas.restaurant import RestaurantUpdate
+
 
 def test_create_restaurant_success(restaurant_service, valid_restaurant_create):
     result = restaurant_service.create_restaurant(valid_restaurant_create)
@@ -54,7 +57,12 @@ def test_fetch_all_restaurant_names(restaurant_service):
     assert names == ["Test Restaurant 1", "Test Restaurant 2", "Test Restaurant 3"]
 
 def test_update_restaurant_correct(restaurant_service): #test updating a restaurant with valid data.
-    updated_restaurant = RestaurantUpdate(name="NewRestaurantName", address="123 st", postalcode="V1V1V1", phone="123-456-7890", location={"city": "NewCity", "province": "NewProvince"})
+    updated_restaurant = RestaurantUpdate(
+        name="NewRestaurantName", 
+        address="123 st", 
+        postalcode="V1V1V1", 
+        phone="123-456-7890", 
+        location=cast(str, {"city": "NewCity", "province": "NewProvince"}))
     
     result = restaurant_service.update_restaurant(1, updated_restaurant)
     
@@ -103,8 +111,6 @@ def test_update_restaurant_invalid_postalcode(restaurant_service): #test updatin
 
 def test_update_restaurant_missing_id(restaurant_service): #searching for a restaurant that does not exist.
     updated_restaurant = RestaurantUpdate(name="MissingRestaurant")  #
-    
-    result = restaurant_service.update_restaurant(1, updated_restaurant)
     
     with pytest.raises(ValueError) as excinfo:
         restaurant_service.update_restaurant(65769, updated_restaurant)
