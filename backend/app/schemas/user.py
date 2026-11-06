@@ -72,3 +72,13 @@ class User(UserBase):
     id: int
     created_at: datetime
     last_updated: datetime
+
+class LoginRequest(BaseModel):
+    """Schema for login requests."""
+    email: EmailStr
+    password: str = Field(..., min_length=8)
+
+class LoginResponse(BaseModel):
+    """Schema for login responses."""
+    access_token: str
+    token_type: str = "bearer"
