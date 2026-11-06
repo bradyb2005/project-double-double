@@ -1,7 +1,8 @@
 from typing import cast
 
 import pytest
-from app.schemas.restaurant import RestaurantUpdate
+
+from backend.app.schemas.restaurant import RestaurantUpdate
 
 
 def test_create_restaurant_success(restaurant_service, valid_restaurant_create):

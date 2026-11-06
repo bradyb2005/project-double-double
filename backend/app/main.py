@@ -1,5 +1,6 @@
-from app.api.routes.restaurants import router
 from fastapi import FastAPI
+
+from backend.app.api.routes.restaurants import router
 
 app = FastAPI(
     title="Project Double Double API",

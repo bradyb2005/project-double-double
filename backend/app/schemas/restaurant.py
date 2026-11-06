@@ -1,5 +1,6 @@
-from app.schemas.menu_item import ItemRead
 from pydantic import BaseModel, Field
+
+from backend.app.schemas.menu_item import ItemRead
 
 
 class Location(BaseModel):
