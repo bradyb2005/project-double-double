@@ -1,7 +1,9 @@
 import re
+
 from app.repositories.restaurant_repository import RestaurantRepository
-from app.schemas.restaurant import RestaurantCreate, RestaurantFilter, RestaurantUpdate
 from app.schemas.menu_item import ItemCreate, ItemUpdate
+from app.schemas.restaurant import RestaurantCreate, RestaurantFilter, RestaurantUpdate
+
 
 class RestaurantService:
     def __init__(self):
@@ -116,9 +118,8 @@ class RestaurantService:
             "Dessert",
             "Drinks",
        ]
-       if item.name is not None:
-           if not item.name.strip():
-            raise ValueError("Item name cannot be empty")
+       if item.name is not None and not item.name.strip():
+        raise ValueError("Item name cannot be empty")
 
        if item.price is not None and item.price <= 0:
               raise ValueError("Item price must be greater than 0")
