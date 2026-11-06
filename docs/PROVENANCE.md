@@ -539,3 +539,23 @@
 - **Influence:** Corrected the test fixture imports and user data field, updated the invalid-input expectation, and constrained bcrypt to a Passlib-compatible version.
 - **Validation:** Reinstalled dependencies and ran `pytest`; all 68 tests passed.
 - **PR:** #66
+
+### Entry: Add user repository tests
+- **Date:** Friday, November 6
+- **Student(s):** @bradyb2005
+- **Artifact:** `backend/tests/repositories/test_user_repository.py`
+- **Label:**
+- [x] AI-GENERATED 🤖
+- [ ] AI-ASSISTED 🤝
+- [ ] AI-REVISED ✍️
+- [ ] NO-AI ❌
+- **AI Tool Used:**
+- [ ] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+- [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+- [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+- [x] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+- [ ] Other: ____
+- **Purpose:** Add automated coverage for the user repository's file operations, lookups, updates, and error handling.
+- **Influence:** Generated tests using the existing `users_json` and `user_repository` fixtures, including persistence checks and invalid input scenarios.
+- **Validation:** Ran the focused repository tests and the full test suite; all 77 tests passed.
+- **PR:** #66
