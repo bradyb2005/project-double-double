@@ -23,7 +23,7 @@ class UserService:
         new_id = max((u.get("id", 0) for u in users), default=0) + 1
         user_dict["id"] = new_id
         user_dict["created_at"] = datetime.now(UTC).isoformat()
-        user_dict["last_modified"] = datetime.now(UTC).isoformat()
+        user_dict["last_updated"] = datetime.now(UTC).isoformat()
         
         users.append(user_dict)
         self.user_repository.save_users(users)

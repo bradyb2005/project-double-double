@@ -178,13 +178,13 @@ def valid_user_payload():
 @pytest.fixture
 def valid_user_create(valid_user_payload):
     """Returns a valid UserCreate Pydantic model instance."""
-    from backend.app.schemas.user import UserCreate
+    from app.schemas.user import UserCreate
     return UserCreate(**valid_user_payload)
 
 @pytest.fixture
 def valid_user_update():
     """Returns a valid UserUpdate instance for partial updates."""
-    from backend.app.schemas.user import UserUpdate
+    from app.schemas.user import UserUpdate
     return UserUpdate(firstname="UpdatedName", is_active=False)
 
 @pytest.fixture
@@ -218,13 +218,13 @@ def users_json(tmp_path):
 @pytest.fixture
 def user_repository(users_json):
     """Returns a UserRepository instance using the temporary JSON file."""
-    from backend.app.repositories.user_repository import UserRepository
+    from app.repositories.user_repository import UserRepository
     return UserRepository(file_path=users_json)
 
 @pytest.fixture
 def user_service(user_repository):
     """Returns a UserService instance injected with the test repository."""
-    from backend.app.services.user_service import UserService
+    from app.services.user_service import UserService
     service = UserService(user_repository=user_repository)
     return service
 

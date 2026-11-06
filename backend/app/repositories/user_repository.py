@@ -46,7 +46,7 @@ class UserRepository:
         user.update(update_data)
         from datetime import UTC, datetime
 
-        user["last_modified"] = datetime.now(UTC).isoformat()
+        user["last_updated"] = datetime.now(UTC).isoformat()
         self.save_users(users)
         return user
     return None
