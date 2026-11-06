@@ -1,0 +1,127 @@
+name: Set project start date
+
+on:
+  create:
+
+jobs:
+  set-start-date:
+    if: github.event.ref_type == 'branch'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set issue start date
+        uses: actions/github-script@v8
+        env:
+          PROJECT_OWNER: bradyb2005
+          PROJECT_NUMBER: 3
+        with:
+          github-token: PROJECT_TOKEN
+          script: |
+            const branchName = context.payload.ref;
+            const issueMatch = branchName.match(/^(\d+)(?:[-/]|$)/);
+
+            if (!issueMatch) {
+              core.info(`Skipping branch without a leading issue number: ${branchName}`);
+              return;
+            }
+
+            const issueNumber = Number(issueMatch[1]);
+            const projectOwner = process.env.PROJECT_OWNER;
+            const projectNumber = Number(process.env.PROJECT_NUMBER);
+            const startDate = new Date().toISOString().slice(0, 10);
+
+            const projectData = await github.graphql(`
+              query($owner: String!, $number: Int!) {
+                user(login: $owner) {
+                  projectV2(number: $number) {
+                    id
+                    fields(first: 100) {
+                      nodes {
+                        ... on ProjectV2Field {
+                          id
+                          name
+                        }
+                      }
+                    }
+                    items(first: 100) {
+                      nodes {
+                        id
+                        content {
+                          ... on Issue {
+                            number
+                            repository {
+                              nameWithOwner
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            `, {
+              owner: projectOwner,
+              number: projectNumber
+            });
+
+            const project = projectData.user?.projectV2;
+            if (!project) {
+              core.setFailed(
+                `Project ${projectOwner}/${projectNumber} could not be found.`
+              );
+              return;
+            }
+
+            const startDateField = project.fields.nodes.find(
+              field => field.name === "Start date"
+            );
+
+            if (!startDateField) {
+              core.setFailed("The project does not have a 'Start date' field.");
+              return;
+            }
+
+            const repositoryName = `${context.repo.owner}/${context.repo.repo}`;
+            const projectItem = project.items.nodes.find(
+              item =>
+                item.content?.number === issueNumber &&
+                item.content?.repository?.nameWithOwner === repositoryName
+            );
+
+            if (!projectItem) {
+              core.warning(
+                `Issue #${issueNumber} is not currently in the project; no start date was set.`
+              );
+              return;
+            }
+
+            await github.graphql(`
+              mutation(
+                $projectId: ID!,
+                $itemId: ID!,
+                $fieldId: ID!,
+                $date: Date!
+              ) {
+                updateProjectV2ItemFieldValue(
+                  input: {
+                    projectId: $projectId
+                    itemId: $itemId
+                    fieldId: $fieldId
+                    value: { date: $date }
+                  }
+                ) {
+                  projectV2Item {
+                    id
+                  }
+                }
+              }
+            `, {
+              projectId: project.id,
+              itemId: projectItem.id,
+              fieldId: startDateField.id,
+              date: startDate
+            });
+
+            core.info(
+              `Set issue #${issueNumber} start date to ${startDate}.`
+            );

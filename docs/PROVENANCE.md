@@ -13,6 +13,8 @@
 
 ---
 
+## Milestone 0 - Foundation
+
 ### Template: Entry 0
 
 - **Date:** Thursday, September 24
@@ -33,6 +35,26 @@
 - **Influence:** Used Gemini to verify the formatting, semantics, and spelling were correct.
 - **Validation:** Manually previewed rendered Markdown in GitHub to confirm suggestions formatted properly.
 - **PR:** N/A
+
+### Entry: GitHub Actions PR label modification
+- **Date:** Thursday, September 24
+- **Student(s):** @bradyb2005
+- **Artifact:** `.github/workflows/auto-label-pr.yml`
+- **Label:**
+  - [x] AI-GENERATED 🤖
+  - [ ] AI-ASSISTED 🤝
+  - [ ] AI-REVISED ✍️
+  - [ ] NO-AI ❌
+- **AI Tool Used:**
+  - [x] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+  - [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+  - [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+  - [ ] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+  - [ ] Other: ____
+- **Purpose:** I don't know YML so I had Gemini refactor the existing GitHub automation to auto assign a PR's author to assignee and the remaining 3 group members as reviewers.
+- **Influence:** AI fully generated the revised YML code.
+- **Validation:** Unable to validate until PR is merged.
+- **PR:** #28
 
 ---
 
@@ -59,7 +81,7 @@
 - **Validation:** Ran `python -m pytest`, and verified that testing does not create a restaurant.
 - **PR:** #27
 
-### Entry: Pycache .gitignore
+### Entry: Restaurant service validation
 
 - **Date:** Wednesday, September 30th
 - **Student(s):** @bradyb2005
@@ -105,27 +127,29 @@
 - **Validation:** Ran tests in `test_restaurant_service.py` to validate the generated regex's correctness.
 - **PR:** #27
 
-### Entry: GitHub Actions PR label modification
-- **Date:** Thursday, September 24
-- **Student(s):** @bradyb2005
-- **Artifact:** `.github/workflows/auto-label-pr.yml`
+### Entry: Restaurant route testing
+- **Date:** Tuesday, October 6th
+- **Student(s):** @Lxamwastaken
+- **Artifact:** `tests/conftest.py` `tests/services/test_menu_item_service.py`
 - **Label:**
-  - [x] AI-GENERATED 🤖
-  - [ ] AI-ASSISTED 🤝
+  - [ ] AI-GENERATED 🤖
+  - [x] AI-ASSISTED 🤝
   - [ ] AI-REVISED ✍️
   - [ ] NO-AI ❌
 - **AI Tool Used:**
-  - [x] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+  - [ ] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
   - [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
   - [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
-  - [ ] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+  - [x] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
   - [ ] Other: ____
-- **Purpose:** I don't know YML so I had Gemini refactor the existing GitHub automation to auto assign a PR's author to assignee and the remaining 3 group members as reviewers.
-- **Influence:** AI fully generated the revised YML code.
-- **Validation:** Unable to validate until PR is merged.
-- **PR:** #28
-
-
+- **Purpose:**
+  - Assisted with understanding pytest fixtures and creating service-layer tests for the menu item feature.
+  - Helped identify missing test fixture data (`"menu": []`) required by the new menu functionality.
+- **Influence:**
+  - Helped diagnose and resolve test failures caused by missing menu data in test fixtures.
+- **Validation:**
+  - Ran `python -m pytest`, and verified that testing passes 13/13
+- **PR:** #31
 
 ### Entry: Dummy data for menu items
 - **Date:** Saturday, October 10
@@ -147,34 +171,6 @@
 - **Validation:** read the output to see if it checks out
 - **PR:** #25
 
-
-### Entry: Restaurant route testing
-
-- **Date:** Tuesday, October 6th
-- **Student(s):** @Lxamwastaken
-- **Artifact:** `tests/conftest.py` `tests/services/test_menu_item_service.py`
-- **Label:**
-  - [ ] AI-GENERATED 🤖
-  - [x] AI-ASSISTED 🤝
-  - [ ] AI-REVISED ✍️
-  - [ ] NO-AI ❌
-- **AI Tool Used:**
-  - [ ] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
-  - [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
-  - [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
-  - [x] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
-  - [ ] Other: ____
-- **Purpose:** 
-  - Assisted with understanding pytest fixtures and creating service-layer tests for the menu item feature.
-  - Helped identify missing test fixture data (`"menu": []`) required by the new menu functionality.
-- **Influence:**
-  - Helped diagnose and resolve test failures caused by missing menu data in test fixtures.
-- **Validation:** 
-  - Ran `python -m pytest`, and verified that testing passes 13/13
-- **PR:** #31
-
-
-
 ### Entry: GitHub Actions PR label modification
 - **Date:** Saturday, October 10
 - **Student(s):** @mooz-55
@@ -183,8 +179,8 @@
   - [ ] AI-GENERATED 🤖
   - [ ] AI-ASSISTED 🤝
   - [x] AI-REVISED ✍️
-### Entry: Search/Filter tests creation
 
+### Entry: Search/Filter tests creation
 - **Date:** Thursday, Oct 15th
 - **Student(s):** @bradyb2005
 - **Artifact:** `tests/conftest.py`, `tests/services/test_restaurant_service.py`, `tests/api/routes/test_restaurant_routes.py`
@@ -213,7 +209,9 @@
   - Manually approved these tests and ran them using `python -m pytest`.
 - **PR:** #37
 
-**Date:** Tuesday, October 16th
+### Entry: Menu item update bug fix
+
+- **Date:** Tuesday, October 16th
 - **Student(s):** @Lxamwastaken
 - **Artifact:** `services/restaurant_service.py` 
 - **Label:**
@@ -235,7 +233,9 @@
   - Tested updating only item price of restaurant ID 1 and item ID 1 to $150.00
 - **PR:** #36
 
-**Date:** Friday, October 16th
+### Entry: Menu item service tests
+
+- **Date:** Friday, October 16th
 - **Student(s):** @Lxamwastaken
 - **Artifact:** `tests/services/test_menu_item_service.py` 
 - **Label:**
@@ -254,7 +254,6 @@
 - **Influence:**
   - Helped create test case when manually found error arose
 - **PR:** #39
-
 
 ### Entry: Frontend scaffold
 - **Date:** Friday, October 16
@@ -276,7 +275,6 @@
 - **Validation:** ran it against the backend and checked the pages load restaurant and menu data
 - **PR:** #42
 
-
 ### Entry: start.sh setup and launch script
 - **Date:** Friday, October 16
 - **Student(s):** @advvaith~
@@ -296,7 +294,6 @@
 - **Influence:** generated the script and the README changes
 - **Validation:** ran `./start.sh` with a fresh venv, checked the backend, frontend and `/api` proxy returned 200 and that Ctrl+C left no processes running. Windows and Linux steps untested
 - **PR:** #43
-
 
 ### Entry: GitHub Actions CI workflow
 - **Date:** Friday, October 16
@@ -318,7 +315,6 @@
 - **Validation:** copied the repo into a clean directory, installed the dependencies in a fresh venv and ran the same steps. 56 tests passed and the frontend lint and build succeeded. The workflow has not run on GitHub yet
 - **PR:** #44
 
-
 ### Entry: OpenAPI documentation for all endpoints
 - **Date:** Friday, October 16
 - **Student(s):** @advvaith~
@@ -338,7 +334,6 @@
 - **Influence:** generated the summaries, descriptions, response models, error response documentation and the tests that check them. No endpoint behaviour was changed
 - **Validation:** ran the full test suite (61 passed) and sent the same 17 requests to the old and new code on temporary data. Responses were identical except that create and update now also return `rating: 0.0`
 - **PR:** #45
-
 
 ### Entry: README and M1 submission doc update
 - **Date:** Friday, October 16
@@ -360,6 +355,8 @@
 - **Validation:** compared the endpoint table (methods, paths, success and error codes) against the generated OpenAPI schema with a script, all 9 endpoints match. Have not viewed the rendered README on GitHub yet
 - **PR:** #43
 
+## Milestone 2 - Integrated System
+
 ### Entry: M1 bug checks/fixes for M2
 - **Date:** Friday, October 16
 - **Student(s):** @Lxamwastaken
@@ -379,3 +376,23 @@
 - **Influence:** generated a list of potential tests to add to enforce our code's behaviour.
 - **Validation:** Implemented tests and ran them
 - **PR:** #65
+
+### Entry: Add project start date workflow
+- **Date:** Friday, November 6
+- **Student(s):** @bradyb2005
+- **Artifact:** `.github/workflows/set-project-start-date.yml`
+- **Label:**
+  - [x] AI-GENERATED 🤖
+  - [ ] AI-ASSISTED 🤝
+  - [ ] AI-REVISED ✍️
+  - [ ] NO-AI ❌
+- **AI Tool Used:**
+  - [ ] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+  - [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+  - [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+  - [x] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+  - [ ] Other: ____
+- **Purpose:** Automatically set an issue's GitHub Project start date when a branch named with the issue number is created.
+- **Influence:** Generated a GitHub Actions workflow that parses the issue number from the branch name, locates the issue in the project, and updates its `Start date` field through the Projects GraphQL API.
+- **Validation:** Reviewed the workflow configuration and verified the YAML diff formatting. The workflow requires a `PROJECT_TOKEN` secret and a configured project number before live validation.
+- **PR:** #67
