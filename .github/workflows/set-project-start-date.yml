@@ -18,12 +18,12 @@ jobs:
           github-token: ${{ secrets.PROJECT_TOKEN }}
           script: |
             const branchName = context.payload.ref;
-            const issueMatch = branchName.match(/(?:^|[-/])(\d+)$/);
+            const issueMatch = branchName.match(/(\d+)$/);
 
             if (!issueMatch) {
               core.warning(
                 `Skipping branch without a trailing issue number: ${branchName}. ` +
-                "Use a branch name such as 'user-auth-67' to set the issue start date."
+                "Use a branch name ending in the issue number, such as 'user-auth52'."
               );
               return;
             }
