@@ -22,6 +22,7 @@ def client():
     from fastapi.testclient import TestClient
     return TestClient(app)
 
+# region Restaurant Fixtures
 @pytest.fixture
 def valid_restaurant_payload():
     """Returns valid raw restaurant data for testing."""
@@ -47,7 +48,6 @@ def valid_restaurant_create(valid_restaurant_payload):
 def valid_restaurant_filter():
     """Returns a valid RestaurantFilter object for testing."""
     return RestaurantFilter(cuisine="Italian", city="Test City", province="Test Province")
-
 
 @pytest.fixture
 def restaurants_json(tmp_path):
@@ -149,16 +149,27 @@ def valid_menu_item_create(valid_menu_item_payload):
     return ItemCreate(**valid_menu_item_payload)
 
 @pytest.fixture
-def make_update_payload():
-    """Returns a helper function to create RestaurantUpdate instances without importing."""
-    from app.schemas.restaurant import RestaurantUpdate
-    def _make(**kwargs):
-        return RestaurantUpdate(**kwargs)
-    return _make
-
-@pytest.fixture
 def restaurant_filter():
     """Factory fixture to create RestaurantFilter instances with custom parameters."""
     def _create_filter(**kwargs):
         return RestaurantFilter(**kwargs)
     return _create_filter
+# endregion
+
+# region User Fixtures
+@pytest.fixture
+def valid_user_payload():
+    """Returns valid raw user data for testing."""
+    return {
+        "firstname": "Brady",
+        "lastname": "Bracken",
+        "email": "bradyryanbracken@gmail.com",
+        "phone": "2508638425",
+        "address": {
+            "street": "613 Clifton Court",
+            "city": "Kelowna",
+            "province": "BC",
+            "postalcode": "V1V0B7"
+        },
+        "is_active": True
+    }
