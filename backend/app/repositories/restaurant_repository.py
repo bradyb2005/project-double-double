@@ -1,6 +1,7 @@
 import json
 import os
 
+
 class RestaurantRepository:
     def __init__(self, file_path: str = "data/restaurants.json"):
         self.filePath = file_path  
