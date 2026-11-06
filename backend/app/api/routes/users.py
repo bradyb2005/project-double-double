@@ -1,13 +1,17 @@
-from fastapi import APIRouter, HTTPException, Path, status
+from app.schemas.error import ErrorResponse
+from app.schemas.user import User, UserCreate, UserUpdate
+from fastapi import APIRouter, Depends, HTTPException, Path, status
 
 from backend.app.repositories.user_repository import UserRepository
-from backend.app.schemas.error import ErrorResponse
-from backend.app.schemas.user import User, UserCreate, UserUpdate
 from backend.app.services.user_service import UserService
 
 router = APIRouter()
-service = UserService(UserRepository())
 UserId = Path(description="ID of the user")
+
+def get_user_service() -> UserService:
+    return UserService(UserRepository())
+
+user_service_dependency = Depends(get_user_service)
 
 @router.get(
     "/users",
@@ -17,8 +21,8 @@ UserId = Path(description="ID of the user")
     response_model=list[dict],
     responses={400: {"model": ErrorResponse, "description": "User data could not be read"}},
 )
-def get_users():
-    return service.get_all_users()
+def get_users(user_service: UserService = user_service_dependency):
+    return user_service.get_all_users()
 
 @router.post(
     "/users",
@@ -29,9 +33,9 @@ def get_users():
     response_model=dict,
     responses={400: {"model": ErrorResponse, "description": "Invalid user details"}},
 )
-def create_user(user: UserCreate):
+def create_user(user: UserCreate, user_service: UserService = user_service_dependency):
     try:
-        return service.create_user(user)
+        return user_service.create_user(user)
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
@@ -43,9 +47,13 @@ def create_user(user: UserCreate):
     response_model=dict,
     responses={404: {"model": ErrorResponse, "description": "User not found"}},
 )
-def update_user(update_data: UserUpdate, user_id: int = UserId):
+def update_user(
+    update_data: UserUpdate,
+    user_id: int = UserId,
+    user_service: UserService = user_service_dependency,
+):
     try:
-        return service.update_user(user_id, update_data)
+        return user_service.update_user(user_id, update_data)
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
 
@@ -57,9 +65,12 @@ def update_user(update_data: UserUpdate, user_id: int = UserId):
     response_model=dict,
     responses={404: {"model": ErrorResponse, "description": "User not found"}},
 )
-def deactivate_user(user_id: int = UserId):
+def deactivate_user(
+    user_id: int = UserId,
+    user_service: UserService = user_service_dependency,
+):
     try:
-        return service.deactivate_user(user_id)
+        return user_service.deactivate_user(user_id)
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
 
@@ -71,8 +82,11 @@ def deactivate_user(user_id: int = UserId):
     response_model=User,
     responses={404: {"model": ErrorResponse, "description": "User not found"}},
 )
-def view_user(user_id: int = UserId):
+def view_user(
+    user_id: int = UserId,
+    user_service: UserService = user_service_dependency,
+):
     try:
-        return service.view_user(user_id)
+        return user_service.view_user(user_id)
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
