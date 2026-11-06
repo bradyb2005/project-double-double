@@ -51,6 +51,4 @@ class UserService:
         user = self.user_repository.get_user_by_id(user_id)
         if user is None:
             raise ValueError("User not found")
-        if user.get("is_active", False) is False:
-            raise ValueError("User is deactivated")
         return user
