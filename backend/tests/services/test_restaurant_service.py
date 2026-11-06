@@ -110,7 +110,7 @@ def test_update_restaurant_invalid_postalcode(restaurant_service): #test updatin
     assert "Invalid postal code format. Must alternate letter and number" in str(excinfo.value)
 
 def test_update_restaurant_missing_id(restaurant_service): #searching for a restaurant that does not exist.
-    updated_restaurant = RestaurantUpdate(name="MissingRestaurant")  #
+    updated_restaurant = RestaurantUpdate(name="MissingRestaurant")
     
     with pytest.raises(ValueError) as excinfo:
         restaurant_service.update_restaurant(65769, updated_restaurant)
