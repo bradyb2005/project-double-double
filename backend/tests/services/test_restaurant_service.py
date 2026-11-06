@@ -1,5 +1,6 @@
 import pytest
-from app.schemas.restaurant import RestaurantUpdate
+from app.schemas.restaurant import Location, RestaurantUpdate
+
 
 def test_create_restaurant_success(restaurant_service, valid_restaurant_create):
     result = restaurant_service.create_restaurant(valid_restaurant_create)
@@ -9,6 +10,7 @@ def test_create_restaurant_success(restaurant_service, valid_restaurant_create):
     assert result["phone"] == valid_restaurant_create.phone
     assert result["location"]["city"] == valid_restaurant_create.location.city
     assert result["location"]["province"] == valid_restaurant_create.location.province
+    assert result["menu"] == []
 
 def test_create_restaurant_missing_required_field(restaurant_service, valid_restaurant_create):
     valid_restaurant_create.name = ""
@@ -53,7 +55,12 @@ def test_fetch_all_restaurant_names(restaurant_service):
     assert names == ["Test Restaurant 1", "Test Restaurant 2", "Test Restaurant 3"]
 
 def test_update_restaurant_correct(restaurant_service): #test updating a restaurant with valid data.
-    updated_restaurant = RestaurantUpdate(name="NewRestaurantName", address="123 st", postalcode="V1V1V1", phone="123-456-7890", location={"city": "NewCity", "province": "NewProvince"})
+    updated_restaurant = RestaurantUpdate(
+        name="NewRestaurantName", 
+        address="123 st", 
+        postalcode="V1V1V1", 
+        phone="123-456-7890", 
+        location=Location(city="NewCity", province="NewProvince"))
     
     result = restaurant_service.update_restaurant(1, updated_restaurant)
     
@@ -63,6 +70,20 @@ def test_update_restaurant_correct(restaurant_service): #test updating a restaur
     assert result["phone"] == "123-456-7890"
     assert result["location"]["city"] == "NewCity"
     assert result["location"]["province"] == "NewProvince"
+
+def test_update_restaurant_id_2(restaurant_service):
+    updated_restaurant = RestaurantUpdate(
+        name="Updated Mexican Spot",
+        address="999 New St"
+    )
+    
+    result = restaurant_service.update_restaurant(2, updated_restaurant)
+    
+    assert result["name"] == "Updated Mexican Spot"
+    assert result["address"] == "999 New St"
+    
+    rest_1 = restaurant_service.fetch_restaurant_details(1)
+    assert rest_1["name"] == "Test Restaurant 1"
 
 def test_update_restaurant_missing(restaurant_service): #test updating a restaurant with missing data.
     updated_restaurant = RestaurantUpdate(name="", address="   ") #spaces and empty
@@ -87,9 +108,7 @@ def test_update_restaurant_invalid_postalcode(restaurant_service): #test updatin
     assert "Invalid postal code format. Must alternate letter and number" in str(excinfo.value)
 
 def test_update_restaurant_missing_id(restaurant_service): #searching for a restaurant that does not exist.
-    updated_restaurant = RestaurantUpdate(name="MissingRestaurant")  #
-    
-    result = restaurant_service.update_restaurant(1, updated_restaurant)
+    updated_restaurant = RestaurantUpdate(name="MissingRestaurant")
     
     with pytest.raises(ValueError) as excinfo:
         restaurant_service.update_restaurant(65769, updated_restaurant)
