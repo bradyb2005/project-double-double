@@ -191,6 +191,9 @@ def valid_user_update():
 def users_json(tmp_path):
     """Creates a temporary JSON file with sample user data for isolated testing."""
     import json
+
+    from app.core.security import get_password_hash
+
     data = [
         {
             "id": 1,
@@ -198,6 +201,7 @@ def users_json(tmp_path):
             "firstname": "John",
             "lastname": "Doe",
             "email": "john.doe@example.com",
+            "password_hash": get_password_hash("SecurePassword123!"),
             "role": "customer",
             "phone": "2505550100",
             "address": {
