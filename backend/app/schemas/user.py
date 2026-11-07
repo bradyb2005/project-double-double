@@ -73,6 +73,14 @@ class User(UserBase):
     id: int
     created_at: datetime
     last_updated: datetime
+    password_hash: str
+
+class UserResponse(UserBase):
+    """Schema for returning user information in API responses.
+    Excludes the `password_hash` field for security reasons."""
+    id: int
+    created_at: datetime
+    last_updated: datetime
 
 class LoginRequest(BaseModel):
     """Schema for login requests."""
