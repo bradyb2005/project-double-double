@@ -2,6 +2,7 @@ from app.schemas.error import ErrorResponse
 from app.schemas.user import User, UserCreate, UserUpdate
 from fastapi import APIRouter, Depends, HTTPException, Path, status
 
+from backend.app.core.dependencies import require_role, require_same_user
 from backend.app.repositories.user_repository import UserRepository
 from backend.app.services.user_service import UserService
 
@@ -24,10 +25,15 @@ user_service_dependency = Depends(get_user_service)
         status.HTTP_400_BAD_REQUEST: {
             "model": ErrorResponse,
             "description": "User data could not be read",
-        }
+        },
+        status.HTTP_401_UNAUTHORIZED: {"description": "Authentication required"},
+        status.HTTP_403_FORBIDDEN: {"description": "Admin role required"},
     },
 )
-def get_users(user_service: UserService = user_service_dependency):
+def get_users(
+    current_user=Depends(require_role("admin")),
+    user_service: UserService = user_service_dependency,
+):
     return user_service.get_all_users()
 
 @router.post(
@@ -56,12 +62,15 @@ def create_user(user: UserCreate, user_service: UserService = user_service_depen
         status.HTTP_404_NOT_FOUND: {
             "model": ErrorResponse,
             "description": "User not found",
-        }
+        },
+        status.HTTP_401_UNAUTHORIZED: {"description": "Authentication required"},
+        status.HTTP_403_FORBIDDEN: {"description": "Own profile access required"},
     },
 )
 def update_user(
     update_data: UserUpdate,
     user_id: int = UserId,
+    current_user=Depends(require_same_user),
     user_service: UserService = user_service_dependency,
 ):
     try:
@@ -80,11 +89,14 @@ def update_user(
         status.HTTP_404_NOT_FOUND: {
             "model": ErrorResponse,
             "description": "User not found",
-        }
+        },
+        status.HTTP_401_UNAUTHORIZED: {"description": "Authentication required"},
+        status.HTTP_403_FORBIDDEN: {"description": "Own profile access required"},
     },
 )
 def deactivate_user(
     user_id: int = UserId,
+    current_user=Depends(require_same_user),
     user_service: UserService = user_service_dependency,
 ):
     try:
@@ -103,11 +115,14 @@ def deactivate_user(
         status.HTTP_404_NOT_FOUND: {
             "model": ErrorResponse,
             "description": "User not found",
-        }
+        },
+        status.HTTP_401_UNAUTHORIZED: {"description": "Authentication required"},
+        status.HTTP_403_FORBIDDEN: {"description": "Own profile access required"},
     },
 )
 def view_user(
     user_id: int = UserId,
+    current_user=Depends(require_same_user),
     user_service: UserService = user_service_dependency,
 ):
     try:
