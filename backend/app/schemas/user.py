@@ -32,6 +32,7 @@ class UserRole(str, Enum):
     """Enumeration of user roles."""
     CUSTOMER = "customer"
     RESTAURANT = "restaurant"
+    ADMIN = "admin"
 
 class UserBase(BaseModel):
     """Shared fields across all User schemas.
