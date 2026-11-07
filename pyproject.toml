@@ -6,6 +6,7 @@ dependencies = [
     "fastapi[standard]>=0.141.1",
     "passlib[bcrypt]>=1.7.4,<2",
     "bcrypt<5",
+    "PyJWT>=2.10,<3",
     "pydantic>=2.13.5",
     "pytest>=9.1.1",
 ]

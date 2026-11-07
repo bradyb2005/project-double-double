@@ -48,3 +48,4 @@ watchfiles==1.2.0
 websockets==17.1
 passlib[bcrypt]
 bcrypt<5
+PyJWT>=2.10,<3

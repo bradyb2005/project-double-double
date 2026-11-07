@@ -103,7 +103,6 @@ class RestaurantService:
 
         return self.repository.add_menu_item(restaurant_id, item_dict)
 
-
     def validate_menu_item_data(self, item):
        allowed_categories = [
            "Starters",

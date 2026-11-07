@@ -191,6 +191,9 @@ def valid_user_update():
 def users_json(tmp_path):
     """Creates a temporary JSON file with sample user data for isolated testing."""
     import json
+
+    from app.core.security import get_password_hash
+
     data = [
         {
             "id": 1,
@@ -198,6 +201,8 @@ def users_json(tmp_path):
             "firstname": "John",
             "lastname": "Doe",
             "email": "john.doe@example.com",
+            "password_hash": get_password_hash("SecurePassword123!"),
+            "role": "customer",
             "phone": "2505550100",
             "address": {
                 "street": "100 Main St",
@@ -228,6 +233,40 @@ def user_service(user_repository):
     service = UserService(user_repository=user_repository)
     return service
 
+@pytest.fixture
+def login_user():
+    """Returns a user with a valid password for login tests."""
+    from app.core.security import get_password_hash
+
+    return {
+        "id": 1,
+        "email": "john.doe@example.com",
+        "password_hash": get_password_hash("SecurePassword123!"),
+        "is_active": True,
+    }
+
+@pytest.fixture
+def login_repository(login_user):
+    """Returns a repository that looks up the login test user by email."""
+    class LoginRepository:
+        def get_user_by_email(self, email):
+            return login_user if email == login_user["email"] else None
+
+    return LoginRepository()
+
+@pytest.fixture
+def login_service(login_repository):
+    """Returns a LoginService using the login test repository."""
+    from app.services.login_service import LoginService
+    return LoginService(login_repository)
+
+@pytest.fixture
+def auth_headers():
+    """Returns bearer headers for the first test user."""
+    from app.core.security import create_access_token
+
+    return {"Authorization": f"Bearer {create_access_token(1)}"}
+
 @pytest.fixture(autouse=True)
 def override_user_dependency(user_service):
     """Overrides the FastAPI user service dependency for route tests."""
@@ -235,9 +274,11 @@ def override_user_dependency(user_service):
     from app.services.user_service import UserService
 
     from app.api.routes import users
+    from backend.app.core.dependencies import get_user_repository
 
     user_dependency = getattr(users, "get_user_service", UserService)
     app.dependency_overrides[user_dependency] = lambda: user_service
+    app.dependency_overrides[get_user_repository] = lambda: user_service.user_repository
     yield
     app.dependency_overrides.clear()
     
