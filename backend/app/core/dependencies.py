@@ -7,13 +7,10 @@ from backend.app.repositories.user_repository import UserRepository
 bearer_scheme = HTTPBearer(auto_error=False)
 bearer_credentials_dependency = Depends(bearer_scheme)
 
-
 def get_user_repository() -> UserRepository:
     return UserRepository()
 
-
 user_repository_dependency = Depends(get_user_repository)
-
 
 def get_current_user(
     credentials: HTTPAuthorizationCredentials | None = bearer_credentials_dependency,
@@ -45,9 +42,7 @@ def get_current_user(
 
     return user
 
-
 current_user_dependency = Depends(get_current_user)
-
 
 def require_role(required_role: str):
     def role_dependency(current_user=current_user_dependency):
@@ -59,7 +54,6 @@ def require_role(required_role: str):
         return current_user
 
     return role_dependency
-
 
 def require_same_user(user_id: int, current_user=current_user_dependency):
     if current_user.get("id") != user_id:
