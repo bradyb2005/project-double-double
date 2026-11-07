@@ -34,7 +34,7 @@
 - **Purpose:** Verify the template for future Provenance entries.
 - **Influence:** Used Gemini to verify the formatting, semantics, and spelling were correct.
 - **Validation:** Manually previewed rendered Markdown in GitHub to confirm suggestions formatted properly.
-- **PR:** N/A
+- **PR:** 71
 
 ### Entry: GitHub Actions PR label modification
 - **Date:** Thursday, September 24
@@ -615,7 +615,7 @@
 - **Purpose:** Add JWT-based access-token security for M2 login and make the project downloadable and runnable without committing a secret key.
 - **Influence:** Added token creation and validation to `security.py`, added the `PyJWT` dependency, generated a local `.env` secret from `start.sh`, loaded the secret at runtime, ignored `.env`, and documented the setup behavior.
 - **Validation:** Ran the full test suite with 102 tests passing, verified JWT creation and tamper rejection, checked `start.sh` syntax, and ran `./start.sh --setup-only` to confirm local secret generation.
-- **PR:** N/A
+- **PR:** 71
 
 ### Entry: Add login service tests
 - **Date:** Friday, November 6
@@ -635,7 +635,7 @@
 - **Purpose:** Add service-level coverage for successful login, missing accounts, incorrect passwords, and inactive accounts.
 - **Influence:** Assisted with organizing shared login fixtures and identifying the service behaviors that require tests.
 - **Validation:** Ran the focused login tests and the full test suite; all 110 tests passed.
-- **PR:** N/A
+- **PR:** 71
 
 ### Entry: Add login route tests
 - **Date:** Friday, November 6
@@ -655,7 +655,7 @@
 - **Purpose:** Add route-level coverage for successful login, invalid credentials, authentication headers, and request validation.
 - **Influence:** Assisted with configuring the FastAPI dependency override and checking the expected HTTP status codes.
 - **Validation:** Ran the focused login and user route tests; all 14 tests passed.
-- **PR:** N/A
+- **PR:** 71
 
 ### Entry: Configure CI test secret
 - **Date:** Saturday, November 7
@@ -675,4 +675,4 @@
 - **Purpose:** Fix CI authentication test failures caused by the missing `SECRET_KEY` environment variable.
 - **Influence:** Revised the backend test job to provide a non-production secret key during GitHub Actions runs.
 - **Validation:** Ran the backend test suite with the CI secret; all 117 tests passed with no warnings. Also verified the Git diff formatting.
-- **PR:** N/A
+- **PR:** 71
