@@ -1,5 +1,5 @@
 from app.schemas.error import ErrorResponse
-from app.schemas.user import User, UserCreate, UserUpdate
+from app.schemas.user import UserCreate, UserResponse, UserUpdate
 from fastapi import APIRouter, Depends, HTTPException, Path, status
 
 from backend.app.core.dependencies import require_role, require_same_user
@@ -13,6 +13,8 @@ def get_user_service() -> UserService:
     return UserService(UserRepository())
 
 user_service_dependency = Depends(get_user_service)
+admin_role_dependency = Depends(require_role("admin"))
+same_user_dependency = Depends(require_same_user)
 
 @router.get(
     "/users",
@@ -20,7 +22,7 @@ user_service_dependency = Depends(get_user_service)
     summary="List all users",
     description="Returns a list of all users.",
     status_code=status.HTTP_200_OK,
-    response_model=list[dict],
+    response_model=list[UserResponse],
     responses={
         status.HTTP_400_BAD_REQUEST: {
             "model": ErrorResponse,
@@ -31,7 +33,7 @@ user_service_dependency = Depends(get_user_service)
     },
 )
 def get_users(
-    current_user=Depends(require_role("admin")),
+    current_user=admin_role_dependency,
     user_service: UserService = user_service_dependency,
 ):
     return user_service.get_all_users()
@@ -42,7 +44,7 @@ def get_users(
     summary="Create a user",
     description="Creates a user with the provided details and returns it with its new ID.",
     status_code=status.HTTP_201_CREATED,
-    response_model=dict,
+    response_model=UserResponse,
     responses={400: {"model": ErrorResponse, "description": "Invalid user details"}},
 )
 def create_user(user: UserCreate, user_service: UserService = user_service_dependency):
@@ -57,7 +59,7 @@ def create_user(user: UserCreate, user_service: UserService = user_service_depen
     summary="Update a user",
     description="Partially updates a user: only the fields sent are changed.",
     status_code=status.HTTP_200_OK,
-    response_model=dict,
+    response_model=UserResponse,
     responses={
         status.HTTP_404_NOT_FOUND: {
             "model": ErrorResponse,
@@ -70,7 +72,7 @@ def create_user(user: UserCreate, user_service: UserService = user_service_depen
 def update_user(
     update_data: UserUpdate,
     user_id: int = UserId,
-    current_user=Depends(require_same_user),
+    current_user=same_user_dependency,
     user_service: UserService = user_service_dependency,
 ):
     try:
@@ -84,7 +86,7 @@ def update_user(
     summary="Deactivate a user",
     description="Deactivates a user. Deactivated users cannot log in.",
     status_code=status.HTTP_200_OK,
-    response_model=dict,
+    response_model=UserResponse,
     responses={
         status.HTTP_404_NOT_FOUND: {
             "model": ErrorResponse,
@@ -96,7 +98,7 @@ def update_user(
 )
 def deactivate_user(
     user_id: int = UserId,
-    current_user=Depends(require_same_user),
+    current_user=same_user_dependency,
     user_service: UserService = user_service_dependency,
 ):
     try:
@@ -110,7 +112,7 @@ def deactivate_user(
     summary="Get user details",
     description="Returns one user's details.",
     status_code=status.HTTP_200_OK,
-    response_model=User,
+    response_model=UserResponse,
     responses={
         status.HTTP_404_NOT_FOUND: {
             "model": ErrorResponse,
@@ -122,7 +124,7 @@ def deactivate_user(
 )
 def view_user(
     user_id: int = UserId,
-    current_user=Depends(require_same_user),
+    current_user=same_user_dependency,
     user_service: UserService = user_service_dependency,
 ):
     try:
