@@ -198,6 +198,7 @@ def users_json(tmp_path):
             "firstname": "John",
             "lastname": "Doe",
             "email": "john.doe@example.com",
+            "role": "customer",
             "phone": "2505550100",
             "address": {
                 "street": "100 Main St",
@@ -255,6 +256,13 @@ def login_service(login_repository):
     from app.services.login_service import LoginService
     return LoginService(login_repository)
 
+@pytest.fixture
+def auth_headers():
+    """Returns bearer headers for the first test user."""
+    from app.core.security import create_access_token
+
+    return {"Authorization": f"Bearer {create_access_token(1)}"}
+
 @pytest.fixture(autouse=True)
 def override_user_dependency(user_service):
     """Overrides the FastAPI user service dependency for route tests."""
@@ -262,9 +270,11 @@ def override_user_dependency(user_service):
     from app.services.user_service import UserService
 
     from app.api.routes import users
+    from backend.app.core.dependencies import get_user_repository
 
     user_dependency = getattr(users, "get_user_service", UserService)
     app.dependency_overrides[user_dependency] = lambda: user_service
+    app.dependency_overrides[get_user_repository] = lambda: user_service.user_repository
     yield
     app.dependency_overrides.clear()
     
