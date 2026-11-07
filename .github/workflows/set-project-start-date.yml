@@ -44,6 +44,14 @@ jobs:
                           id
                           name
                         }
+                        ... on ProjectV2SingleSelectField {
+                          id
+                          name
+                          options {
+                            id
+                            name
+                          }
+                        }
                       }
                     }
                     items(first: 100) {
@@ -84,6 +92,20 @@ jobs:
               return;
             }
 
+            const statusField = project.fields.nodes.find(
+              field => field.name === "Status"
+            );
+            const inProgressOption = statusField?.options?.find(
+              option => option.name === "In Progress"
+            );
+
+            if (!statusField || !inProgressOption) {
+              core.setFailed(
+                "The project does not have a Status field with an 'In Progress' option."
+              );
+              return;
+            }
+
             const repositoryName = `${context.repo.owner}/${context.repo.repo}`;
             const projectItem = project.items.nodes.find(
               item =>
@@ -103,7 +125,9 @@ jobs:
                 $projectId: ID!,
                 $itemId: ID!,
                 $fieldId: ID!,
-                $date: Date!
+                $date: Date!,
+                $statusFieldId: ID!,
+                $statusOptionId: String!
               ) {
                 updateProjectV2ItemFieldValue(
                   input: {
@@ -117,14 +141,28 @@ jobs:
                     id
                   }
                 }
+                updateStatus: updateProjectV2ItemFieldValue(
+                  input: {
+                    projectId: $projectId
+                    itemId: $itemId
+                    fieldId: $statusFieldId
+                    value: { singleSelectOptionId: $statusOptionId }
+                  }
+                ) {
+                  projectV2Item {
+                    id
+                  }
+                }
               }
             `, {
               projectId: project.id,
               itemId: projectItem.id,
               fieldId: startDateField.id,
-              date: startDate
+              date: startDate,
+              statusFieldId: statusField.id,
+              statusOptionId: inProgressOption.id
             });
 
             core.info(
-              `Set issue #${issueNumber} start date to ${startDate}.`
+              `Set issue #${issueNumber} start date to ${startDate} and status to In Progress.`
             );
