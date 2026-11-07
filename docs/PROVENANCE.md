@@ -656,3 +656,23 @@
 - **Influence:** Assisted with configuring the FastAPI dependency override and checking the expected HTTP status codes.
 - **Validation:** Ran the focused login and user route tests; all 14 tests passed.
 - **PR:** N/A
+
+### Entry: Configure CI test secret
+- **Date:** Saturday, November 7
+- **Student(s):** @bradyb2005
+- **Artifact:** `.github/workflows/ci.yml`
+- **Label:**
+  - [ ] AI-GENERATED 🤖
+  - [ ] AI-ASSISTED 🤝
+  - [x] AI-REVISED ✍️
+  - [ ] NO-AI ❌
+- **AI Tool Used:**
+  - [ ] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+  - [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+  - [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+  - [x] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+  - [ ] Other: ____
+- **Purpose:** Fix CI authentication test failures caused by the missing `SECRET_KEY` environment variable.
+- **Influence:** Revised the backend test job to provide a non-production secret key during GitHub Actions runs.
+- **Validation:** Ran the backend test suite with the CI secret; all 117 tests passed with no warnings. Also verified the Git diff formatting.
+- **PR:** N/A
