@@ -32,6 +32,7 @@ class UserRole(str, Enum):
     """Enumeration of user roles."""
     CUSTOMER = "customer"
     RESTAURANT = "restaurant"
+    ADMIN = "admin"
 
 class UserBase(BaseModel):
     """Shared fields across all User schemas.
@@ -72,3 +73,21 @@ class User(UserBase):
     id: int
     created_at: datetime
     last_updated: datetime
+    password_hash: str
+
+class UserResponse(UserBase):
+    """Schema for returning user information in API responses.
+    Excludes the `password_hash` field for security reasons."""
+    id: int
+    created_at: datetime
+    last_updated: datetime
+
+class LoginRequest(BaseModel):
+    """Schema for login requests."""
+    email: EmailStr
+    password: str = Field(..., min_length=8)
+
+class LoginResponse(BaseModel):
+    """Schema for login responses."""
+    access_token: str
+    token_type: str = "bearer"

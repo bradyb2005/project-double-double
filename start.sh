@@ -129,6 +129,15 @@ if   [ -x "$VENV/bin/python" ];         then VPY="$VENV/bin/python"
 else                                         VPY="$VENV/Scripts/python.exe"
 fi
 
+# ---------- Local application secret ----------
+ENV_FILE="$ROOT/.env"
+if [ ! -f "$ENV_FILE" ]; then
+  log "Generating local application secret"
+  SECRET_KEY="$("$VPY" -c 'import secrets; print(secrets.token_urlsafe(48))')"
+  printf 'SECRET_KEY=%s\n' "$SECRET_KEY" >"$ENV_FILE"
+  chmod 600 "$ENV_FILE" 2>/dev/null || true
+fi
+
 # Reinstall only when requirements.txt changed.
 STAMP="$VENV/.requirements.sum"
 SUM="$(cksum <"$REQS" | cut -d' ' -f1,2)"

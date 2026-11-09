@@ -18,7 +18,7 @@ cd project-double-double
 ./start.sh
 ```
 
-`start.sh` installs anything missing (Python 3.12+, Node 20.19+, a `.venv`, the backend and frontend dependencies), then starts both servers:
+`start.sh` installs anything missing (Python 3.12+, Node 20.19+, a `.venv`, the backend and frontend dependencies), generates a private local `.env` secret if needed, then starts both servers:
 
  - Backend at http://127.0.0.1:8000 (API docs at `/docs`)
  - Frontend at http://localhost:5173

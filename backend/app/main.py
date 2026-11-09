@@ -1,3 +1,4 @@
+from app.api.routes.login import router as login_router
 from app.api.routes.restaurants import router as restaurant_router
 from app.api.routes.users import router as user_router
 from fastapi import FastAPI
@@ -14,3 +15,4 @@ def read_root():
 
 app.include_router(restaurant_router)
 app.include_router(user_router)
+app.include_router(login_router)

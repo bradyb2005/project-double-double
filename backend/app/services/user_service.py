@@ -2,7 +2,7 @@
 from datetime import UTC, datetime
 
 from app.core.security import get_password_hash
-from app.schemas.user import UserCreate, UserUpdate
+from app.schemas.user import User, UserCreate, UserUpdate
 
 
 class UserService:
@@ -10,7 +10,10 @@ class UserService:
         self.user_repository = user_repository
 
     def get_all_users(self):
-        return self.user_repository.get_all_users()
+        return [
+            User.model_validate(user).model_dump(mode="json")
+            for user in self.user_repository.get_all_users()
+        ]
 
     def create_user(self, user: UserCreate):
         users = self.user_repository.get_all_users()
@@ -24,6 +27,7 @@ class UserService:
         user_dict["id"] = new_id
         user_dict["created_at"] = datetime.now(UTC).isoformat()
         user_dict["last_updated"] = datetime.now(UTC).isoformat()
+        user_dict = User.model_validate(user_dict).model_dump(mode="json")
         
         users.append(user_dict)
         self.user_repository.save_users(users)
@@ -35,7 +39,7 @@ class UserService:
         updated_user = self.user_repository.update_user(user_id, update_dict)
         if updated_user is None:
             raise ValueError("User not found")
-        return updated_user
+        return User.model_validate(updated_user).model_dump(mode="json")
 
     def deactivate_user(self, user_id: int) -> dict:
         user = self.user_repository.get_user_by_id(user_id)
@@ -45,10 +49,14 @@ class UserService:
         if user.get("is_active") is False:
             raise ValueError("User is already deactivated")
         
-        return self.user_repository.update_user(user_id, {"is_active": False})
+        updated_user = self.user_repository.update_user(
+            user_id,
+            {"is_active": False},
+        )
+        return User.model_validate(updated_user).model_dump(mode="json")
 
     def view_user(self, user_id: int):
         user = self.user_repository.get_user_by_id(user_id)
         if not user:
             raise ValueError("User not found")
-        return user
+        return User.model_validate(user).model_dump(mode="json")

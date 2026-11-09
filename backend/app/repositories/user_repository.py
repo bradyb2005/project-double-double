@@ -38,6 +38,13 @@ class UserRepository:
             return user
     return None
 
+  def get_user_by_email(self, email: str):
+    users = self.get_all_users()
+    for user in users:
+        if isinstance(user, dict) and user.get("email") == email:
+            return user
+    return None
+
   def update_user(self, user_id: int, update_data: dict):
     users = self.get_all_users()
 
