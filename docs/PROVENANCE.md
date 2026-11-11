@@ -812,6 +812,25 @@
 - **Influence:** Loaded the signed-in user profile and used its name, phone, and street address as initial checkout values while preserving manually entered values.
 - **Validation:** Ran the frontend lint and production build successfully.
 
+### Entry: Align backend test dependency override
+- **Date:** Wednesday, November 11
+- **Student(s):** @bradyb2005
+- **Artifact:** `backend/tests/conftest.py`
+- **Label:**
+  - [x] AI-GENERATED 🤖
+  - [ ] AI-ASSISTED 🤝
+  - [ ] AI-REVISED ✍️
+  - [ ] NO-AI ❌
+- **AI Tool Used:**
+  - [ ] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+  - [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+  - [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+  - [x] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+  - [ ] Other: ____
+- **Purpose:** Restore route-test dependency overrides after normalizing backend imports.
+- **Influence:** Updated the fixture to override the same `app.core.dependencies` object used by the running application.
+- **Validation:** Ran the full backend suite; all 117 tests passed.
+
 ### Entry: Replace switch-role navigation with sign-out
 - **Date:** Wednesday, November 11
 - **Student(s):** @bradyb2005
