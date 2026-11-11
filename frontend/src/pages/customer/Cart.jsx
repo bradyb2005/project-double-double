@@ -1,15 +1,29 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { cartTotal, clearCart, formatCents, placeOrder, setQty, useDemo } from '../../demoStore'
 import DemoNote from '../../components/DemoNote'
 import Field from '../../components/Field'
-import { Empty } from '../../components/States'
+import { Empty, ErrorState } from '../../components/States'
+import { getAuthenticatedUserId, getUser } from '../../api'
 
 export default function Cart() {
   const { cart } = useDemo()
   const navigate = useNavigate()
   const [values, setValues] = useState({ name: '', phone: '', address: '' })
   const [errors, setErrors] = useState({})
+  const [accountError, setAccountError] = useState('')
+
+  useEffect(() => {
+    const userId = getAuthenticatedUserId()
+    if (!userId) return
+    getUser(userId).then((user) => {
+      setValues((current) => ({
+        name: current.name || `${user.firstname} ${user.lastname}`.trim(),
+        phone: current.phone || user.phone || '',
+        address: current.address || user.address?.street || '',
+      }))
+    }).catch((error) => setAccountError(error.message))
+  }, [])
 
   const bind = (key, label) => ({
     label, value: values[key], error: errors[key],
@@ -74,6 +88,7 @@ export default function Cart() {
 
             <form className="stack form-narrow" style={{ '--stack': 'var(--s-5)' }} onSubmit={submit} noValidate>
               <span className="eyebrow">Delivery</span>
+              {accountError && <ErrorState error={{ message: accountError }} />}
               <Field autoComplete="name" required {...bind('name', 'Name')} />
               <Field type="tel" autoComplete="tel" placeholder="250-555-0100" {...bind('phone', 'Phone (optional)')} />
               <Field autoComplete="street-address" required {...bind('address', 'Delivery address')} />

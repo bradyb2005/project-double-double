@@ -1,14 +1,17 @@
 import { useEffect, useState } from 'react'
-import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
+import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { ROLES, roleOf } from '../roles'
+import { clearAccessToken, getAccessToken } from '../api'
 import { cartCount, useDemo } from '../demoStore'
 
 export default function Layout() {
   const [open, setOpen] = useState(false)
   const { pathname } = useLocation()
+  const navigate = useNavigate()
   const role = roleOf(pathname)
   const { cart } = useDemo()
   const count = cartCount(cart)
+  const signedIn = Boolean(getAccessToken())
   const links = (role ? ROLES[role].nav : []).map((l) => ({
     ...l, label: l.to === '/customer/cart' && count ? `Cart (${count})` : l.label,
   }))
@@ -32,8 +35,14 @@ export default function Layout() {
   // New route starts at the top.
   useEffect(() => { if (!window.location.hash) window.scrollTo(0, 0) }, [pathname])
 
-  // Every role can always get back to the role chooser.
-  const switchLabel = role ? 'Switch role' : 'Choose a role'
+  const accountLink = signedIn ? { to: '/customer/account', label: 'My account' } : { to: '/login', label: 'Sign in' }
+
+  function signOut() {
+    if (!window.confirm('Are you sure you want to sign out?')) return
+    clearAccessToken()
+    setOpen(false)
+    navigate('/login')
+  }
 
   return (
     <>
@@ -50,13 +59,13 @@ export default function Layout() {
               {links.map((l) => (
                 <NavLink key={l.to} to={l.to} end={l.end}>{l.label}</NavLink>
               ))}
-              {role && <Link to="/">{switchLabel}</Link>}
+              <NavLink to={accountLink.to}>{accountLink.label}</NavLink>
             </div>
           </nav>
-          {role ? (
-            <Link className="btn btn--sm nav-links" to="/">{switchLabel}</Link>
+          {signedIn ? (
+            <button className="btn btn--sm nav-links" type="button" onClick={signOut}>Sign out</button>
           ) : (
-            <span className="nav-links" />
+            <Link className="btn btn--sm nav-links" to={accountLink.to}>{accountLink.label}</Link>
           )}
           <button
             className="btn btn--ghost menu-toggle" type="button"
@@ -70,7 +79,8 @@ export default function Layout() {
           {links.map((l, i) => (
             <Link key={l.to} className="menu-link" to={l.to} onClick={() => setOpen(false)}>{l.label} <span>0{i + 1}</span></Link>
           ))}
-          <Link className="menu-link" to="/" onClick={() => setOpen(false)}>{switchLabel} <span>0{links.length + 1}</span></Link>
+          <Link className="menu-link" to={accountLink.to} onClick={() => setOpen(false)}>{accountLink.label} <span>0{links.length + 1}</span></Link>
+          {signedIn && <button className="menu-link" type="button" onClick={signOut}>Sign out <span>0{links.length + 2}</span></button>}
         </div>
       </header>
 
@@ -87,7 +97,6 @@ export default function Layout() {
                 {links.map((l) => (
                   <Link key={l.to} className="eyebrow" to={l.to}>{l.label}</Link>
                 ))}
-                <Link className="eyebrow" to="/">{switchLabel}</Link>
                 <Link className="eyebrow" to="/credits">Photo credits</Link>
               </nav>
             </div>

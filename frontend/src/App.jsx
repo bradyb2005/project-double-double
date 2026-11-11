@@ -1,7 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 import Layout from './components/Layout'
 import Redirect from './components/Redirect'
-import RoleSelect from './pages/RoleSelect'
 import Credits from './pages/Credits'
 import NotFound from './pages/NotFound'
 import Browse from './pages/customer/Browse'
@@ -15,14 +14,20 @@ import AddRestaurant from './pages/owner/AddRestaurant'
 import EditRestaurant from './pages/owner/EditRestaurant'
 import AddMenuItem from './pages/owner/AddMenuItem'
 import EditMenuItem from './pages/owner/EditMenuItem'
+import Login from './pages/Login'
+import Register from './pages/Register'
+import Account from './pages/customer/Account'
 
 export default function App() {
   return (
     <Routes>
       <Route element={<Layout />}>
-        <Route index element={<RoleSelect />} />
+        <Route index element={<Login />} />
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
 
         <Route path="customer" element={<Browse />} />
+        <Route path="customer/account" element={<Account />} />
         <Route path="customer/restaurants/:id" element={<RestaurantDetail />} />
         <Route path="customer/cart" element={<Cart />} />
         <Route path="customer/orders" element={<Orders />} />
