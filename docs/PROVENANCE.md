@@ -695,7 +695,7 @@
 - **Purpose:** Implement the frontend required by issue #56 for customer registration, sign-in, and profile management.
 - **Influence:** Generated the React routes, forms, API integration, token storage, authenticated profile loading, profile editing, validation, and account navigation using the existing Rubric design system and backend user endpoints.
 - **Validation:** Ran the frontend lint and production build; both completed successfully.
-- **Issue:** #56
+- **PR:** #72
 
 ### Entry: Add login test-account shortcuts
 - **Date:** Wednesday, November 11
@@ -715,7 +715,7 @@
 - **Purpose:** Add login-screen shortcuts for testing customer, restaurant, and admin authentication flows.
 - **Influence:** Generated labeled autofill buttons and seeded non-production accounts using the existing user schema and bcrypt password conventions.
 - **Validation:** Ran the frontend lint and production build; both completed successfully.
-- **Issue:** #56
+- **PR:** #72
 
 ### Entry: Fix backend startup import paths
 - **Date:** Wednesday, November 11
@@ -735,6 +735,7 @@
 - **Purpose:** Make the backend start consistently from the documented `backend/` directory.
 - **Influence:** Replaced mixed `backend.app` imports with the local `app` package imports used by `uvicorn app.main:app`.
 - **Validation:** Verified `from app.main import app` succeeds from `backend/`.
+- **PR:** #72
 
 ### Entry: Remove landing role chooser
 - **Date:** Wednesday, November 11
@@ -754,6 +755,7 @@
 - **Purpose:** Remove the landing role chooser so the application opens directly to sign-in.
 - **Influence:** Changed the root route to render the existing login screen and updated the frontend route description.
 - **Validation:** Confirmed the route configuration and documentation diff are formatted correctly.
+- **PR:** #72
 
 ### Entry: Remove remaining role-selection labels
 - **Date:** Wednesday, November 11
@@ -773,6 +775,7 @@
 - **Purpose:** Remove residual role-selection language from the direct sign-in experience.
 - **Influence:** Hid switch-role links when no role is active and renamed the login page eyebrow to “Sign in.”
 - **Validation:** Ran the frontend lint and production build successfully.
+- **PR:** #72
 
 ### Entry: Confirm sign-out
 - **Date:** Wednesday, November 11
@@ -792,6 +795,7 @@
 - **Purpose:** Prevent accidental sign-outs.
 - **Influence:** Added a confirmation prompt before clearing the access token from either sign-out control.
 - **Validation:** Ran the frontend lint and production build successfully.
+- **PR:** #72
 
 ### Entry: Prefill checkout from customer profile
 - **Date:** Wednesday, November 11
@@ -811,6 +815,7 @@
 - **Purpose:** Populate checkout delivery fields from the authenticated customer's account.
 - **Influence:** Loaded the signed-in user profile and used its name, phone, and street address as initial checkout values while preserving manually entered values.
 - **Validation:** Ran the frontend lint and production build successfully.
+- **PR:** #72
 
 ### Entry: Align backend test dependency override
 - **Date:** Wednesday, November 11
@@ -830,6 +835,7 @@
 - **Purpose:** Restore route-test dependency overrides after normalizing backend imports.
 - **Influence:** Updated the fixture to override the same `app.core.dependencies` object used by the running application.
 - **Validation:** Ran the full backend suite; all 117 tests passed.
+- **PR:** #72
 
 ### Entry: Replace switch-role navigation with sign-out
 - **Date:** Wednesday, November 11
@@ -849,3 +855,4 @@
 - **Purpose:** Remove the obsolete role-switching control and provide a clear sign-out action for signed-in users.
 - **Influence:** Replaced switch-role links with a sign-out button that clears the access token and navigates to `/login`.
 - **Validation:** Ran the frontend lint and production build successfully.
+- **PR:** #72
