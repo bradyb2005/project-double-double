@@ -23,7 +23,5 @@ class Cart(BaseModel):
     @field_validator("items")
     @classmethod
     def validate_items(cls, value: list[CartItem]) -> list[CartItem]:
-        """Validates that the cart has at least one item."""
-        if not value:
-            raise ValueError("Cart must contain at least one item")
+        """Validate the cart items."""
         return value
