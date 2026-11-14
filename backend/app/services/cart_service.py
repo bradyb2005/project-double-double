@@ -1,3 +1,4 @@
+from app.repositories.restaurant_repository import RestaurantRepository
 from app.repositories.user_repository import UserRepository
 from app.schemas.cart import Cart, CartItem
 
@@ -7,7 +8,21 @@ class CartService:
         self.user_repository = user_repository or UserRepository()
 
     def calculate_cart_total(self, cart: Cart) -> float:
-        return 0.0
+        total = 0.0
+        if cart.items:
+            restaurant_id = cart.items[0].restaurant_id
+            restaurant_repo = RestaurantRepository()
+            restaurant = restaurant_repo.get_restaurant_by_id(restaurant_id)
+        else:
+            return 0.0
+        for item in cart.items:
+            if restaurant is None:
+                raise ValueError("Restaurant not found")
+            menu_item = next((i for i in restaurant.get("menu", []) if i["id"] == item.item_id), None)
+            if menu_item is None:
+                raise ValueError(f"Menu item with ID {item.item_id} not found in restaurant {restaurant_id}")
+            total += menu_item["price"] * item.quantity
+        return total
 
     def get_cart(self, user_id: int) -> Cart:
         user = self.user_repository.get_user_by_id(user_id)
