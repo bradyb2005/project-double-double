@@ -22,7 +22,6 @@ def cart_service(user_repository, restaurant_repository):
     service.restaurant_repository = restaurant_repository
     return service
 
-
 class TestGetCart:
     def test_get_cart_returns_existing_cart(self, cart_service):
         cart = cart_service.get_cart(1)
