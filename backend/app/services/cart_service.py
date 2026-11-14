@@ -11,7 +11,13 @@ class CartService:
         return 0.0
     
     def get_cart(self, user_id: int) -> Cart:
-        return Cart()
+        user = self.user_repository.get_user_by_id(user_id)
+        if user is None:
+            raise ValueError("User not found")
+        
+        cart_data = user.get("cart", {})
+        cart = Cart.model_validate(cart_data)
+        return cart
     
     def add_to_cart(self, user_id: int, item_id: int, restaurant_id: int, quantity: int) -> Cart:
         return Cart()
