@@ -2,6 +2,7 @@ from app.repositories.restaurant_repository import RestaurantRepository
 from app.repositories.user_repository import UserRepository
 from app.schemas.cart import Cart, CartItem
 
+
 class CartService:
     def __init__(self, user_repository: UserRepository | None = None):
         self.user_repository = user_repository or UserRepository()
