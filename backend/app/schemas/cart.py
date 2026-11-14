@@ -18,6 +18,7 @@ class CartItem(BaseModel):
 class Cart(BaseModel):
     """Schema for the shopping cart."""
     items: list[CartItem] = Field(default_factory=list, description="List of items in the cart")
+    total: float = Field(default=0.0, description="Total price of the items in the cart")
 
     @field_validator("items")
     @classmethod
