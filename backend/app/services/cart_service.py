@@ -8,67 +8,58 @@ class CartService:
 
     def calculate_cart_total(self, cart: Cart) -> float:
         return 0.0
-    
+
     def get_cart(self, user_id: int) -> Cart:
         user = self.user_repository.get_user_by_id(user_id)
         if user is None:
             raise ValueError("User not found")
-        
-        cart_data = user.get("cart", {})
-        cart = Cart.model_validate(cart_data)
-        return cart
-    
+
+        return Cart.model_validate(user.get("cart") or {})
+
     def add_to_cart(self, user_id: int, item_id: int, restaurant_id: int, quantity: int) -> Cart:
-        user = self.user_repository.get_user_by_id(user_id)
-        if user is None:
-            raise ValueError("User not found")
-        
-        current_rest_id = user.get("cart", {}).get("restaurant_id")
-        if current_rest_id is not None and current_rest_id != restaurant_id:
+        cart = self.get_cart(user_id)
+
+        if cart.items and any(item.restaurant_id != restaurant_id for item in cart.items):
             raise ValueError("Cannot add items from different restaurants to the cart")
 
         item = CartItem(item_id=item_id, restaurant_id=restaurant_id, quantity=quantity)
-        cart_data = user.get("cart", {})
-        cart = Cart.model_validate(cart_data)
         cart.items.append(item)
-        
         cart.total = self.calculate_cart_total(cart)
+        if self.user_repository.update_cart(user_id, cart.model_dump(mode="json")) is None:
+            raise ValueError("User not found")
         return cart
 
     def remove_from_cart(self, user_id: int, item_id: int) -> Cart:
-        user = self.user_repository.get_user_by_id(user_id)
-        if user is None:
-            raise ValueError("User not found")
-        
-        cart_data = user.get("cart", {})
-        cart = Cart.model_validate(cart_data)
+        cart = self.get_cart(user_id)
         cart.items = [item for item in cart.items if item.item_id != item_id]
-        
         cart.total = self.calculate_cart_total(cart)
+        if self.user_repository.update_cart(user_id, cart.model_dump(mode="json")) is None:
+            raise ValueError("User not found")
         return cart
 
     def update_cart_item(self, user_id: int, item_id: int, new_quantity: int) -> Cart:
-        user = self.user_repository.get_user_by_id(user_id)
-        if user is None:
-            raise ValueError("User not found")
-        
-        cart_data = user.get("cart", {})
-        cart = Cart.model_validate(cart_data)
-        
+        cart = self.get_cart(user_id)
+
         for item in cart.items:
             if item.item_id == item_id:
-                item.quantity = new_quantity
+                item.quantity = CartItem(
+                    item_id=item.item_id,
+                    restaurant_id=item.restaurant_id,
+                    quantity=new_quantity,
+                ).quantity
                 break
         else:
             raise ValueError("Item not found in cart")
-        
+
         cart.total = self.calculate_cart_total(cart)
+        if self.user_repository.update_cart(user_id, cart.model_dump(mode="json")) is None:
+            raise ValueError("User not found")
         return cart
 
     def clear_cart(self, user_id: int) -> Cart:
-        user = self.user_repository.get_user_by_id(user_id)
-        if user is None:
+        cart = self.get_cart(user_id)
+        cart.items = []
+        cart.total = 0.0
+        if self.user_repository.update_cart(user_id, cart.model_dump(mode="json")) is None:
             raise ValueError("User not found")
-        
-        cart = Cart(items=[], total=0.0)
         return cart
