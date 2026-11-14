@@ -2,7 +2,7 @@ from app.core.dependencies import require_same_user
 from app.schemas.cart import Cart, CartItem
 from app.schemas.error import ErrorResponse
 from app.services.cart_service import CartService
-from fastapi import APIRouter, Depends, HTTPException, Path, status
+from fastapi import APIRouter, Depends, HTTPException, Path, Query, status
 
 router = APIRouter()
 UserId = Path(description="ID of the user")
@@ -100,7 +100,7 @@ def add_to_cart(
 def update_cart_item(
     user_id: int = UserId,
     item_id: int = Path(description="ID of the item in cart"),
-    quantity: int = Path(..., gt=0, description="New quantity (must be > 0)"),
+    quantity: int = Query(..., gt=0, description="New quantity (must be > 0)"),
     current_user=same_user_dependency,
     cart_service: CartService = cart_service_dependency,
 ):
