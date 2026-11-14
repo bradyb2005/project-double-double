@@ -9,18 +9,15 @@ class CartService:
     def calculate_cart_total(self, cart: Cart) -> float:
         return 0.0
 
-    def _get_user_cart(self, user_id: int) -> Cart:
+    def get_cart(self, user_id: int) -> Cart:
         user = self.user_repository.get_user_by_id(user_id)
         if user is None:
             raise ValueError("User not found")
 
         return Cart.model_validate(user.get("cart") or {})
 
-    def get_cart(self, user_id: int) -> Cart:
-        return self._get_user_cart(user_id)
-
     def add_to_cart(self, user_id: int, item_id: int, restaurant_id: int, quantity: int) -> Cart:
-        cart = self._get_user_cart(user_id)
+        cart = self.get_cart(user_id)
 
         if cart.items and any(item.restaurant_id != restaurant_id for item in cart.items):
             raise ValueError("Cannot add items from different restaurants to the cart")
@@ -33,7 +30,7 @@ class CartService:
         return cart
 
     def remove_from_cart(self, user_id: int, item_id: int) -> Cart:
-        cart = self._get_user_cart(user_id)
+        cart = self.get_cart(user_id)
         cart.items = [item for item in cart.items if item.item_id != item_id]
         cart.total = self.calculate_cart_total(cart)
         if self.user_repository.update_cart(user_id, cart.model_dump(mode="json")) is None:
@@ -41,7 +38,7 @@ class CartService:
         return cart
 
     def update_cart_item(self, user_id: int, item_id: int, new_quantity: int) -> Cart:
-        cart = self._get_user_cart(user_id)
+        cart = self.get_cart(user_id)
 
         for item in cart.items:
             if item.item_id == item_id:
@@ -60,7 +57,7 @@ class CartService:
         return cart
 
     def clear_cart(self, user_id: int) -> Cart:
-        cart = self._get_user_cart(user_id)
+        cart = self.get_cart(user_id)
         cart.items = []
         cart.total = 0.0
         if self.user_repository.update_cart(user_id, cart.model_dump(mode="json")) is None:
