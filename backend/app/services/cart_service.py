@@ -3,8 +3,8 @@ from app.schemas.cart import Cart, CartItem
 
 
 class CartService:
-    def __init__(self):
-        self.user_repository = UserRepository()
+    def __init__(self, user_repository: UserRepository | None = None):
+        self.user_repository = user_repository or UserRepository()
 
     def calculate_cart_total(self, cart: Cart) -> float:
         return 0.0
