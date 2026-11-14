@@ -300,7 +300,5 @@ def cart_service(user_repository, restaurant_repository):
     from app.services.cart_service import CartService
     service = CartService(user_repository)
     service.restaurant_repository = restaurant_repository
-    # Reset user's cart before each test
-    user_repository.update_cart(1, {"items": [], "total": 0.0})
     return service
 # endregion
