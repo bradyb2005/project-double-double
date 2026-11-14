@@ -1,6 +1,6 @@
 import pytest
-from app.api.routes.login import get_login_service
 from app.main import app
+from app.routes.login import get_login_service
 from fastapi import status
 
 
