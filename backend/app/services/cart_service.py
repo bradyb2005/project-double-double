@@ -2,17 +2,16 @@ from app.repositories.restaurant_repository import RestaurantRepository
 from app.repositories.user_repository import UserRepository
 from app.schemas.cart import Cart, CartItem
 
-
 class CartService:
     def __init__(self, user_repository: UserRepository | None = None):
         self.user_repository = user_repository or UserRepository()
+        self.restaurant_repository = RestaurantRepository()
 
     def calculate_cart_total(self, cart: Cart) -> float:
         total = 0.0
         if cart.items:
             restaurant_id = cart.items[0].restaurant_id
-            restaurant_repo = RestaurantRepository()
-            restaurant = restaurant_repo.get_restaurant_by_id(restaurant_id)
+            restaurant = self.restaurant_repository.get_restaurant_by_id(restaurant_id)
         else:
             return 0.0
         for item in cart.items:
