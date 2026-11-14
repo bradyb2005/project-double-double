@@ -1,14 +1,22 @@
 import pytest
 from app.main import app
-from app.services.cart_service import CartService
+from app.repositories.user_repository import UserRepository
+from app.routes.carts import get_cart_service
 from fastapi import status
 
 
 @pytest.fixture(autouse=True)
-def override_dependency(cart_service):
-    app.dependency_overrides[CartService] = lambda: cart_service
+def override_dependency(cart_service, users_json, monkeypatch):
+    save_users = UserRepository.save_users
+
+    def save_test_users(repository, users):
+        assert str(repository.filePath) == users_json, "Refusing to write outside test users file"
+        return save_users(repository, users)
+
+    monkeypatch.setattr(UserRepository, "save_users", save_test_users)
+    app.dependency_overrides[get_cart_service] = lambda: cart_service
     yield
-    app.dependency_overrides.clear()
+    app.dependency_overrides.pop(get_cart_service, None)
 
 
 class TestGetCart:
@@ -66,7 +74,13 @@ class TestAddToCart:
         assert len(data["items"]) == 1
         assert data["items"][0]["item_id"] == 1
         assert data["items"][0]["quantity"] == 2
-        assert data["total"] == 11.98  # 5.99 * 2
+        assert data["total"] == 11.98
+
+    def test_add_to_cart_persists_to_test_repository(self, client, auth_headers, user_repository):
+        payload = {"item_id": 1, "restaurant_id": 1, "quantity": 2}
+        response = client.post("/users/1/cart/items", json=payload, headers=auth_headers)
+        assert response.status_code == status.HTTP_200_OK
+        assert user_repository.get_user_by_id(1)["cart"] == response.json()
 
     def test_add_to_cart_with_invalid_restaurant_raises_error(self, client, auth_headers):
         payload = {"item_id": 1, "restaurant_id": 999, "quantity": 1}
@@ -132,20 +146,19 @@ class TestAddToCart:
         # Add second item: 12.50
         payload2 = {"item_id": 2, "restaurant_id": 1, "quantity": 1}
         response2 = client.post("/users/1/cart/items", json=payload2, headers=auth_headers)
-        assert response2.json()["total"] == 18.49
+        assert response2.json()["total"] == pytest.approx(18.49)
 
 
 class TestUpdateCartItem:
     def test_update_cart_item_requires_authentication(self, client):
         response = client.put(
-            "/users/1/cart/items/1",
-            json={"quantity": 5},
+            "/users/1/cart/items/1?quantity=5",
         )
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
     def test_update_cart_item_requires_same_user(self, client, auth_headers):
         response = client.put(
-            "/users/99999/cart/items/1",
+            "/users/99999/cart/items/1?quantity=5",
             headers=auth_headers,
         )
         assert response.status_code == status.HTTP_403_FORBIDDEN
@@ -171,6 +184,10 @@ class TestUpdateCartItem:
             headers=auth_headers,
         )
         assert response.status_code == status.HTTP_404_NOT_FOUND
+
+    def test_update_cart_item_requires_quantity(self, client, auth_headers):
+        response = client.put("/users/1/cart/items/1", headers=auth_headers)
+        assert response.status_code == status.HTTP_422_UNPROCESSABLE_CONTENT
 
     def test_update_cart_item_with_zero_quantity_raises_error(self, client, auth_headers):
         # Add item first
@@ -207,7 +224,7 @@ class TestUpdateCartItem:
             "/users/1/cart/items/1?quantity=5",
             headers=auth_headers,
         )
-        assert response2.json()["total"] == 29.95
+        assert response2.json()["total"] == pytest.approx(29.95)
 
 
 class TestRemoveFromCart:
