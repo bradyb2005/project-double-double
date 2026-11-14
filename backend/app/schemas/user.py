@@ -3,6 +3,8 @@ from enum import Enum
 
 from pydantic import BaseModel, EmailStr, Field, field_validator
 
+from backend.app.schemas.cart import Cart
+
 
 class Province(str, Enum):
     ON = "ON"
@@ -46,6 +48,7 @@ class UserBase(BaseModel):
     phone: str | None = Field(default=None, pattern=r"^\d{10}$")
     address: Address | None = None
     is_active: bool = True
+    cart: Cart | None = Field(default_factory=Cart, description="Shopping cart for the user")
 
     @field_validator('phone')
     @classmethod
