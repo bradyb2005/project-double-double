@@ -172,7 +172,11 @@ def valid_user_payload():
             "province": "BC",
             "postalcode": "V1V0B7"
         },
-        "is_active": True
+        "is_active": True,
+        "cart": {
+            "items": [],
+            "total": 0.0
+        }
     }
 
 @pytest.fixture
@@ -212,7 +216,11 @@ def users_json(tmp_path):
             },
             "is_active": True,
             "created_at": "2026-01-01T00:00:00Z",
-            "last_updated": "2026-01-01T00:00:00Z"
+            "last_updated": "2026-01-01T00:00:00Z",
+            "cart": {
+                "items": [],
+                "total": 0.0
+            }
         }
     ]
     file_path = tmp_path / "users.json"
@@ -243,6 +251,10 @@ def login_user():
         "email": "john.doe@example.com",
         "password_hash": get_password_hash("SecurePassword123!"),
         "is_active": True,
+        "cart": {
+            "items": [],
+            "total": 0.0
+        },
     }
 
 @pytest.fixture
@@ -270,11 +282,10 @@ def auth_headers():
 @pytest.fixture(autouse=True)
 def override_user_dependency(user_service):
     """Overrides the FastAPI user service dependency for route tests."""
-    from app.main import app
-    from app.services.user_service import UserService
-
-    from app.routes import users
     from app.core.dependencies import get_user_repository
+    from app.main import app
+    from app.routes import users
+    from app.services.user_service import UserService
 
     user_dependency = getattr(users, "get_user_service", UserService)
     app.dependency_overrides[user_dependency] = lambda: user_service
