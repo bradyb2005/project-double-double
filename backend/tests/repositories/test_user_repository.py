@@ -58,3 +58,12 @@ class TestUpdateUser:
     def test_save_users_raises_for_unserializable_data(self, user_repository):
         with pytest.raises(OSError, match="Error saving data"):
             user_repository.save_users({"users": object()})
+
+class TestUpdateCart:
+    def test_update_cart_updates_and_persists_cart(self, user_repository):
+        updated_cart = {"items": [{"product_id": 1, "quantity": 2}]}
+        updated_user = user_repository.update_user(1, {"cart": updated_cart})
+
+        assert updated_user is not None
+        assert updated_user["cart"] == updated_cart
+        assert user_repository.get_user_by_id(1)["cart"] == updated_cart
