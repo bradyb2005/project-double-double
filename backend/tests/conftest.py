@@ -7,6 +7,8 @@ from app.schemas.menu_item import ItemCreate
 from app.schemas.restaurant import RestaurantCreate, RestaurantFilter
 from app.services.restaurant_service import RestaurantService
 
+TEST_PASSWORD_HASH = "$2b$12$e1xOnh3Mk7n5.RA.5E0ys.az/ZEbZqjJ5P1ATStPup3Pi8p/VUsx6"
+
 
 @pytest.fixture
 def client():
@@ -196,8 +198,6 @@ def users_json(tmp_path):
     """Creates a temporary JSON file with sample user data for isolated testing."""
     import json
 
-    from app.core.security import get_password_hash
-
     data = [
         {
             "id": 1,
@@ -205,7 +205,7 @@ def users_json(tmp_path):
             "firstname": "John",
             "lastname": "Doe",
             "email": "john.doe@example.com",
-            "password_hash": get_password_hash("SecurePassword123!"),
+            "password_hash": TEST_PASSWORD_HASH,
             "role": "customer",
             "phone": "2505550100",
             "address": {
@@ -244,12 +244,10 @@ def user_service(user_repository):
 @pytest.fixture
 def login_user():
     """Returns a user with a valid password for login tests."""
-    from app.core.security import get_password_hash
-
     return {
         "id": 1,
         "email": "john.doe@example.com",
-        "password_hash": get_password_hash("SecurePassword123!"),
+        "password_hash": TEST_PASSWORD_HASH,
         "is_active": True,
         "cart": {
             "items": [],
