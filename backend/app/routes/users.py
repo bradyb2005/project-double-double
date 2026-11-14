@@ -1,9 +1,8 @@
+from app.core.dependencies import require_role, require_same_user
 from app.schemas.error import ErrorResponse
 from app.schemas.user import UserCreate, UserResponse, UserUpdate
+from app.services.user_service import UserService
 from fastapi import APIRouter, Depends, HTTPException, Path, status
-
-from backend.app.core.dependencies import require_role, require_same_user
-from backend.app.services.user_service import UserService
 
 router = APIRouter()
 UserId = Path(description="ID of the user")

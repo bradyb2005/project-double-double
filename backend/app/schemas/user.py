@@ -1,9 +1,8 @@
 from datetime import datetime
 from enum import Enum
 
+from app.schemas.cart import Cart
 from pydantic import BaseModel, EmailStr, Field, field_validator
-
-from backend.app.schemas.cart import Cart
 
 
 class Province(str, Enum):

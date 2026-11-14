@@ -1,4 +1,3 @@
-
 from datetime import UTC, datetime
 
 from app.core.security import get_password_hash
@@ -7,8 +6,8 @@ from app.schemas.user import User, UserCreate, UserUpdate
 
 
 class UserService:
-    def __init__(self):
-        self.user_repository = UserRepository()
+    def __init__(self, user_repository: UserRepository | None = None):
+        self.user_repository = user_repository or UserRepository()
 
     def get_all_users(self):
         return [
