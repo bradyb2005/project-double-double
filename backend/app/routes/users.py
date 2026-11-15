@@ -1,16 +1,14 @@
+from app.core.dependencies import require_role, require_same_user
 from app.schemas.error import ErrorResponse
 from app.schemas.user import UserCreate, UserResponse, UserUpdate
+from app.services.user_service import UserService
 from fastapi import APIRouter, Depends, HTTPException, Path, status
-
-from backend.app.core.dependencies import require_role, require_same_user
-from backend.app.repositories.user_repository import UserRepository
-from backend.app.services.user_service import UserService
 
 router = APIRouter()
 UserId = Path(description="ID of the user")
 
 def get_user_service() -> UserService:
-    return UserService(UserRepository())
+    return UserService()
 
 user_service_dependency = Depends(get_user_service)
 admin_role_dependency = Depends(require_role("admin"))
