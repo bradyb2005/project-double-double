@@ -96,12 +96,12 @@ jobs:
               field => field.name === "Status"
             );
             const inProgressOption = statusField?.options?.find(
-              option => option.name === "In Progress"
+              option => option.name === "In progress"
             );
 
             if (!statusField || !inProgressOption) {
               core.setFailed(
-                "The project does not have a Status field with an 'In Progress' option."
+                "The project does not have a Status field with an 'In progress' option."
               );
               return;
             }
@@ -164,5 +164,5 @@ jobs:
             });
 
             core.info(
-              `Set issue #${issueNumber} start date to ${startDate} and status to In Progress.`
+              `Set issue #${issueNumber} start date to ${startDate} and status to In progress.`
             );
