@@ -47,7 +47,7 @@ def get_cart(
     "/users/{user_id}/cart/items",
     tags=["Cart"],
     summary="Add item to cart",
-    description="Adds an item to the user's shopping cart.",
+    description="Adds an item to the user's shopping cart, increasing its quantity if already present.",
     status_code=status.HTTP_200_OK,
     response_model=Cart,
     responses={

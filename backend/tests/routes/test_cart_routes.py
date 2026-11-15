@@ -125,7 +125,9 @@ class TestAddToCart:
         response2 = client.post("/users/1/cart/items", json=payload, headers=auth_headers)
         assert response2.status_code == status.HTTP_200_OK
         data = response2.json()
-        assert len(data["items"]) == 2  # Appends, doesn't merge
+        assert data["items"] == [{"item_id": 1, "restaurant_id": 1, "quantity": 3}]
+        assert data["total"] == pytest.approx(17.97)
+        assert client.get("/users/1/cart", headers=auth_headers).json() == data
 
     def test_add_to_cart_missing_required_fields(self, client, auth_headers):
         payload = {"item_id": 1}  # Missing restaurant_id and quantity

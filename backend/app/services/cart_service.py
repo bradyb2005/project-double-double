@@ -29,7 +29,16 @@ class CartService:
         if user is None:
             raise ValueError("User not found")
 
-        return Cart.model_validate(user.get("cart") or {})
+        cart = Cart.model_validate(user.get("cart") or {})
+        items: dict[tuple[int, int], CartItem] = {}
+        for item in cart.items:
+            key = (item.restaurant_id, item.item_id)
+            if key in items:
+                items[key].quantity += item.quantity
+            else:
+                items[key] = item
+        cart.items = list(items.values())
+        return cart
 
     def add_to_cart(self, user_id: int, item_id: int, restaurant_id: int, quantity: int) -> Cart:
         cart = self.get_cart(user_id)
@@ -38,7 +47,11 @@ class CartService:
             raise ValueError("Cannot add items from different restaurants to the cart")
 
         item = CartItem(item_id=item_id, restaurant_id=restaurant_id, quantity=quantity)
-        cart.items.append(item)
+        existing_item = next((i for i in cart.items if i.item_id == item_id), None)
+        if existing_item is not None:
+            existing_item.quantity += item.quantity
+        else:
+            cart.items.append(item)
         cart.total = self.calculate_cart_total(cart)
         if self.user_repository.update_cart(user_id, cart.model_dump(mode="json")) is None:
             raise ValueError("User not found")
