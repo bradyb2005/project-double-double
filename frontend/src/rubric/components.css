@@ -129,13 +129,14 @@ body::after {
   overflow-y: auto; overscroll-behavior: contain;
 }
 .menu-panel[hidden] { display: none; }
-.menu-panel a.menu-link {
+.menu-panel .menu-link {
   display: flex; align-items: baseline; justify-content: space-between;
   font-family: var(--f-display); font-weight: 300; font-size: 56px; line-height: 1;
   text-decoration: none; padding: var(--s-3) 0; min-height: var(--hit);
   box-shadow: inset 0 -1px 0 0 color-mix(in oklch, var(--paper) 40%, var(--field));
 }
-.menu-panel a.menu-link span { font-family: var(--f-mono); font-size: var(--t-label); letter-spacing: var(--track-label); }
+.menu-panel .menu-link span { font-family: var(--f-mono); font-size: var(--t-label); letter-spacing: var(--track-label); }
+.menu-panel button.menu-link { border: 0; background: transparent; color: inherit; text-align: left; cursor: pointer; }
 .menu-panel .menu-foot { margin-top: auto; }
 body.menu-open { overflow: hidden; }
 /* the toggle must stay above the open panel */

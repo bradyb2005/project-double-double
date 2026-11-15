@@ -17,11 +17,14 @@ For a deployed build, set `VITE_API_URL` to the backend's URL (and add CORS midd
 
 ## Pages
 
-Two roles, picked on `/`. There are no accounts yet, so either role is open to anyone.
+Customer accounts are available from the sign-in and registration links. The customer and owner areas remain available at their respective routes.
 
 | Route | Page | Data |
 |---|---|---|
+| `/register` | Customer registration | `POST /users` |
+| `/login` | Customer sign-in | `POST /login` |
 | `/customer` | Browse restaurants (search, cuisine filter, sort) | `GET /restaurants` |
+| `/customer/account` | View and edit the signed-in customer profile | `GET/PUT /users/{id}` |
 | `/customer/restaurants/:id` | Restaurant and menu, add to cart | `GET /restaurants/{id}`, `GET /restaurants/{id}/menu` |
 | `/customer/cart` | Cart and checkout | demo |
 | `/customer/orders`, `/customer/orders/:id` | Order list and tracker | demo |

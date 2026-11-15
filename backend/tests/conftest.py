@@ -274,7 +274,7 @@ def override_user_dependency(user_service):
     from app.services.user_service import UserService
 
     from app.api.routes import users
-    from backend.app.core.dependencies import get_user_repository
+    from app.core.dependencies import get_user_repository
 
     user_dependency = getattr(users, "get_user_service", UserService)
     app.dependency_overrides[user_dependency] = lambda: user_service

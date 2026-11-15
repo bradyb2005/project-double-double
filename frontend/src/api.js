@@ -1,5 +1,6 @@
 // All backend calls go through here. In dev, Vite proxies /api to the FastAPI server.
 const BASE = import.meta.env.VITE_API_URL ?? '/api'
+const TOKEN_KEY = 'double-double-access-token'
 
 export class ApiError extends Error {
   constructor(message, status) {
@@ -19,8 +20,12 @@ function detailMessage(body, fallback) {
 async function request(path, options) {
   let res
   try {
+    const token = localStorage.getItem(TOKEN_KEY)
     res = await fetch(`${BASE}${path}`, {
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
       ...options,
     })
   } catch {
@@ -46,6 +51,30 @@ export const createMenuItem = (id, data) =>
 // The PUT response holds only the fields that were sent, so callers should refetch the menu.
 export const updateMenuItem = (id, itemId, data) =>
   request(`/restaurants/${id}/menu/${itemId}`, { method: 'PUT', body: JSON.stringify(data) })
+export const registerUser = (data) =>
+  request('/users', { method: 'POST', body: JSON.stringify(data) })
+export const loginUser = (data) =>
+  request('/login', { method: 'POST', body: JSON.stringify(data) })
+export const getUser = (id) => request(`/users/${id}`)
+export const updateUser = (id, data) =>
+  request(`/users/${id}`, { method: 'PUT', body: JSON.stringify(data) })
+
+export const getAccessToken = () => localStorage.getItem(TOKEN_KEY)
+export const saveAccessToken = (token) => localStorage.setItem(TOKEN_KEY, token)
+export const clearAccessToken = () => localStorage.removeItem(TOKEN_KEY)
+
+export function getAuthenticatedUserId() {
+  const token = getAccessToken()
+  if (!token) return null
+  try {
+    const encodedPayload = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')
+    const payload = JSON.parse(atob(encodedPayload.padEnd(Math.ceil(encodedPayload.length / 4) * 4, '=')))
+    const id = Number(payload.sub)
+    return Number.isInteger(id) && id > 0 ? id : null
+  } catch {
+    return null
+  }
+}
 
 export const MENU_CATEGORIES = [
   'Starters', 'Pizza', 'Pasta', 'Mains', 'Vegetarian', 'Dim Sum', 'Rolls', 'Nigiri',
