@@ -290,7 +290,6 @@ def override_user_dependency(user_service):
     app.dependency_overrides[get_user_repository] = lambda: user_service.user_repository
     yield
     app.dependency_overrides.clear()
-    
 # endregion
 
 # region Cart Fixtures

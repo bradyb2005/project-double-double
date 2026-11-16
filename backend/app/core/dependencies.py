@@ -3,6 +3,9 @@ from app.repositories.user_repository import UserRepository
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
+from app.core.security import decode_access_token
+from app.repositories.user_repository import UserRepository
+
 bearer_scheme = HTTPBearer(auto_error=False)
 bearer_credentials_dependency = Depends(bearer_scheme)
 

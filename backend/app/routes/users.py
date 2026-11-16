@@ -4,6 +4,10 @@ from app.schemas.user import UserCreate, UserResponse, UserUpdate
 from app.services.user_service import UserService
 from fastapi import APIRouter, Depends, HTTPException, Path, status
 
+from app.core.dependencies import require_role, require_same_user
+from app.repositories.user_repository import UserRepository
+from app.services.user_service import UserService
+
 router = APIRouter()
 UserId = Path(description="ID of the user")
 
