@@ -1,3 +1,5 @@
+from app.core.security import decode_access_token
+from app.repositories.user_repository import UserRepository
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 

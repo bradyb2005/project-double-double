@@ -7,6 +7,8 @@ from app.schemas.menu_item import ItemCreate
 from app.schemas.restaurant import RestaurantCreate, RestaurantFilter
 from app.services.restaurant_service import RestaurantService
 
+TEST_PASSWORD_HASH = "$2b$12$e1xOnh3Mk7n5.RA.5E0ys.az/ZEbZqjJ5P1ATStPup3Pi8p/VUsx6"
+
 
 @pytest.fixture
 def client():
@@ -172,7 +174,11 @@ def valid_user_payload():
             "province": "BC",
             "postalcode": "V1V0B7"
         },
-        "is_active": True
+        "is_active": True,
+        "cart": {
+            "items": [],
+            "total": 0.0
+        }
     }
 
 @pytest.fixture
@@ -192,8 +198,6 @@ def users_json(tmp_path):
     """Creates a temporary JSON file with sample user data for isolated testing."""
     import json
 
-    from app.core.security import get_password_hash
-
     data = [
         {
             "id": 1,
@@ -201,7 +205,7 @@ def users_json(tmp_path):
             "firstname": "John",
             "lastname": "Doe",
             "email": "john.doe@example.com",
-            "password_hash": get_password_hash("SecurePassword123!"),
+            "password_hash": TEST_PASSWORD_HASH,
             "role": "customer",
             "phone": "2505550100",
             "address": {
@@ -212,7 +216,11 @@ def users_json(tmp_path):
             },
             "is_active": True,
             "created_at": "2026-01-01T00:00:00Z",
-            "last_updated": "2026-01-01T00:00:00Z"
+            "last_updated": "2026-01-01T00:00:00Z",
+            "cart": {
+                "items": [],
+                "total": 0.0
+            }
         }
     ]
     file_path = tmp_path / "users.json"
@@ -236,13 +244,15 @@ def user_service(user_repository):
 @pytest.fixture
 def login_user():
     """Returns a user with a valid password for login tests."""
-    from app.core.security import get_password_hash
-
     return {
         "id": 1,
         "email": "john.doe@example.com",
-        "password_hash": get_password_hash("SecurePassword123!"),
+        "password_hash": TEST_PASSWORD_HASH,
         "is_active": True,
+        "cart": {
+            "items": [],
+            "total": 0.0
+        },
     }
 
 @pytest.fixture
@@ -270,16 +280,24 @@ def auth_headers():
 @pytest.fixture(autouse=True)
 def override_user_dependency(user_service):
     """Overrides the FastAPI user service dependency for route tests."""
-    from app.main import app
-    from app.services.user_service import UserService
-
-    from app.api.routes import users
     from app.core.dependencies import get_user_repository
+    from app.main import app
+    from app.routes import users
+    from app.services.user_service import UserService
 
     user_dependency = getattr(users, "get_user_service", UserService)
     app.dependency_overrides[user_dependency] = lambda: user_service
     app.dependency_overrides[get_user_repository] = lambda: user_service.user_repository
     yield
     app.dependency_overrides.clear()
-    
+# endregion
+
+# region Cart Fixtures
+@pytest.fixture
+def cart_service(user_repository, restaurant_repository):
+    """Returns a cart service using the test repositories."""
+    from app.services.cart_service import CartService
+    service = CartService(user_repository)
+    service.restaurant_repository = restaurant_repository
+    return service
 # endregion

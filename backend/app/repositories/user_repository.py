@@ -57,3 +57,6 @@ class UserRepository:
         self.save_users(users)
         return user
     return None
+
+  def update_cart(self, user_id: int, cart: dict):
+    return self.update_user(user_id, {"cart": cart})
