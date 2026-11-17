@@ -164,6 +164,19 @@ class TestAddToCart:
         assert data["service_charge"] == 1.80
         assert data["total"] == 21.93
 
+    def test_add_to_cart_unavailable_item_raises_error(self, client, auth_headers, restaurant_repository):
+        restaurants = restaurant_repository.get_all_restaurants()
+        restaurants[0]["menu"][1]["availability"] = False  # item 2 (Test Pasta)
+        restaurant_repository.save_restaurants(restaurants)
+
+        payload = {"item_id": 2, "restaurant_id": 1, "quantity": 1}
+        response = client.post("/users/1/cart/items", json=payload, headers=auth_headers)
+
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert "not available" in response.json()["detail"].lower()
+        assert client.get("/users/1/cart", headers=auth_headers).json()["items"] == []
+
+        
 class TestUpdateCartItem:
     def test_update_cart_item_requires_authentication(self, client):
         response = client.put(

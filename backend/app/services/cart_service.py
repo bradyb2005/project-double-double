@@ -47,6 +47,17 @@ class CartService:
             "service_charge": float(service_charge),
             "total": float(total),
         }
+
+    def _get_available_menu_item(self, restaurant_id: int, item_id: int) -> dict:
+        restaurant = self.restaurant_repository.get_restaurant_by_id(restaurant_id)
+        if restaurant is None:
+            raise ValueError("Restaurant not found")
+        menu_item = next((i for i in restaurant.get("menu", []) if i["id"] == item_id), None)
+        if menu_item is None:
+            raise ValueError(f"Menu item with ID {item_id} not found in restaurant {restaurant_id}")
+        if not menu_item.get("availability", True):
+            raise ValueError(f"Menu item with ID {item_id} is not available")
+        return menu_item
     
     def apply_totals(self, cart: Cart) -> None:
         for field, value in self.calculate_cart_totals(cart).items():
@@ -73,7 +84,8 @@ class CartService:
 
         if cart.items and any(item.restaurant_id != restaurant_id for item in cart.items):
             raise ValueError("Cannot add items from different restaurants to the cart")
-
+        
+        self._get_available_menu_item(restaurant_id, item_id)
         item = CartItem(item_id=item_id, restaurant_id=restaurant_id, quantity=quantity)
         existing_item = next((i for i in cart.items if i.item_id == item_id), None)
         if existing_item is not None:

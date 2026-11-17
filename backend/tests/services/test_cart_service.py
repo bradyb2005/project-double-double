@@ -103,7 +103,27 @@ class TestAddToCart:
         assert cart.subtotal == pytest.approx(29.95)
         assert cart.total == pytest.approx(36.55)
         assert user_repository.get_user_by_id(1)["cart"] == cart.model_dump(mode="json")
+    def test_add_to_cart_unavailable_item_raises(self, cart_service, restaurant_repository):
+        restaurants = restaurant_repository.get_all_restaurants()
+        restaurants[0]["menu"][1]["availability"] = False  # item 2 (Test Pasta)
+        restaurant_repository.save_restaurants(restaurants)
 
+        with pytest.raises(ValueError, match="not available"):
+            cart_service.add_to_cart(1, item_id=2, restaurant_id=1, quantity=1)
+
+        assert cart_service.get_cart(1).items == []
+
+    def test_add_to_cart_available_item_still_works_when_another_is_unavailable(
+        self, cart_service, restaurant_repository
+    ):
+        restaurants = restaurant_repository.get_all_restaurants()
+        restaurants[0]["menu"][1]["availability"] = False  # item 2 (Test Pasta)
+        restaurant_repository.save_restaurants(restaurants)
+
+        cart = cart_service.add_to_cart(1, item_id=1, restaurant_id=1, quantity=1)
+
+        assert [(item.item_id, item.quantity) for item in cart.items] == [(1, 1)]
+        
 
 class TestUpdateCart:
     def test_update_combines_existing_duplicate_items(self, cart_service, user_repository):
