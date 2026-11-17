@@ -33,7 +33,7 @@ class TestGetCart:
         assert response.status_code == status.HTTP_200_OK
         data = response.json()
         assert "items" in data
-        assert "total" in data
+        assert "subtotal" in data
         assert isinstance(data["items"], list)
 
     def test_get_cart_returns_empty_cart(self, client, auth_headers):
@@ -41,7 +41,7 @@ class TestGetCart:
         assert response.status_code == status.HTTP_200_OK
         data = response.json()
         assert data["items"] == []
-        assert data["total"] == 0.0
+        assert data["subtotal"] == 0.0
 
     def test_get_cart_invalid_user_id_type(self, client, auth_headers):
         response = client.get("/users/abc/cart", headers=auth_headers)
@@ -75,7 +75,6 @@ class TestAddToCart:
         assert data["items"][0]["item_id"] == 1
         assert data["items"][0]["quantity"] == 2
         assert data["subtotal"] == 11.98
-        assert data["total"] == 14.62  
 
     def test_add_to_cart_persists_to_test_repository(self, client, auth_headers, user_repository):
         payload = {"item_id": 1, "restaurant_id": 1, "quantity": 2}
@@ -128,7 +127,6 @@ class TestAddToCart:
         data = response2.json()
         assert data["items"] == [{"item_id": 1, "restaurant_id": 1, "quantity": 3}]
         assert data["subtotal"] == pytest.approx(17.97)
-        assert data["total"] == pytest.approx(21.93)
         assert client.get("/users/1/cart", headers=auth_headers).json() == data
 
     def test_add_to_cart_missing_required_fields(self, client, auth_headers):
@@ -146,23 +144,17 @@ class TestAddToCart:
         payload1 = {"item_id": 1, "restaurant_id": 1, "quantity": 1}
         response1 = client.post("/users/1/cart/items", json=payload1, headers=auth_headers)
         assert response1.json()["subtotal"] == 5.99
-        assert response1.json()["total"] == 7.31
 
         # Add second item: 12.50
         payload2 = {"item_id": 2, "restaurant_id": 1, "quantity": 1}
         response2 = client.post("/users/1/cart/items", json=payload2, headers=auth_headers)
         assert response2.json()["subtotal"] == pytest.approx(18.49)
-        assert response2.json()["total"] == pytest.approx(22.55)
 
     def test_add_to_cart_returns_charge_breakdown(self, client, auth_headers):
         payload = {"item_id": 1, "restaurant_id": 1, "quantity": 3}
         response = client.post("/users/1/cart/items", json=payload, headers=auth_headers)
         data = response.json()
         assert data["subtotal"] == 17.97
-        assert data["gst"] == 0.90
-        assert data["pst"] == 1.26
-        assert data["service_charge"] == 1.80
-        assert data["total"] == 21.93
 
     def test_add_to_cart_unavailable_item_raises_error(self, client, auth_headers, restaurant_repository):
         restaurants = restaurant_repository.get_all_restaurants()
@@ -219,7 +211,6 @@ class TestUpdateCartItem:
         data = response.json()
         assert data["items"][0]["quantity"] == 3
         assert data["subtotal"] == 17.97  # 5.99 * 3
-        assert data["total"] == 21.93
 
     def test_update_cart_item_not_found_raises_error(self, client, auth_headers):
         response = client.put(
@@ -261,7 +252,6 @@ class TestUpdateCartItem:
         add_payload = {"item_id": 1, "restaurant_id": 1, "quantity": 2}
         response1 = client.post("/users/1/cart/items", json=add_payload, headers=auth_headers)
         assert response1.json()["subtotal"] == 11.98
-        assert response1.json()["total"] == 14.62
 
         # Update to quantity 5
         response2 = client.put(
@@ -269,7 +259,6 @@ class TestUpdateCartItem:
             headers=auth_headers,
         )
         assert response2.json()["subtotal"] == pytest.approx(29.95)
-        assert response2.json()["total"] == pytest.approx(36.55)
 
 
 class TestRemoveFromCart:
@@ -298,7 +287,6 @@ class TestRemoveFromCart:
         assert len(data["items"]) == 1
         assert data["items"][0]["item_id"] == 2
         assert data["subtotal"] == 12.50
-        assert data["total"] == 15.26
 
     def test_remove_from_cart_item_not_found(self, client, auth_headers):
         response = client.delete("/users/1/cart/items/999", headers=auth_headers)
@@ -313,12 +301,10 @@ class TestRemoveFromCart:
         client.post("/users/1/cart/items", json=add_payload1, headers=auth_headers)
         response_before = client.post("/users/1/cart/items", json=add_payload2, headers=auth_headers)
         assert response_before.json()["subtotal"] == 24.48
-        assert response_before.json()["total"] == 29.86
 
         # Remove first item
         response_after = client.delete("/users/1/cart/items/1", headers=auth_headers)
         assert response_after.json()["subtotal"] == 12.50
-        assert response_after.json()["total"] == 15.26
 
     def test_remove_from_cart_invalid_user_id_type(self, client, auth_headers):
         response = client.delete("/users/abc/cart/items/1", headers=auth_headers)
@@ -346,14 +332,14 @@ class TestClearCart:
         assert response.status_code == status.HTTP_200_OK
         data = response.json()
         assert data["items"] == []
-        assert data["total"] == 0.0
+        assert data["subtotal"] == 0.0
 
     def test_clear_empty_cart(self, client, auth_headers):
         response = client.delete("/users/1/cart", headers=auth_headers)
         assert response.status_code == status.HTTP_200_OK
         data = response.json()
         assert data["items"] == []
-        assert data["total"] == 0.0
+        assert data["subtotal"] == 0.0
 
     def test_clear_cart_invalid_user_id_type(self, client, auth_headers):
         response = client.delete("/users/abc/cart", headers=auth_headers)

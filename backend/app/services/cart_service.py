@@ -1,11 +1,12 @@
+from decimal import ROUND_HALF_UP, Decimal
+
 from app.repositories.restaurant_repository import RestaurantRepository
 from app.repositories.user_repository import UserRepository
 from app.schemas.cart import Cart, CartItem
-from decimal import ROUND_HALF_UP, Decimal
 
-GST_RATE = Decimal("0.05")
-PST_RATE = Decimal("0.07")  # BC only for now
-SERVICE_CHARGE_RATE = Decimal("0.10")
+# GST_RATE = Decimal("0.05")
+# PST_RATE = Decimal("0.07")  # BC only for now
+# SERVICE_CHARGE_RATE = Decimal("0.10")
 CENT = Decimal("0.01")
 
 
@@ -100,7 +101,7 @@ class CartService:
             existing_item.quantity += item.quantity
         else:
             cart.items.append(item)
-        self.apply_totals(cart)
+        cart.subtotal = self.calculate_cart_subtotal(cart)
         if self.user_repository.update_cart(user_id, cart.model_dump(mode="json")) is None:
             raise ValueError("User not found")
         return cart
@@ -109,7 +110,7 @@ class CartService:
         self.require_active_user(user_id)        
         cart = self.get_cart(user_id)
         cart.items = [item for item in cart.items if item.item_id != item_id]
-        self.apply_totals(cart)
+        cart.subtotal = self.calculate_cart_subtotal(cart)
         if self.user_repository.update_cart(user_id, cart.model_dump(mode="json")) is None:
             raise ValueError("User not found")
         return cart
@@ -129,7 +130,7 @@ class CartService:
         else:
             raise ValueError("Item not found in cart")
 
-        self.apply_totals(cart)
+        cart.subtotal = self.calculate_cart_subtotal(cart)
         if self.user_repository.update_cart(user_id, cart.model_dump(mode="json")) is None:
             raise ValueError("User not found")
         return cart
@@ -138,7 +139,7 @@ class CartService:
         self.require_active_user(user_id)
         cart = self.get_cart(user_id)
         cart.items = []
-        self.apply_totals(cart)
+        cart.subtotal = 0.0
         if self.user_repository.update_cart(user_id, cart.model_dump(mode="json")) is None:
             raise ValueError("User not found")
         return cart
