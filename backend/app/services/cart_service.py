@@ -4,9 +4,9 @@ from app.repositories.restaurant_repository import RestaurantRepository
 from app.repositories.user_repository import UserRepository
 from app.schemas.cart import Cart, CartItem
 
-GST_RATE = Decimal("0.05")
-PST_RATE = Decimal("0.07")  # BC only for now
-SERVICE_CHARGE_RATE = Decimal("0.10")
+# GST_RATE = Decimal("0.05")
+# PST_RATE = Decimal("0.07")  # BC only for now
+# SERVICE_CHARGE_RATE = Decimal("0.10")
 CENT = Decimal("0.01")
 
 
@@ -34,24 +34,6 @@ class CartService:
                 raise ValueError(f"Menu item with ID {item.item_id} not found in restaurant {restaurant_id}")
             total += _money(menu_item["price"]) * item.quantity
         return float(total)
-
-    def calculate_cart_totals(self, cart: Cart) -> dict[str, float]:
-        subtotal = _money(self.calculate_cart_subtotal(cart))
-        gst = _money(subtotal * GST_RATE)
-        pst = _money(subtotal * PST_RATE)
-        service_charge = _money(subtotal * SERVICE_CHARGE_RATE)
-        total = subtotal + gst + pst + service_charge
-        return {
-            "subtotal": float(subtotal),
-            "gst": float(gst),
-            "pst": float(pst),
-            "service_charge": float(service_charge),
-            "total": float(total),
-        }
-    
-    def apply_totals(self, cart: Cart) -> None:
-        for field, value in self.calculate_cart_totals(cart).items():
-            setattr(cart, field, value)
 
     def get_cart(self, user_id: int) -> Cart:
         user = self.user_repository.get_user_by_id(user_id)
@@ -81,7 +63,7 @@ class CartService:
             existing_item.quantity += item.quantity
         else:
             cart.items.append(item)
-        self.apply_totals(cart)
+        cart.subtotal = self.calculate_cart_subtotal(cart)
         if self.user_repository.update_cart(user_id, cart.model_dump(mode="json")) is None:
             raise ValueError("User not found")
         return cart
@@ -89,7 +71,7 @@ class CartService:
     def remove_from_cart(self, user_id: int, item_id: int) -> Cart:
         cart = self.get_cart(user_id)
         cart.items = [item for item in cart.items if item.item_id != item_id]
-        self.apply_totals(cart)
+        cart.subtotal = self.calculate_cart_subtotal(cart)
         if self.user_repository.update_cart(user_id, cart.model_dump(mode="json")) is None:
             raise ValueError("User not found")
         return cart
@@ -108,7 +90,7 @@ class CartService:
         else:
             raise ValueError("Item not found in cart")
 
-        self.apply_totals(cart)
+        cart.subtotal = self.calculate_cart_subtotal(cart)
         if self.user_repository.update_cart(user_id, cart.model_dump(mode="json")) is None:
             raise ValueError("User not found")
         return cart
@@ -116,7 +98,7 @@ class CartService:
     def clear_cart(self, user_id: int) -> Cart:
         cart = self.get_cart(user_id)
         cart.items = []
-        self.apply_totals(cart)
+        cart.subtotal = 0.0
         if self.user_repository.update_cart(user_id, cart.model_dump(mode="json")) is None:
             raise ValueError("User not found")
         return cart
