@@ -123,8 +123,31 @@ class TestUpdateCart:
         assert cart.total == pytest.approx(44.48)
         assert user_repository.get_user_by_id(1)["cart"] == cart.model_dump(mode="json")
 
+class TestCalculateCartTotals:
+    def test_empty_cart_is_all_zero(self, cart_service):
+        from app.schemas.cart import Cart
+
+        assert cart_service.calculate_cart_totals(Cart()) == {
+            "subtotal": 0.0, "gst": 0.0, "pst": 0.0, "service_charge": 0.0, "total": 0.0,
+        }
+
+    def test_charges_are_5_7_and_10_percent_of_subtotal(self, cart_service):
+        from app.schemas.cart import Cart, CartItem
+
+        cart = Cart(items=[CartItem(item_id=2, restaurant_id=1, quantity=1)])  # 12.50
+
+        assert cart_service.calculate_cart_totals(cart) == {
+            "subtotal": 12.50, "gst": 0.63, "pst": 0.88, "service_charge": 1.25, "total": 15.26,
+        }
+
+    def test_unknown_menu_item_raises(self, cart_service):
+        from app.schemas.cart import Cart, CartItem
+
+        cart = Cart(items=[CartItem(item_id=999, restaurant_id=1, quantity=1)])
+
+        with pytest.raises(ValueError, match="not found"):
+            cart_service.calculate_cart_totals(cart)
+
 # class TestRemoveFromCart:
  
 # class TestClearCart:
-
-# class TestCalculateCartTotal:

@@ -154,6 +154,15 @@ class TestAddToCart:
         assert response2.json()["subtotal"] == pytest.approx(18.49)
         assert response2.json()["total"] == pytest.approx(22.55)
 
+    def test_add_to_cart_returns_charge_breakdown(self, client, auth_headers):
+        payload = {"item_id": 1, "restaurant_id": 1, "quantity": 3}
+        response = client.post("/users/1/cart/items", json=payload, headers=auth_headers)
+        data = response.json()
+        assert data["subtotal"] == 17.97
+        assert data["gst"] == 0.90
+        assert data["pst"] == 1.26
+        assert data["service_charge"] == 1.80
+        assert data["total"] == 21.93
 
 class TestUpdateCartItem:
     def test_update_cart_item_requires_authentication(self, client):
