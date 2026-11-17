@@ -106,6 +106,7 @@ class CartService:
         return cart
 
     def remove_from_cart(self, user_id: int, item_id: int) -> Cart:
+        self.require_active_user(user_id)        
         cart = self.get_cart(user_id)
         cart.items = [item for item in cart.items if item.item_id != item_id]
         self.apply_totals(cart)
@@ -114,6 +115,7 @@ class CartService:
         return cart
 
     def update_cart_item(self, user_id: int, item_id: int, new_quantity: int) -> Cart:
+        self.require_active_user(user_id)        
         cart = self.get_cart(user_id)
 
         for item in cart.items:
@@ -133,6 +135,7 @@ class CartService:
         return cart
 
     def clear_cart(self, user_id: int) -> Cart:
+        self.require_active_user(user_id)
         cart = self.get_cart(user_id)
         cart.items = []
         self.apply_totals(cart)

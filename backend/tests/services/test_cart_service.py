@@ -138,7 +138,7 @@ class TestAddToCart:
         cart = cart_service.add_to_cart(1, item_id=1, restaurant_id=1, quantity=1)
 
         assert [(item.item_id, item.quantity) for item in cart.items] == [(1, 1)]
-        
+
 class TestUpdateCart:
     def test_update_combines_existing_duplicate_items(self, cart_service, user_repository):
         user_repository.update_cart(1, {
@@ -182,6 +182,38 @@ class TestCalculateCartTotals:
         with pytest.raises(ValueError, match="not found"):
             cart_service.calculate_cart_totals(cart)
 
+class TestInactiveUserCannotModifyCart:
+    def test_inactive_user_cannot_remove_update_or_clear(self, cart_service, user_repository):
+        cart_service.add_to_cart(1, item_id=1, restaurant_id=1, quantity=1)
+        user_repository.update_user(1, {"is_active": False})
+
+        with pytest.raises(ValueError, match="Inactive customers"):
+            cart_service.remove_from_cart(1, 1)
+        with pytest.raises(ValueError, match="Inactive customers"):
+            cart_service.update_cart_item(1, 1, 3)
+        with pytest.raises(ValueError, match="Inactive customers"):
+            cart_service.clear_cart(1)
+
+        assert [(i.item_id, i.quantity) for i in cart_service.get_cart(1).items] == [(1, 1)]
+
+class TestInvalidQuantities:
+    @pytest.mark.parametrize("quantity", [0, -1, 1.5])
+    def test_add_to_cart_rejects_invalid_quantity(self, cart_service, quantity):
+        with pytest.raises(ValueError):
+            cart_service.add_to_cart(1, item_id=1, restaurant_id=1, quantity=quantity)
+
+        assert cart_service.get_cart(1).items == []
+
+    @pytest.mark.parametrize("quantity", [0, -1, 1.5])
+    def test_update_cart_item_rejects_invalid_quantity(self, cart_service, quantity):
+        cart_service.add_to_cart(1, item_id=1, restaurant_id=1, quantity=2)
+
+        with pytest.raises(ValueError):
+            cart_service.update_cart_item(1, 1, quantity)
+
+        assert cart_service.get_cart(1).items[0].quantity == 2
+        
+             
 # class TestRemoveFromCart:
  
 # class TestClearCart:

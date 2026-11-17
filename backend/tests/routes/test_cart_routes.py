@@ -183,7 +183,14 @@ class TestAddToCart:
         response = client.post("/users/1/cart/items", json=payload, headers=auth_headers)
 
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
-              
+
+    @pytest.mark.parametrize("quantity", [0, -1, 1.5])
+    def test_add_to_cart_rejects_invalid_quantity(self, client, auth_headers, quantity):
+        payload = {"item_id": 1, "restaurant_id": 1, "quantity": quantity}
+        response = client.post("/users/1/cart/items", json=payload, headers=auth_headers)
+
+        assert response.status_code in (400, 422)
+        assert client.get("/users/1/cart", headers=auth_headers).json()["items"] == []             
 class TestUpdateCartItem:
     def test_update_cart_item_requires_authentication(self, client):
         response = client.put(
