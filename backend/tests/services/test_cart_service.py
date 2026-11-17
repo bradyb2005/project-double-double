@@ -123,8 +123,22 @@ class TestAddToCart:
         cart = cart_service.add_to_cart(1, item_id=1, restaurant_id=1, quantity=1)
 
         assert [(item.item_id, item.quantity) for item in cart.items] == [(1, 1)]
-        
 
+    def test_add_to_cart_inactive_user_raises(self, cart_service, user_repository):
+        user_repository.update_user(1, {"is_active": False})
+
+        with pytest.raises(ValueError, match="Inactive customers"):
+            cart_service.add_to_cart(1, item_id=1, restaurant_id=1, quantity=1)
+
+        assert cart_service.get_cart(1).items == []
+
+    def test_add_to_cart_active_user_still_works(self, cart_service, user_repository):
+        user_repository.update_user(1, {"is_active": True})
+
+        cart = cart_service.add_to_cart(1, item_id=1, restaurant_id=1, quantity=1)
+
+        assert [(item.item_id, item.quantity) for item in cart.items] == [(1, 1)]
+        
 class TestUpdateCart:
     def test_update_combines_existing_duplicate_items(self, cart_service, user_repository):
         user_repository.update_cart(1, {

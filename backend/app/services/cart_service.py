@@ -48,7 +48,7 @@ class CartService:
             "total": float(total),
         }
 
-    def _get_available_menu_item(self, restaurant_id: int, item_id: int) -> dict:
+    def get_available_menu_item(self, restaurant_id: int, item_id: int) -> dict:
         restaurant = self.restaurant_repository.get_restaurant_by_id(restaurant_id)
         if restaurant is None:
             raise ValueError("Restaurant not found")
@@ -58,7 +58,14 @@ class CartService:
         if not menu_item.get("availability", True):
             raise ValueError(f"Menu item with ID {item_id} is not available")
         return menu_item
-    
+
+    def require_active_user(self, user_id: int) -> None:
+        user = self.user_repository.get_user_by_id(user_id)
+        if user is None:
+            raise ValueError("User not found")
+        if not user.get("is_active", True):
+            raise ValueError("Inactive customers cannot modify their cart")
+          
     def apply_totals(self, cart: Cart) -> None:
         for field, value in self.calculate_cart_totals(cart).items():
             setattr(cart, field, value)
@@ -80,12 +87,13 @@ class CartService:
         return cart
 
     def add_to_cart(self, user_id: int, item_id: int, restaurant_id: int, quantity: int) -> Cart:
+        self.require_active_user(user_id)
         cart = self.get_cart(user_id)
 
         if cart.items and any(item.restaurant_id != restaurant_id for item in cart.items):
             raise ValueError("Cannot add items from different restaurants to the cart")
         
-        self._get_available_menu_item(restaurant_id, item_id)
+        self.get_available_menu_item(restaurant_id, item_id)
         item = CartItem(item_id=item_id, restaurant_id=restaurant_id, quantity=quantity)
         existing_item = next((i for i in cart.items if i.item_id == item_id), None)
         if existing_item is not None:
