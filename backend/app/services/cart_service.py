@@ -1,7 +1,17 @@
 from app.repositories.restaurant_repository import RestaurantRepository
 from app.repositories.user_repository import UserRepository
 from app.schemas.cart import Cart, CartItem
+from decimal import ROUND_HALF_UP, Decimal
 
+GST_RATE = Decimal("0.05")
+PST_RATE = Decimal("0.07")  # BC only for now
+SERVICE_CHARGE_RATE = Decimal("0.10")
+CENT = Decimal("0.01")
+
+
+def _money(value) -> Decimal:
+    """Round to cents, half up."""
+    return Decimal(str(value)).quantize(CENT, rounding=ROUND_HALF_UP)
 
 class CartService:
     def __init__(self, user_repository: UserRepository | None = None):
@@ -9,7 +19,7 @@ class CartService:
         self.restaurant_repository = RestaurantRepository()
 
     def calculate_cart_total(self, cart: Cart) -> float:
-        total = 0.0
+        total = Decimal("0.00")
         if cart.items:
             restaurant_id = cart.items[0].restaurant_id
             restaurant = self.restaurant_repository.get_restaurant_by_id(restaurant_id)
@@ -21,8 +31,8 @@ class CartService:
             menu_item = next((i for i in restaurant.get("menu", []) if i["id"] == item.item_id), None)
             if menu_item is None:
                 raise ValueError(f"Menu item with ID {item.item_id} not found in restaurant {restaurant_id}")
-            total += menu_item["price"] * item.quantity
-        return total
+            total += _money(menu_item["price"]) * item.quantity
+        return float(total)
 
     def get_cart(self, user_id: int) -> Cart:
         user = self.user_repository.get_user_by_id(user_id)
