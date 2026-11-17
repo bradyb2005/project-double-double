@@ -1,7 +1,8 @@
+from decimal import ROUND_HALF_UP, Decimal
+
 from app.repositories.restaurant_repository import RestaurantRepository
 from app.repositories.user_repository import UserRepository
 from app.schemas.cart import Cart, CartItem
-from decimal import ROUND_HALF_UP, Decimal
 
 GST_RATE = Decimal("0.05")
 PST_RATE = Decimal("0.07")  # BC only for now
