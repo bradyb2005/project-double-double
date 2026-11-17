@@ -54,7 +54,8 @@ class TestAddToCart:
         updated_cart = cart_service.add_to_cart(1, item_id=1, restaurant_id=1, quantity=1)
 
         assert any(item.item_id == 1 for item in updated_cart.items)
-        assert updated_cart.total == 5.99
+        assert updated_cart.subtotal == 5.99
+        assert updated_cart.total == 7.31
 
     def test_add_to_cart_different_restaurant_raises(self, cart_service):
         cart_service.add_to_cart(1, item_id=1, restaurant_id=1, quantity=1)
@@ -83,7 +84,8 @@ class TestAddToCart:
         updated_cart = cart_service.add_to_cart(1, item_id=1, restaurant_id=1, quantity=2)
 
         assert [item.quantity for item in updated_cart.items if item.item_id == 1] == [3]
-        assert updated_cart.total == pytest.approx(17.97)
+        assert updated_cart.subtotal == pytest.approx(17.97)
+        assert updated_cart.total == pytest.approx(21.93)
         assert cart_service.get_cart(1) == updated_cart
 
     def test_add_to_cart_combines_existing_duplicate_items(self, cart_service, user_repository):
@@ -98,7 +100,8 @@ class TestAddToCart:
         cart = cart_service.add_to_cart(1, item_id=1, restaurant_id=1, quantity=2)
 
         assert [(item.item_id, item.quantity) for item in cart.items] == [(1, 5)]
-        assert cart.total == pytest.approx(29.95)
+        assert cart.subtotal == pytest.approx(29.95)
+        assert cart.total == pytest.approx(36.55)
         assert user_repository.get_user_by_id(1)["cart"] == cart.model_dump(mode="json")
 
 
@@ -116,7 +119,8 @@ class TestUpdateCart:
         cart = cart_service.update_cart_item(1, item_id=1, new_quantity=4)
 
         assert [(item.item_id, item.quantity) for item in cart.items] == [(1, 4), (2, 1)]
-        assert cart.total == pytest.approx(36.46)
+        assert cart.subtotal == pytest.approx(36.46)
+        assert cart.total == pytest.approx(44.48)
         assert user_repository.get_user_by_id(1)["cart"] == cart.model_dump(mode="json")
 
 # class TestRemoveFromCart:
