@@ -153,31 +153,6 @@ class TestUpdateCart:
         assert cart.subtotal == pytest.approx(36.46)
         assert user_repository.get_user_by_id(1)["cart"] == cart.model_dump(mode="json")
 
-class TestCalculateCartTotals:
-    def test_empty_cart_is_all_zero(self, cart_service):
-        from app.schemas.cart import Cart
-
-        assert cart_service.calculate_cart_totals(Cart()) == {
-            "subtotal": 0.0, "gst": 0.0, "pst": 0.0, "service_charge": 0.0, "total": 0.0,
-        }
-
-    def test_charges_are_5_7_and_10_percent_of_subtotal(self, cart_service):
-        from app.schemas.cart import Cart, CartItem
-
-        cart = Cart(items=[CartItem(item_id=2, restaurant_id=1, quantity=1)])  # 12.50
-
-        assert cart_service.calculate_cart_totals(cart) == {
-            "subtotal": 12.50, "gst": 0.63, "pst": 0.88, "service_charge": 1.25, "total": 15.26,
-        }
-
-    def test_unknown_menu_item_raises(self, cart_service):
-        from app.schemas.cart import Cart, CartItem
-
-        cart = Cart(items=[CartItem(item_id=999, restaurant_id=1, quantity=1)])
-
-        with pytest.raises(ValueError, match="not found"):
-            cart_service.calculate_cart_totals(cart)
-
 class TestInactiveUserCannotModifyCart:
     def test_inactive_user_cannot_remove_update_or_clear(self, cart_service, user_repository):
         cart_service.add_to_cart(1, item_id=1, restaurant_id=1, quantity=1)
@@ -208,8 +183,8 @@ class TestInvalidQuantities:
             cart_service.update_cart_item(1, 1, quantity)
 
         assert cart_service.get_cart(1).items[0].quantity == 2
-        
-             
+
+
 # class TestRemoveFromCart:
  
 # class TestClearCart:

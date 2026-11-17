@@ -35,20 +35,6 @@ class CartService:
             total += _money(menu_item["price"]) * item.quantity
         return float(total)
 
-    def calculate_cart_totals(self, cart: Cart) -> dict[str, float]:
-        subtotal = _money(self.calculate_cart_subtotal(cart))
-        gst = _money(subtotal * GST_RATE)
-        pst = _money(subtotal * PST_RATE)
-        service_charge = _money(subtotal * SERVICE_CHARGE_RATE)
-        total = subtotal + gst + pst + service_charge
-        return {
-            "subtotal": float(subtotal),
-            "gst": float(gst),
-            "pst": float(pst),
-            "service_charge": float(service_charge),
-            "total": float(total),
-        }
-
     def get_available_menu_item(self, restaurant_id: int, item_id: int) -> dict:
         restaurant = self.restaurant_repository.get_restaurant_by_id(restaurant_id)
         if restaurant is None:
@@ -67,10 +53,6 @@ class CartService:
         if not user.get("is_active", True):
             raise ValueError("Inactive customers cannot modify their cart")
           
-    def apply_totals(self, cart: Cart) -> None:
-        for field, value in self.calculate_cart_totals(cart).items():
-            setattr(cart, field, value)
-
     def get_cart(self, user_id: int) -> Cart:
         user = self.user_repository.get_user_by_id(user_id)
         if user is None:
