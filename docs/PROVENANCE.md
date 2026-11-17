@@ -856,3 +856,24 @@
 - **Influence:** Replaced switch-role links with a sign-out button that clears the access token and navigates to `/login`.
 - **Validation:** Ran the frontend lint and production build successfully.
 - **PR:** #72
+
+### Entry: Cart totals tests
+
+- **Date:** Tuesday, November 17
+- **Student(s):** @Lxamwastaken
+- **Artifacts:** `backend/tests/services/test_cart_service.py`, `backend/tests/routes/test_cart_routes.py`
+- **Label:**
+  - [ ] AI-GENERATED 🤖
+  - [x] AI-ASSISTED 🤝
+  - [ ] AI-REVISED ✍️
+  - [ ] NO-AI ❌
+- **AI Tool Used:**
+  - [ ] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+  - [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+  - [x] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+  - [ ] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+  - [ ] Other: ____
+- **Purpose:** The old tests expected `total` to be the price before tax. Update them for the new totals and add tests for the three charges.
+- **Influence:** Worked out the new expected numbers and wrote the new test cases (empty cart, rounding, unknown item, charge breakdown). I edited the old assertions to check `subtotal` and `total`.
+- **Validation:** Ran `python -m pytest` and all tests passed.
+- **PR:** #
