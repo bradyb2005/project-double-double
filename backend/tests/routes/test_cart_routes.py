@@ -156,6 +156,33 @@ class TestAddToCart:
         data = response.json()
         assert data["subtotal"] == 17.97
 
+    def test_add_to_cart_unavailable_item_raises_error(self, client, auth_headers, restaurant_repository):
+        restaurants = restaurant_repository.get_all_restaurants()
+        restaurants[0]["menu"][1]["availability"] = False  # item 2 (Test Pasta)
+        restaurant_repository.save_restaurants(restaurants)
+
+        payload = {"item_id": 2, "restaurant_id": 1, "quantity": 1}
+        response = client.post("/users/1/cart/items", json=payload, headers=auth_headers)
+
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert "not available" in response.json()["detail"].lower()
+        assert client.get("/users/1/cart", headers=auth_headers).json()["items"] == []
+
+    def test_add_to_cart_inactive_user_is_rejected(self, client, auth_headers, user_repository):
+        user_repository.update_user(1, {"is_active": False})
+
+        payload = {"item_id": 1, "restaurant_id": 1, "quantity": 1}
+        response = client.post("/users/1/cart/items", json=payload, headers=auth_headers)
+
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+    @pytest.mark.parametrize("quantity", [0, -1, 1.5])
+    def test_add_to_cart_rejects_invalid_quantity(self, client, auth_headers, quantity):
+        payload = {"item_id": 1, "restaurant_id": 1, "quantity": quantity}
+        response = client.post("/users/1/cart/items", json=payload, headers=auth_headers)
+
+        assert response.status_code in (400, 422)
+        assert client.get("/users/1/cart", headers=auth_headers).json()["items"] == []             
 class TestUpdateCartItem:
     def test_update_cart_item_requires_authentication(self, client):
         response = client.put(
