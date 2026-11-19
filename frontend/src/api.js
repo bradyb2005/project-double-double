@@ -58,7 +58,17 @@ export const loginUser = (data) =>
 export const getUser = (id) => request(`/users/${id}`)
 export const updateUser = (id, data) =>
   request(`/users/${id}`, { method: 'PUT', body: JSON.stringify(data) })
-
+// Cart and checkout. The cart holds only ids and quantities; names and prices come from the menu.
+export const getCart = (userId) => request(`/users/${userId}/cart`)
+export const addCartItem = (userId, data) =>
+  request(`/users/${userId}/cart/items`, { method: 'POST', body: JSON.stringify(data) })
+// quantity is a query parameter on this endpoint, not a JSON body.
+export const updateCartItem = (userId, itemId, quantity) =>
+  request(`/users/${userId}/cart/items/${itemId}?quantity=${quantity}`, { method: 'PUT' })
+export const removeCartItem = (userId, itemId) =>
+  request(`/users/${userId}/cart/items/${itemId}`, { method: 'DELETE' })
+export const clearServerCart = (userId) => request(`/users/${userId}/cart`, { method: 'DELETE' })
+export const checkout = (userId) => request(`/users/${userId}/orders/checkout`, { method: 'POST' })
 export const getAccessToken = () => localStorage.getItem(TOKEN_KEY)
 export const saveAccessToken = (token) => localStorage.setItem(TOKEN_KEY, token)
 export const clearAccessToken = () => localStorage.removeItem(TOKEN_KEY)

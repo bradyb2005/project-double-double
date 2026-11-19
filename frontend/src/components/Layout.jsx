@@ -2,15 +2,17 @@ import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { ROLES, roleOf } from '../roles'
 import { clearAccessToken, getAccessToken } from '../api'
-import { cartCount, useDemo } from '../demoStore'
+import { cartCount, refreshCart, useServerCart } from '../cartStore'
 
 export default function Layout() {
   const [open, setOpen] = useState(false)
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const role = roleOf(pathname)
-  const { cart } = useDemo()
+    const { cart } = useServerCart()
   const count = cartCount(cart)
+  // Refetch on every page change so the badge follows login, logout and checkout.
+  useEffect(() => { refreshCart().catch(() => {}) }, [pathname])
   const signedIn = Boolean(getAccessToken())
   const links = (role ? ROLES[role].nav : []).map((l) => ({
     ...l, label: l.to === '/customer/cart' && count ? `Cart (${count})` : l.label,
