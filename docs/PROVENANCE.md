@@ -898,3 +898,24 @@
 - **Influence:** . The inactive-customer route test first expected a 400 and failed with a 401. I changed it to expect 401 after we found the auth dependency rejects inactive users before the cart service runs. Helped finding necessary tests to modify after tests kept failing.
 - **Validation:** Ran `python -m pytest`, and all 187 tests pass and tested the endpoints by hand.
 - **PR:** #76
+
+### Entry: Order business rules tests
+
+- **Date:** Tuesday, November 18
+- **Student(s):** @mooz-55 (Caden)
+- **Artifacts:** `backend/tests/services/test_order_service.py`
+- **Label:**
+  - [ ] AI-GENERATED 🤖
+  - [x] AI-ASSISTED 🤝
+  - [ ] AI-REVISED ✍️
+  - [ ] NO-AI ❌
+- **AI Tool Used:**
+  - [ ] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+  - [x] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+  - [ ] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+  - [ ] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+  - [ ] Other: ____
+- **Purpose:** Review failed tests when issues came from bugs in formatting or syntax. Assisted with making a mock for testing.
+- **Influence:** . Used ChatGPT to assist with mock code, as I kept running into syntax errors. Used ChatGPT to review syntax in tests when tests failed due to misformatted tests.
+- **Validation:** Ran `python -m pytest`, and all tests in `backend/tests/services/test_order_service.py` ran.
+- **PR:** #77
