@@ -1,9 +1,8 @@
-import { useMemo } from 'react'
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { getMenu, formatRating, getRestaurant } from '../../api'
 import { restaurantPhoto } from '../../foodImages'
-import { addToCart, replaceCart, useDemo } from '../../demoStore'
+import { addItem, cartCount, cartRestaurantId, emptyCart, refreshCart, useServerCart } from '../../cartStore'
 import { useFetch } from '../../useFetch'
 import MenuItemRow from '../../components/MenuItemRow'
 import { Empty, ErrorState, Loading } from '../../components/States'
@@ -12,9 +11,13 @@ import NotFound from '../NotFound'
 export default function RestaurantDetail() {
   const { id } = useParams()
   const restaurant = useFetch(() => getRestaurant(id), [id])
-  const { cart } = useDemo()
+  const { cart } = useServerCart()
   const [swap, setSwap] = useState(null)   // an add that needs the cart replaced first
+  const [busy, setBusy] = useState(false)
+  const [cartError, setCartError] = useState('')
   const menu = useFetch(() => getMenu(id), [id])
+
+  useEffect(() => { refreshCart().catch(() => {}) }, [])
 
   // Group by category in first-seen order; the backend gives no category order.
   const groups = useMemo(() => {
@@ -31,11 +34,23 @@ export default function RestaurantDetail() {
   }
 
   const r = restaurant.data
-  const inCart = (itemId) => (cart?.restaurant.id === r?.id ? cart.lines.find((l) => l.itemId === itemId)?.qty : 0)
-  const add = (item) => { const res = addToCart(r, item); if (res.conflict) setSwap(item) }
+  const inCart = (itemId) =>
+    (cartRestaurantId(cart) === r?.id ? cart.items.find((i) => i.item_id === itemId)?.quantity : 0)
+
+  async function run(action) {
+    setBusy(true)
+    setCartError('')
+    try { await action() } catch (e) { setCartError(e.message) } finally { setBusy(false) }
+  }
+
+  const add = (item) => {
+    const otherRestaurant = cartCount(cart) > 0 && cartRestaurantId(cart) !== r.id
+    if (otherRestaurant) { setSwap(item); return }
+    run(() => addItem(r.id, item.id))
+  }
   const addButton = (item) =>
     item.availability === false || !r ? null : (
-      <button className="btn btn--sm" type="button" onClick={() => add(item)} aria-label={`Add ${item.name} to cart`}>
+      <button className="btn btn--sm" type="button" disabled={busy} onClick={() => add(item)} aria-label={`Add ${item.name} to cart`}>
         {inCart(item.id) ? `Add another (${inCart(item.id)})` : 'Add to cart'}
       </button>
     )
@@ -75,9 +90,9 @@ export default function RestaurantDetail() {
           <div className="stack" style={{ '--stack': 'var(--s-4)' }}>
             <span className="eyebrow"><b>#1</b>Menu</span>
             <h2 className="h2">What is on offer</h2>
-            {cart?.lines.length > 0 && (
+            {cartCount(cart) > 0 && (
               <div className="btn-row">
-                <Link className="btn" to="/customer/cart">View cart from {cart.restaurant.name}</Link>
+                <Link className="btn" to="/customer/cart">View cart ({cartCount(cart)})</Link>
               </div>
             )}
           </div>
@@ -91,14 +106,21 @@ export default function RestaurantDetail() {
           {swap && (
             <div className="note stack" style={{ '--stack': 'var(--s-3)' }} role="alert">
               <p className="small">
-                Your cart has items from {cart.restaurant.name}. Start a new cart with {swap.name} from {r?.name}?
+                Your cart has items from another restaurant. Start a new cart with {swap.name} from {r?.name}?
               </p>
               <div className="btn-row btn-row--tight">
-                <button className="btn btn--sm" type="button" onClick={() => { replaceCart(r, swap); setSwap(null) }}>Replace cart</button>
+                <button
+                  className="btn btn--sm" type="button" disabled={busy}
+                  onClick={() => run(async () => { await emptyCart(); await addItem(r.id, swap.id); setSwap(null) })}
+                >
+                  Replace cart
+                </button>
                 <button className="btn btn--sm btn--ghost" type="button" onClick={() => setSwap(null)}>Keep my cart</button>
               </div>
             </div>
           )}
+
+          {cartError && <ErrorState error={{ message: cartError }} />}
 
           {groups.map(([category, items], g) => (
             <div className="stack" style={{ '--stack': 'var(--s-4)' }} key={category}>

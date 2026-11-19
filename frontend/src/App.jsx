@@ -8,6 +8,7 @@ import RestaurantDetail from './pages/customer/RestaurantDetail'
 import Cart from './pages/customer/Cart'
 import Orders from './pages/customer/Orders'
 import OrderTracker from './pages/customer/OrderTracker'
+import OrderConfirmation from './pages/customer/OrderConfirmation'
 import Dashboard from './pages/owner/Dashboard'
 import OwnerMenu from './pages/owner/OwnerMenu'
 import AddRestaurant from './pages/owner/AddRestaurant'
@@ -32,7 +33,8 @@ export default function App() {
         <Route path="customer/cart" element={<Cart />} />
         <Route path="customer/orders" element={<Orders />} />
         <Route path="customer/orders/:orderId" element={<OrderTracker />} />
-
+        <Route path="customer/orders/confirmation/:orderId" element={<OrderConfirmation />} />
+        
         <Route path="owner" element={<Dashboard />} />
         <Route path="owner/menu" element={<OwnerMenu />} />
         <Route path="owner/restaurants/new" element={<AddRestaurant />} />
