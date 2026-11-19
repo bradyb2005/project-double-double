@@ -939,4 +939,4 @@
 - **Purpose:** Issue #61 requires a checkout view, a Place Order button wired to the backend, an order confirmation screen and friendly error messages. The frontend cart was a localStorage demo, so it also had to move onto the real cart endpoints.
 - **Influence:** Generated the cart and checkout API functions, a backend-backed cart store, the rewritten Cart and RestaurantDetail pages and the new confirmation page. Names and prices come from the menu because the backend cart stores only ids and quantities. Delivery details come from the customer's account because checkout takes no request body. The confirmation page reads the checkout response from sessionStorage until the order retrieval endpoint (#63) exists.
 - **Validation:** `npm run lint` and `npm run build` pass. Ran the app against the backend: added an item, viewed the cart, placed the order, checked the confirmation page and the saved order in `orders.json`, and tried the unavailable-item and stopped-backend cases.
-- **PR:** #
+- **PR:** #78
