@@ -1,7 +1,7 @@
-import pytest
-from unittest.mock import MagicMock
 from types import SimpleNamespace
+from unittest.mock import MagicMock
 
+import pytest
 from app.services.order_service import OrderService
 
 

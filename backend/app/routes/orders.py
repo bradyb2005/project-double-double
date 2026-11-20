@@ -1,11 +1,8 @@
 from app.core.dependencies import require_same_user
-from app.schemas.order import Order
 from app.schemas.error import ErrorResponse
+from app.schemas.order import Order
 from app.services.order_service import OrderService
-
-from fastapi import APIRouter, Depends, HTTPException, Path, Query, status
-
-
+from fastapi import APIRouter, Depends, HTTPException, Path, status
 
 router = APIRouter()
 
