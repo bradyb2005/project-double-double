@@ -4,9 +4,6 @@ from app.schemas.user import LoginRequest, LoginResponse
 from app.services.login_service import LoginService
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from app.repositories.user_repository import UserRepository
-from app.services.login_service import LoginService
-
 router = APIRouter()
 
 def get_login_service() -> LoginService:

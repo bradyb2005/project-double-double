@@ -1,12 +1,10 @@
-from app.repositories.user_repository import UserRepository
-from app.repositories.restaurant_repository import RestaurantRepository
-from app.repositories.order_repository import OrderRepository
-from app.services.cart_service import CartService
-
-
 from datetime import UTC, datetime
-from decimal import Decimal, ROUND_HALF_UP
+from decimal import ROUND_HALF_UP, Decimal
 
+from app.repositories.order_repository import OrderRepository
+from app.repositories.restaurant_repository import RestaurantRepository
+from app.repositories.user_repository import UserRepository
+from app.services.cart_service import CartService
 
 CENT = Decimal("0.01")
 

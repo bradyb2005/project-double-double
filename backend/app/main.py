@@ -1,8 +1,8 @@
 from app.routes.carts import router as carts_router
 from app.routes.login import router as login_router
+from app.routes.orders import router as orders_router
 from app.routes.restaurants import router as restaurant_router
 from app.routes.users import router as user_router
-from app.routes.orders import router as orders_router
 from fastapi import FastAPI
 
 app = FastAPI(
