@@ -37,6 +37,12 @@ class OrderRepository:
                 return order
         return None
 
+    def get_orders_by_customer_id(self, customer_id: int):
+        return [
+            order for order in self.get_all_orders()
+            if order.get("customer_id") == customer_id
+        ]
+
     def create_order(self, order: dict):
         orders = self.get_all_orders()
         next_id = max((o.get("id", 0) for o in orders), default = 0 ) + 1
