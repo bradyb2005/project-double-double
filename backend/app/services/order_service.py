@@ -140,3 +140,17 @@ class OrderService:
             self.cart_service.clear_cart(user_id)
 
         return created_order
+
+    def get_customer_orders(self, user_id: int):
+        orders = self.order_repository.get_orders_by_customer_id(user_id)
+        return sorted(
+            orders,
+            key=lambda order: (order.get("created_at", ""), order.get("id", 0)),
+            reverse=True,
+        )
+
+    def get_customer_order(self, user_id: int, order_id: int):
+        order = self.order_repository.get_order_by_id(order_id)
+        if order is None or order.get("customer_id") != user_id:
+            raise ValueError(f"Order with ID {order_id} not found.")
+        return order
