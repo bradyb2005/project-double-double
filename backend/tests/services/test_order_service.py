@@ -262,3 +262,58 @@ class TestPersistence:
             service.checkout(1)
 
         service.cart_service.clear_cart.assert_not_called()
+
+@pytest.fixture
+def stored_orders():
+    return [
+        {"id": 1, "customer_id": 1, "status": "delivered", "created_at": "2026-11-01T12:00:00+00:00"},
+        {"id": 2, "customer_id": 2, "status": "pending", "created_at": "2026-11-02T12:00:00+00:00"},
+        {"id": 3, "customer_id": 1, "status": "pending", "created_at": "2026-11-03T12:00:00+00:00"},
+    ]
+
+
+@pytest.fixture
+def history_service(service, stored_orders):
+    repo = service.order_repository
+    repo.get_orders_by_customer_id.side_effect = lambda customer_id: [
+        order for order in stored_orders if order["customer_id"] == customer_id
+    ]
+    repo.get_order_by_id.side_effect = lambda order_id: next(
+        (order for order in stored_orders if order["id"] == order_id), None
+    )
+    return service
+
+
+class TestCustomerOrders:
+    def test_lists_only_the_customers_orders(self, history_service):
+        orders = history_service.get_customer_orders(1)
+
+        assert {order["customer_id"] for order in orders} == {1}
+        assert len(orders) == 2
+
+
+    def test_lists_newest_first(self, history_service):
+        orders = history_service.get_customer_orders(1)
+
+        assert [order["id"] for order in orders] == [3, 1]
+
+
+    def test_lists_nothing_for_customer_without_orders(self, history_service):
+        assert history_service.get_customer_orders(42) == []
+
+
+    def test_gets_own_order(self, history_service):
+        order = history_service.get_customer_order(1, 3)
+
+        assert order["id"] == 3
+        assert order["status"] == "pending"
+
+
+    def test_get_missing_order(self, history_service):
+        with pytest.raises(ValueError, match="not found"):
+            history_service.get_customer_order(1, 999)
+
+
+    def test_get_another_customers_order(self, history_service):
+        with pytest.raises(ValueError, match="not found"):
+            history_service.get_customer_order(1, 2)
