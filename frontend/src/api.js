@@ -69,6 +69,18 @@ export const removeCartItem = (userId, itemId) =>
   request(`/users/${userId}/cart/items/${itemId}`, { method: 'DELETE' })
 export const clearServerCart = (userId) => request(`/users/${userId}/cart`, { method: 'DELETE' })
 export const checkout = (userId) => request(`/users/${userId}/orders/checkout`, { method: 'POST' })
+export const getOrders = (userId) => request(`/users/${userId}/orders`)
+export const getOrder = (userId, orderId) => request(`/users/${userId}/orders/${orderId}`)
+export const ORDER_STATUS = {
+  pending: 'Pending', preparing: 'Preparing', out_for_delivery: 'Out for delivery',
+  delivered: 'Delivered', cancelled: 'Cancelled',
+}
+export const ORDER_STEPS = ['pending', 'preparing', 'out_for_delivery', 'delivered']
+export const orderStatusLabel = (status) => ORDER_STATUS[status] ?? status
+export const isOrderActive = (order) => !['delivered', 'cancelled'].includes(order.status)
+export const formatOrderTime = (iso) =>
+  new Date(iso).toLocaleString('en-CA', { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })
+export const orderItemSummary = (order) => order.items.map((i) => `${i.quantity} x ${i.name}`).join(', ')
 export const getAccessToken = () => localStorage.getItem(TOKEN_KEY)
 export const saveAccessToken = (token) => localStorage.setItem(TOKEN_KEY, token)
 export const clearAccessToken = () => localStorage.removeItem(TOKEN_KEY)

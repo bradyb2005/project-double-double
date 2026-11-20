@@ -940,3 +940,24 @@
 - **Influence:** Generated the cart and checkout API functions, a backend-backed cart store, the rewritten Cart and RestaurantDetail pages and the new confirmation page. Names and prices come from the menu because the backend cart stores only ids and quantities. Delivery details come from the customer's account because checkout takes no request body. The confirmation page reads the checkout response from sessionStorage until the order retrieval endpoint (#63) exists.
 - **Validation:** `npm run lint` and `npm run build` pass. Ran the app against the backend: added an item, viewed the cart, placed the order, checked the confirmation page and the saved order in `orders.json`, and tried the unavailable-item and stopped-backend cases.
 - **PR:** #78
+
+### Entry: Frontend order history and order details
+
+- **Date:** Thursday, November 19
+- **Student(s):** @advvaith
+- **Artifacts:** `frontend/src/api.js`, `frontend/src/pages/customer/Orders.jsx`, `frontend/src/pages/customer/OrderTracker.jsx`
+- **Label:**
+  - [x] AI-GENERATED 🤖
+  - [ ] AI-ASSISTED 🤝
+  - [ ] AI-REVISED ✍️
+  - [ ] NO-AI ❌
+- **AI Tool Used:**
+  - [ ] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+  - [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+  - [x] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+  - [ ] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+  - [ ] Other: ____
+- **Purpose:** Issue #64 requires an order history page listing past orders with date, total and status, a details view with the itemized list and total, and handling for an empty history. The Orders and order pages still read from the localStorage demo store.
+- **Influence:** Generated the `getOrders` and `getOrder` API functions, the order status and formatting helpers, and the rewritten Orders and order details pages. Removed the demo Cancel button from the order details page, and the progress list shows only the current status.
+- **Validation:** `npm run lint` and `npm run build` pass. Ran the app and checked the order list, the details page, the empty history, another customer's order (Order not found) and the signed-out state, in Chromium and WebKit at phone and desktop widths.
+- **PR:** #
