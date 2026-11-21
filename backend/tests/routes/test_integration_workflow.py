@@ -67,11 +67,12 @@ def override_integration_dependencies(
 @pytest.fixture(autouse=True)
 def clear_user_cart_before_test(user_repository):
     """Clear the test user's cart before each test to prevent state contamination."""
-    # Get user 1 from the repository
-    user = user_repository.get_user_by_id(1)
-    if user:
-        user["cart"] = {"items": [], "total": 0.0, "subtotal": 0.0}
-        user_repository.save_users([user])
+    # Get all users, clear user 1's cart, and save
+    users = user_repository.get_all_users()
+    for user in users:
+        if user.get("id") == 1:
+            user["cart"] = {"items": [], "total": 0.0, "subtotal": 0.0}
+    user_repository.save_users(users)
     yield
 
 
