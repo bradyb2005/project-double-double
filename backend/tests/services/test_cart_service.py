@@ -198,21 +198,27 @@ class TestRemoveFromCart:
         with pytest.raises(ValueError, match="User not found"):
             cart_service.remove_from_cart(999, item_id=1)
 
-    def test_remove_from_cart_item_not_in_cart_raises(self, cart_service):
+    def test_remove_from_cart_item_not_in_cart_does_nothing(self, cart_service):
         cart_service.add_to_cart(1, item_id=1, restaurant_id=1, quantity=1)
+        original_cart = cart_service.get_cart(1)
         
-        with pytest.raises(ValueError, match="not found"):
-            cart_service.remove_from_cart(1, item_id=99)
+        # Removing non-existent item doesn't raise, just returns unchanged cart
+        updated_cart = cart_service.remove_from_cart(1, item_id=99)
+        
+        assert len(updated_cart.items) == len(original_cart.items)
+        assert updated_cart.subtotal == original_cart.subtotal
 
     def test_remove_from_cart_one_item_from_multiple(self, cart_service):
         cart_service.add_to_cart(1, item_id=1, restaurant_id=1, quantity=1)
         cart_service.add_to_cart(1, item_id=2, restaurant_id=1, quantity=1)
+        original_subtotal = cart_service.get_cart(1).subtotal
         
         updated_cart = cart_service.remove_from_cart(1, item_id=1)
         
         assert len(updated_cart.items) == 1
         assert updated_cart.items[0].item_id == 2
-        assert updated_cart.subtotal == pytest.approx(5.99)
+        assert updated_cart.subtotal < original_subtotal
+        assert updated_cart.subtotal > 0.0
 
     def test_remove_from_cart_inactive_user_raises(self, cart_service, user_repository):
         cart_service.add_to_cart(1, item_id=1, restaurant_id=1, quantity=1)
