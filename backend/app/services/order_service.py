@@ -15,9 +15,6 @@ def money(value):
         rounding=ROUND_HALF_UP
     )
 
-
-
-
 class OrderService:
     def __init__(
         self,
