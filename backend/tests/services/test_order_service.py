@@ -113,8 +113,14 @@ class TestCheckout:
     def test_checkout_calculates_correct_total(self, service):
         order = service.checkout(1)
 
-        # 2 x $8.49 + 1 x $9.79
-        assert order["total_price"] == 26.77
+        # 2 x $8.49 + 1 x $9.79 = $26.77 subtotal
+        # GST (5%) = $1.34, PST (7%) = $1.87, Service (10%) = $2.68
+        # Total = $32.66
+        assert order["subtotal"] == 26.77
+        assert round(order["gst"], 2) == 1.34
+        assert round(order["pst"], 2) == 1.87
+        assert round(order["service_charge"], 2) == 2.68
+        assert round(order["total_price"], 2) == 32.66
 
 
     def test_checkout_saves_item_snapshots(self, service):
@@ -180,8 +186,14 @@ class TestCheckout:
 
         order = service.checkout(1)
 
-        # 2 x $10.00 + 1 x $9.79
-        assert order["total_price"] == 29.79
+        # 2 x $10.00 + 1 x $9.79 = $29.79 subtotal
+        # GST (5%) = $1.49, PST (7%) = $2.09, Service (10%) = $2.98
+        # Total = $36.35
+        assert order["subtotal"] == 29.79
+        assert round(order["gst"], 2) == 1.49
+        assert round(order["pst"], 2) == 2.09
+        assert round(order["service_charge"], 2) == 2.98
+        assert round(order["total_price"], 2) == 36.35
 
         assert order["items"][0]["price"] == 10.00
 

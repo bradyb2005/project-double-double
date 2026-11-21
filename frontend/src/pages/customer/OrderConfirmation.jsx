@@ -60,6 +60,24 @@ export default function OrderConfirmation() {
               ))}
             </ul>
             <div className="step">
+              <span className="eyebrow">Subtotal</span>
+              <p className="work__price num">{formatPrice(order.subtotal)}</p>
+            </div>
+            <div className="step small">
+              <div className="step">
+                <span>GST (5%)</span>
+                <p className="num">{formatPrice(order.gst)}</p>
+              </div>
+              <div className="step">
+                <span>PST (7%)</span>
+                <p className="num">{formatPrice(order.pst)}</p>
+              </div>
+              <div className="step">
+                <span>Service charge (10%)</span>
+                <p className="num">{formatPrice(order.service_charge)}</p>
+              </div>
+            </div>
+            <div className="step">
               <span className="eyebrow">Total</span>
               <p className="work__price num">{formatPrice(order.total_price)}</p>
             </div>

@@ -15,9 +15,6 @@ def money(value):
         rounding=ROUND_HALF_UP
     )
 
-
-
-
 class OrderService:
     def __init__(
         self,
@@ -118,13 +115,24 @@ class OrderService:
             "address": user.get("address")
         }
 
+        # Calculate fees: GST (5%), PST (7% for BC), service charge (10%)
+        subtotal = money(total)
+        gst = money(subtotal * Decimal("0.05"))
+        pst = money(subtotal * Decimal("0.07"))  # BC rate for now
+        service_charge = money(subtotal * Decimal("0.10"))
+        total_price = money(subtotal + gst + pst + service_charge)
+
         # Create order data
         order = {
             "customer_id": user_id,
             "customer_details": customer_details,
             "restaurant_id": restaurant_id,
             "items": order_items,
-            "total_price": float(money(total)),
+            "subtotal": float(subtotal),
+            "gst": float(gst),
+            "pst": float(pst),
+            "service_charge": float(service_charge),
+            "total_price": float(total_price),
             "status": "pending",
             "created_at": datetime.now(UTC).isoformat()
         }

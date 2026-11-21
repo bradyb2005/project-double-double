@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Field from '../components/Field'
-import { loginUser, saveAccessToken } from '../api'
+import { loginUser, saveAccessToken, getAccessToken } from '../api'
 
 const TEST_ACCOUNTS = [
   { label: 'Fill customer test account', email: 'customer.test@example.com', password: 'SecurePassword123!' },
@@ -16,6 +16,12 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
+
+  useEffect(() => {
+    if (getAccessToken()) {
+      navigate('/customer/account')
+    }
+  }, [])
 
   function fillAccount(account) {
     setEmail(account.email)

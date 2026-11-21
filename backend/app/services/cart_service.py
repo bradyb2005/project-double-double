@@ -4,9 +4,6 @@ from app.repositories.restaurant_repository import RestaurantRepository
 from app.repositories.user_repository import UserRepository
 from app.schemas.cart import Cart, CartItem
 
-# GST_RATE = Decimal("0.05")
-# PST_RATE = Decimal("0.07")  # BC only for now
-# SERVICE_CHARGE_RATE = Decimal("0.10")
 CENT = Decimal("0.01")
 
 

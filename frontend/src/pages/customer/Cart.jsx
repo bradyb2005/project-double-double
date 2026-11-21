@@ -110,10 +110,27 @@ export default function Cart() {
             ))}
           </ul>
           <div className="step">
-            <span className="eyebrow">Total</span>
+            <span className="eyebrow">Subtotal</span>
             <p className="work__price num">{formatPrice(totalCents / 100)}</p>
           </div>
-          <p className="small muted">Taxes and service charges are not added yet.</p>
+          <div className="step small">
+            <div className="step">
+              <span>GST (5%)</span>
+              <p className="num">{formatPrice((totalCents * 0.05) / 100)}</p>
+            </div>
+            <div className="step">
+              <span>PST (7%)</span>
+              <p className="num">{formatPrice((totalCents * 0.07) / 100)}</p>
+            </div>
+            <div className="step">
+              <span>Service charge (10%)</span>
+              <p className="num">{formatPrice((totalCents * 0.10) / 100)}</p>
+            </div>
+          </div>
+          <div className="step">
+            <span className="eyebrow">Total</span>
+            <p className="work__price num">{formatPrice((totalCents * 1.22) / 100)}</p>
+          </div>
           <div className="btn-row btn-row--tight">
             <Link className="btn btn--ghost btn--sm" to={`/customer/restaurants/${restaurantId}`}>Add more</Link>
             <button className="btn btn--ghost btn--sm" type="button" disabled={busy} onClick={() => run(emptyCart)}>Empty cart</button>

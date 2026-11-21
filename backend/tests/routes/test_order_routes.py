@@ -9,6 +9,12 @@ from fastapi import status
 
 
 def make_order(order_id, customer_id, created_at, status_value="pending"):
+    subtotal = 24.48  # (5.99 * 2) + (12.5 * 1)
+    gst = round(subtotal * 0.05, 2)
+    pst = round(subtotal * 0.07, 2)
+    service_charge = round(subtotal * 0.10, 2)
+    total_price = round(subtotal + gst + pst + service_charge, 2)
+    
     return {
         "id": order_id,
         "customer_id": customer_id,
@@ -29,7 +35,11 @@ def make_order(order_id, customer_id, created_at, status_value="pending"):
             {"item_id": 1, "name": "Test Soup", "price": 5.99, "quantity": 2},
             {"item_id": 2, "name": "Test Pasta", "price": 12.5, "quantity": 1},
         ],
-        "total_price": 24.48,
+        "subtotal": subtotal,
+        "gst": gst,
+        "pst": pst,
+        "service_charge": service_charge,
+        "total_price": total_price,
         "status": status_value,
         "created_at": created_at,
     }
@@ -109,7 +119,8 @@ class TestGetOrder:
         data = response.json()
         assert data["id"] == 3
         assert data["status"] == "pending"
-        assert data["total_price"] == 24.48
+        assert data["subtotal"] == 24.48
+        assert round(data["total_price"], 2) == 29.86
         assert data["items"] == [
             {"item_id": 1, "name": "Test Soup", "price": 5.99, "quantity": 2},
             {"item_id": 2, "name": "Test Pasta", "price": 12.5, "quantity": 1},

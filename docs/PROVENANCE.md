@@ -960,4 +960,46 @@
 - **Purpose:** Issue #64 requires an order history page listing past orders with date, total and status, a details view with the itemized list and total, and handling for an empty history. The Orders and order pages still read from the localStorage demo store.
 - **Influence:** Generated the `getOrders` and `getOrder` API functions, the order status and formatting helpers, and the rewritten Orders and order details pages. Removed the demo Cancel button from the order details page, and the progress list shows only the current status.
 - **Validation:** `npm run lint` and `npm run build` pass. Ran the app and checked the order list, the details page, the empty history, another customer's order (Order not found) and the signed-out state, in Chromium and WebKit at phone and desktop widths.
-- **PR:** #
+- **PR:** #80
+
+### Entry: Missing cart service tests (RemoveFromCart and ClearCart)
+
+- **Date:** Friday, November 20
+- **Student(s):** @bradyb2005
+- **Artifacts:** `backend/tests/services/test_cart_service.py`
+- **Label:**
+  - [x] AI-GENERATED 🤖
+  - [ ] AI-ASSISTED 🤝
+  - [ ] AI-REVISED ✍️
+  - [ ] NO-AI ❌
+- **AI Tool Used:**
+  - [ ] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+  - [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+  - [x] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+  - [ ] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+  - [ ] Other: ____
+- **Purpose:** M2 requirements mandate test coverage for all cart service operations. Two test classes were left empty: `TestRemoveFromCart` and `TestClearCart`. Generated comprehensive tests to complete M2 test coverage.
+- **Influence:** Generated 12 test cases total (6 per class) following existing test patterns in the codebase. Tests cover: item removal with verification, error handling for invalid items, inactive user restrictions, and data persistence. Clear cart tests cover: clearing operations, empty cart handling, inactive user blocks, and repository persistence verification.
+- **Validation:** Ran `python -m pytest backend/tests/services/test_cart_service.py` and all 34 tests pass. Tests follow naming conventions and assertion patterns consistent with existing test suite.
+- **PR:** #85
+
+### Entry: Integration test for complete customer workflow
+
+- **Date:** Friday, November 20
+- **Student(s):** @bradyb2005
+- **Artifacts:** `backend/tests/routes/test_integration_workflow.py`
+- **Label:**
+  - [x] AI-GENERATED 🤖
+  - [ ] AI-ASSISTED 🤝
+  - [ ] AI-REVISED ✍️
+  - [ ] NO-AI ❌
+- **AI Tool Used:**
+  - [ ] Gemini <img src="https://shorturl.at/aT3Bx" width="16" align="top 60%"/>
+  - [ ] ChatGPT <img src="https://shorturl.at/BmeCK" width="16" align="top 60%"/>
+  - [x] Claude <img src="https://shorturl.at/pAFE7" width="16" align="top 60%"/>
+  - [ ] Copilot <img src="https://shorturl.at/P9VwD" width="16" align="top 60%"/>
+  - [ ] Other: ____
+- **Purpose:** M2 requirements mandate at least 1 integrated test per team member demonstrating the complete workflow: Customer Registration → Browse Restaurants → Add to Cart → Checkout → Order Created. Generated comprehensive integration test class to validate end-to-end system behavior.
+- **Influence:** Generated 5 integrated test methods following existing route test patterns. Tests verify: complete workflow from registration to order creation, deactivated customer rejection, unavailable item rejection at checkout, price revalidation during checkout, and single-restaurant constraint enforcement.
+- **Validation:** Test file created with 320 lines demonstrating all major business rules and workflow steps. Tests follow naming conventions and assertion patterns consistent with existing test suite.
+- **PR:** #85
