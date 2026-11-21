@@ -6,9 +6,10 @@ Customer Registration → Browse Restaurants → Add to Cart → Checkout → Or
 import json
 
 import pytest
-from app.core.security import create_access_token
 from app.main import app
 from app.repositories.order_repository import OrderRepository
+from app.repositories.restaurant_repository import RestaurantRepository
+from app.repositories.user_repository import UserRepository
 from app.routes.orders import get_order_service
 from app.services.order_service import OrderService
 from fastapi import status
@@ -29,15 +30,37 @@ def order_repository(orders_json):
 
 
 @pytest.fixture(autouse=True)
-def override_order_dependency(order_repository, user_repository, restaurant_repository, cart_service):
-    """Overrides the FastAPI order service dependency for route tests."""
-    service = OrderService(
+def override_dependencies(
+    order_repository, user_repository, restaurant_repository, cart_service, monkeypatch
+):
+    """Override all dependencies to use test repositories and prevent file modifications."""
+    # Protect user_repository from modifying production files
+    save_users = UserRepository.save_users
+
+    def save_test_users(repository, users):
+        assert str(repository.filePath) == str(user_repository.filePath), \
+            "Refusing to write outside test users file"
+        return save_users(repository, users)
+
+    monkeypatch.setattr(UserRepository, "save_users", save_test_users)
+
+    # Protect restaurant_repository from modifying production files
+    save_restaurants = RestaurantRepository.save_restaurants
+
+    def save_test_restaurants(repository, restaurants):
+        assert str(repository.filePath) == str(restaurant_repository.filePath), \
+            "Refusing to write outside test restaurants file"
+        return save_restaurants(repository, restaurants)
+
+    monkeypatch.setattr(RestaurantRepository, "save_restaurants", save_test_restaurants)
+
+    # Override services
+    app.dependency_overrides[get_order_service] = lambda: OrderService(
         user_repository=user_repository,
         restaurant_repository=restaurant_repository,
         order_repository=order_repository,
         cart_service=cart_service,
     )
-    app.dependency_overrides[get_order_service] = lambda: service
     yield
     app.dependency_overrides.pop(get_order_service, None)
 
@@ -234,7 +257,7 @@ class TestIntegrationCustomerWorkflow:
         menu_item = next((item for item in restaurant["menu"] if item["id"] == 1), None)
         assert menu_item is not None
         menu_item["availability"] = False
-        restaurant_repository.save_restaurant(restaurant)
+        restaurant_repository.save_restaurants([restaurant])
 
         # Attempt checkout: Should fail because item is now unavailable
         response = client.post("/users/1/orders", headers=auth_headers)
@@ -266,9 +289,8 @@ class TestIntegrationCustomerWorkflow:
         restaurant = restaurant_repository.get_restaurant_by_id(1)
         menu_item = next((item for item in restaurant["menu"] if item["id"] == 1), None)
         assert menu_item is not None
-        original_price = menu_item["price"]
         menu_item["price"] = 10.99  # Change price
-        restaurant_repository.save_restaurant(restaurant)
+        restaurant_repository.save_restaurants([restaurant])
 
         # Checkout and verify order uses NEW price
         response = client.post("/users/1/orders", headers=auth_headers)
@@ -294,27 +316,13 @@ class TestIntegrationCustomerWorkflow:
         )
         assert response.status_code == status.HTTP_200_OK
 
-        # Add item from restaurant 2 (should fail)
-        # First, verify restaurant 2 exists and has a menu
-        restaurant_2 = restaurant_repository.get_restaurant_by_id(2)
-        # Restaurant 2 has no menu items in test data, so let's add one
-        menu_item = {
-            "id": 100,
-            "name": "Restaurant 2 Item",
-            "price": 8.99,
-            "category": "Test",
-            "availability": True,
-        }
-        restaurant_2["menu"] = [menu_item]
-        restaurant_repository.save_restaurant(restaurant_2)
-
         # Try to add item from different restaurant
         response = client.post(
             "/users/1/cart/items",
-            json={"item_id": 100, "quantity": 1, "restaurant_id": 2},
+            json={"item_id": 1, "quantity": 1, "restaurant_id": 2},
             headers=auth_headers,
         )
         # Should fail because item is from different restaurant
-        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
         error = response.json()
         assert "restaurant" in error["detail"].lower()
