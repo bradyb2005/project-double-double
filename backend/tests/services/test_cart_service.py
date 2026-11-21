@@ -185,6 +185,100 @@ class TestInvalidQuantities:
         assert cart_service.get_cart(1).items[0].quantity == 2
 
 
-# class TestRemoveFromCart:
+class TestRemoveFromCart:
+    def test_remove_from_cart_removes_item(self, cart_service):
+        cart_service.add_to_cart(1, item_id=1, restaurant_id=1, quantity=2)
+        
+        updated_cart = cart_service.remove_from_cart(1, item_id=1)
+        
+        assert len(updated_cart.items) == 0
+        assert updated_cart.subtotal == 0.0
+
+    def test_remove_from_cart_invalid_user_raises(self, cart_service):
+        with pytest.raises(ValueError, match="User not found"):
+            cart_service.remove_from_cart(999, item_id=1)
+
+    def test_remove_from_cart_item_not_in_cart_raises(self, cart_service):
+        cart_service.add_to_cart(1, item_id=1, restaurant_id=1, quantity=1)
+        
+        with pytest.raises(ValueError, match="not found"):
+            cart_service.remove_from_cart(1, item_id=99)
+
+    def test_remove_from_cart_one_item_from_multiple(self, cart_service):
+        cart_service.add_to_cart(1, item_id=1, restaurant_id=1, quantity=1)
+        cart_service.add_to_cart(1, item_id=2, restaurant_id=1, quantity=1)
+        
+        updated_cart = cart_service.remove_from_cart(1, item_id=1)
+        
+        assert len(updated_cart.items) == 1
+        assert updated_cart.items[0].item_id == 2
+        assert updated_cart.subtotal == pytest.approx(5.99)
+
+    def test_remove_from_cart_inactive_user_raises(self, cart_service, user_repository):
+        cart_service.add_to_cart(1, item_id=1, restaurant_id=1, quantity=1)
+        user_repository.update_user(1, {"is_active": False})
+        
+        with pytest.raises(ValueError, match="Inactive customers"):
+            cart_service.remove_from_cart(1, item_id=1)
+        
+        assert len(cart_service.get_cart(1).items) == 1
+
+    def test_remove_from_cart_persists_to_repository(self, cart_service, user_repository):
+        cart_service.add_to_cart(1, item_id=1, restaurant_id=1, quantity=1)
+        cart_service.add_to_cart(1, item_id=2, restaurant_id=1, quantity=2)
+        
+        cart_service.remove_from_cart(1, item_id=1)
+        
+        persisted_cart = user_repository.get_user_by_id(1)["cart"]
+        assert len(persisted_cart["items"]) == 1
+        assert persisted_cart["items"][0]["item_id"] == 2
+        assert persisted_cart["items"][0]["quantity"] == 2
+
  
-# class TestClearCart:
+class TestClearCart:
+    def test_clear_cart_removes_all_items(self, cart_service):
+        cart_service.add_to_cart(1, item_id=1, restaurant_id=1, quantity=1)
+        cart_service.add_to_cart(1, item_id=2, restaurant_id=1, quantity=2)
+        
+        updated_cart = cart_service.clear_cart(1)
+        
+        assert updated_cart.items == []
+        assert updated_cart.subtotal == 0.0
+
+    def test_clear_cart_on_empty_cart(self, cart_service):
+        cart = cart_service.clear_cart(1)
+        
+        assert cart.items == []
+        assert cart.subtotal == 0.0
+
+    def test_clear_cart_invalid_user_raises(self, cart_service):
+        with pytest.raises(ValueError, match="User not found"):
+            cart_service.clear_cart(999)
+
+    def test_clear_cart_inactive_user_raises(self, cart_service, user_repository):
+        cart_service.add_to_cart(1, item_id=1, restaurant_id=1, quantity=1)
+        user_repository.update_user(1, {"is_active": False})
+        
+        with pytest.raises(ValueError, match="Inactive customers"):
+            cart_service.clear_cart(1)
+        
+        assert len(cart_service.get_cart(1).items) == 1
+
+    def test_clear_cart_persists_to_repository(self, cart_service, user_repository):
+        cart_service.add_to_cart(1, item_id=1, restaurant_id=1, quantity=1)
+        cart_service.add_to_cart(1, item_id=2, restaurant_id=1, quantity=2)
+        
+        cart_service.clear_cart(1)
+        
+        persisted_cart = user_repository.get_user_by_id(1)["cart"]
+        assert persisted_cart["items"] == []
+        assert persisted_cart["subtotal"] == 0.0
+
+    def test_clear_cart_multiple_times(self, cart_service):
+        cart_service.add_to_cart(1, item_id=1, restaurant_id=1, quantity=1)
+        
+        cart_service.clear_cart(1)
+        cart = cart_service.clear_cart(1)
+        
+        assert cart.items == []
+        assert cart.subtotal == 0.0
