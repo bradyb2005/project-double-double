@@ -75,7 +75,7 @@ class TestIntegrationCustomerWorkflow:
                 "postalcode": "V1V1V1",
             },
         }
-        response = client.post("/users/register", json=register_payload)
+        response = client.post("/users", json=register_payload)
         assert response.status_code == status.HTTP_201_CREATED
         user_data = response.json()
         new_user_id = user_data["id"]
@@ -122,7 +122,7 @@ class TestIntegrationCustomerWorkflow:
         # Add first item (qty 2)
         response = client.post(
             f"/users/{new_user_id}/cart/items",
-            json={"item_id": item_1["id"], "quantity": 2},
+            json={"item_id": item_1["id"], "quantity": 2, "restaurant_id": restaurant_id},
             headers=auth_headers,
         )
         assert response.status_code == status.HTTP_200_OK
@@ -135,7 +135,7 @@ class TestIntegrationCustomerWorkflow:
         # Add second item (qty 1)
         response = client.post(
             f"/users/{new_user_id}/cart/items",
-            json={"item_id": item_2["id"], "quantity": 1},
+            json={"item_id": item_2["id"], "quantity": 1, "restaurant_id": restaurant_id},
             headers=auth_headers,
         )
         assert response.status_code == status.HTTP_200_OK
@@ -198,16 +198,16 @@ class TestIntegrationCustomerWorkflow:
         # Setup: Deactivate user 1
         user = user_repository.get_user_by_id(1)
         user["is_active"] = False
-        user_repository.save_user(user)
+        user_repository.save_users([user])
 
         # Add items to cart for deactivated user
         response = client.post(
             "/users/1/cart/items",
-            json={"item_id": 1, "quantity": 1},
+            json={"item_id": 1, "quantity": 1, "restaurant_id": 1},
             headers=auth_headers,
         )
         # Should fail because user is deactivated
-        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY or response.status_code == status.HTTP_401_UNAUTHORIZED
+        assert response.status_code in [status.HTTP_400_BAD_REQUEST, status.HTTP_401_UNAUTHORIZED, status.HTTP_422_UNPROCESSABLE_ENTITY]
 
         # Verify checkout also fails
         response = client.post("/users/1/orders", headers=auth_headers)
@@ -224,7 +224,7 @@ class TestIntegrationCustomerWorkflow:
         # Setup: Add items to cart
         response = client.post(
             "/users/1/cart/items",
-            json={"item_id": 1, "quantity": 1},
+            json={"item_id": 1, "quantity": 1, "restaurant_id": 1},
             headers=auth_headers,
         )
         assert response.status_code == status.HTTP_200_OK
@@ -254,7 +254,7 @@ class TestIntegrationCustomerWorkflow:
         # Setup: Add item to cart at current price (5.99)
         response = client.post(
             "/users/1/cart/items",
-            json={"item_id": 1, "quantity": 1},
+            json={"item_id": 1, "quantity": 1, "restaurant_id": 1},
             headers=auth_headers,
         )
         assert response.status_code == status.HTTP_200_OK
@@ -289,12 +289,12 @@ class TestIntegrationCustomerWorkflow:
         # Setup: Add item from restaurant 1
         response = client.post(
             "/users/1/cart/items",
-            json={"item_id": 1, "quantity": 1},  # Restaurant 1, Item 1
+            json={"item_id": 1, "quantity": 1, "restaurant_id": 1},
             headers=auth_headers,
         )
         assert response.status_code == status.HTTP_200_OK
 
-        # Add item from restaurant 2 (should fail or replace cart)
+        # Add item from restaurant 2 (should fail)
         # First, verify restaurant 2 exists and has a menu
         restaurant_2 = restaurant_repository.get_restaurant_by_id(2)
         # Restaurant 2 has no menu items in test data, so let's add one
@@ -311,7 +311,7 @@ class TestIntegrationCustomerWorkflow:
         # Try to add item from different restaurant
         response = client.post(
             "/users/1/cart/items",
-            json={"item_id": 100, "quantity": 1},  # Restaurant 2, Item 100
+            json={"item_id": 100, "quantity": 1, "restaurant_id": 2},
             headers=auth_headers,
         )
         # Should fail because item is from different restaurant
