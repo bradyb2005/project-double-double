@@ -191,6 +191,14 @@ class TestIntegrationCustomerWorkflow:
         assert order["restaurant_id"] == restaurant_id
         assert len(order["items"]) == 2
         assert order["status"] == "pending"
+        
+        # Verify fee calculations: subtotal=(5.99*2)+(12.50*1)=24.48
+        # GST (5%)=1.22, PST (7%)=1.71, Service (10%)=2.45, Total=29.86
+        assert order["subtotal"] == 24.48
+        assert round(order["gst"], 2) == 1.22
+        assert round(order["pst"], 2) == 1.71
+        assert round(order["service_charge"], 2) == 2.45
+        assert round(order["total_price"], 2) == 29.86
 
         # ===== STEP 8: Retrieve the created order =====
         response = client.get(f"/users/{new_user_id}/orders/{order_id}", headers=auth_headers)
@@ -198,6 +206,9 @@ class TestIntegrationCustomerWorkflow:
         retrieved_order = response.json()
         assert retrieved_order["id"] == order_id
         assert retrieved_order["status"] == "pending"
+        # Verify fees are present in retrieved order
+        assert retrieved_order["subtotal"] == 24.48
+        assert round(retrieved_order["total_price"], 2) == 29.86
 
         # ===== STEP 9: Verify cart was cleared =====
         response = client.get(f"/users/{new_user_id}/cart", headers=auth_headers)
@@ -230,6 +241,14 @@ class TestIntegrationCustomerWorkflow:
         assert order["customer_id"] == 1
         assert len(order["items"]) == 1
         assert order["status"] == "pending"
+        
+        # Verify fee calculations: subtotal=(5.99*2)=11.98
+        # GST (5%)=0.60, PST (7%)=0.84, Service (10%)=1.20, Total=14.62
+        assert order["subtotal"] == 11.98
+        assert round(order["gst"], 2) == 0.60
+        assert round(order["pst"], 2) == 0.84
+        assert round(order["service_charge"], 2) == 1.20
+        assert round(order["total_price"], 2) == 14.62
 
         # Verify cart was cleared
         response = client.get("/users/1/cart", headers=auth_headers)

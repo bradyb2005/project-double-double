@@ -15,6 +15,10 @@ class Order(BaseModel):
     customer_details: dict
     restaurant_id: int
     items: list[OrderItem]
-    total_price: float = Field(..., gt=0, description = "Total price must be greater than 0")
+    subtotal: float = Field(..., ge=0, description="Sum of item prices × quantities")
+    gst: float = Field(..., ge=0, description="GST (5% of subtotal)")
+    pst: float = Field(..., ge=0, description="PST (7% of subtotal, BC only)")
+    service_charge: float = Field(..., ge=0, description="Service charge (10% of subtotal)")
+    total_price: float = Field(..., gt=0, description="Subtotal plus GST, PST and service charge")
     status: str = "pending"
     created_at: datetime
