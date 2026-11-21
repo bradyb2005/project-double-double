@@ -964,7 +964,7 @@
 
 ### Entry: Missing cart service tests (RemoveFromCart and ClearCart)
 
-- **Date:** Thursday, November 20
+- **Date:** Friday, November 20
 - **Student(s):** @bradyb2005
 - **Artifacts:** `backend/tests/services/test_cart_service.py`
 - **Label:**
@@ -981,11 +981,11 @@
 - **Purpose:** M2 requirements mandate test coverage for all cart service operations. Two test classes were left empty: `TestRemoveFromCart` and `TestClearCart`. Generated comprehensive tests to complete M2 test coverage.
 - **Influence:** Generated 12 test cases total (6 per class) following existing test patterns in the codebase. Tests cover: item removal with verification, error handling for invalid items, inactive user restrictions, and data persistence. Clear cart tests cover: clearing operations, empty cart handling, inactive user blocks, and repository persistence verification.
 - **Validation:** Ran `python -m pytest backend/tests/services/test_cart_service.py` and all 34 tests pass. Tests follow naming conventions and assertion patterns consistent with existing test suite.
-- **PR:** #84
+- **PR:** #85
 
 ### Entry: Integration test for complete customer workflow
 
-- **Date:** Thursday, November 20
+- **Date:** Friday, November 20
 - **Student(s):** @bradyb2005
 - **Artifacts:** `backend/tests/routes/test_integration_workflow.py`
 - **Label:**
@@ -1002,4 +1002,4 @@
 - **Purpose:** M2 requirements mandate at least 1 integrated test per team member demonstrating the complete workflow: Customer Registration → Browse Restaurants → Add to Cart → Checkout → Order Created. Generated comprehensive integration test class to validate end-to-end system behavior.
 - **Influence:** Generated 5 integrated test methods following existing route test patterns. Tests verify: complete workflow from registration to order creation, deactivated customer rejection, unavailable item rejection at checkout, price revalidation during checkout, and single-restaurant constraint enforcement.
 - **Validation:** Test file created with 320 lines demonstrating all major business rules and workflow steps. Tests follow naming conventions and assertion patterns consistent with existing test suite.
-- **PR:** #
+- **PR:** #85
